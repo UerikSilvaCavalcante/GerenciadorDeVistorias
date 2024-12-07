@@ -1,0 +1,6 @@
+@TeiaAPI_HostAddress = http://localhost:5017
+
+GET {{TeiaAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
