@@ -38,7 +38,7 @@ namespace TeiaAPI.Repositorios
             }
             await _solucoesRepositorio.Delete(lote.SolucoesId);
             _context.Lotes.Remove(lote);
-            await _context.SaveChangesAsync();
+            // await _context.SaveChangesAsync();
             return true;
         }
 

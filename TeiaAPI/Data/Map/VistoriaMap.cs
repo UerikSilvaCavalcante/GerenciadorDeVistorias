@@ -40,7 +40,11 @@ namespace TeiaAPI.Data.Map
 
 
             //?DateTime
-            builder.Property(x => x.DataVistoria).IsRequired();
+            builder.Property(x => x.DataAbertura).IsRequired();
+            builder.Property(x => x.DataLancamento);
+            builder.Property(x => x.DataConclusao);
+
+
             //?Enums
             builder.Property(x => x.Type).IsRequired();
             builder.Property(x => x.Status).HasDefaultValue(StatusVistoriaEnum.Pendente);

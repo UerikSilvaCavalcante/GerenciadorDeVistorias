@@ -17,14 +17,17 @@ namespace TeiaAPI.Repositorios
         private readonly IimovelRepositorio _imovelRepositorio;
         private readonly IApartamentoRepositorio _apartamentoRepositorio;
         private readonly ILoteRepositorio _loteRepositorio;
+        private readonly IObraRepositorio _obraRepositorio;
 
-        public VistoriadorRepositorio(TeiaApiDBContext context, IEnderecoRepositorio enderecoRepositorio, IimovelRepositorio imovelRepositorio, IApartamentoRepositorio apartamentoRepositorio, ILoteRepositorio loteRepositorio)
+
+        public VistoriadorRepositorio(TeiaApiDBContext context, IEnderecoRepositorio enderecoRepositorio, IimovelRepositorio imovelRepositorio, IApartamentoRepositorio apartamentoRepositorio, ILoteRepositorio loteRepositorio, IObraRepositorio obraRepositorio)
         {
             _context = context;
             _enderecoRepositorio = enderecoRepositorio;
             _imovelRepositorio = imovelRepositorio;
             _apartamentoRepositorio = apartamentoRepositorio;
             _loteRepositorio = loteRepositorio;
+            _obraRepositorio = obraRepositorio;
         }
 
         public async Task<VistoriaModel> AtualizarVistoria(VistoriadorModel.VistoriadorProps vistoria, int id)
@@ -34,7 +37,7 @@ namespace TeiaAPI.Repositorios
             {
                 return null;
             }
-            vistoriaAtualizada.DataVistoria = vistoria.DataVistoria;
+            vistoriaAtualizada.DataConclusao = DateTime.Now;
             vistoriaAtualizada.URLImagens = vistoria.URLImagens;
             vistoriaAtualizada.Latitude = vistoria.Latitude;
             vistoriaAtualizada.Longitude = vistoria.Longitude;
@@ -57,6 +60,9 @@ namespace TeiaAPI.Repositorios
                 {
                     int idLote = await _loteRepositorio.Add(vistoria.Lote);
                     vistoriaAtualizada.IdTipoImovel = idLote;   
+                }else if (vistoriaAtualizada.Type == TypeEnum.E401){
+                    ObraModel obra = await _obraRepositorio.AddObra(vistoria.Obra);
+                    vistoriaAtualizada.IdTipoImovel = obra.Id;
                 }
                 vistoriaAtualizada.Status = StatusVistoriaEnum.Concluida;
             }else if(vistoriaAtualizada.Status == StatusVistoriaEnum.Concluida)
@@ -77,7 +83,10 @@ namespace TeiaAPI.Repositorios
                     {
                         LoteModel lote = await _loteRepositorio.Update(vistoria.Lote, (int)vistoriaAtualizada.IdTipoImovel);
                         vistoriaAtualizada.IdTipoImovel = lote.Id;
-                }
+                    }else if (vistoriaAtualizada.Type == TypeEnum.E401){
+                        ObraModel obra = await _obraRepositorio.UpdateObra(vistoria.Obra, (int)vistoriaAtualizada.IdTipoImovel);
+                        vistoriaAtualizada.IdTipoImovel = obra.Id;
+                    }
             }
             _context.Vistorias.Update(vistoriaAtualizada);
             await _context.SaveChangesAsync();

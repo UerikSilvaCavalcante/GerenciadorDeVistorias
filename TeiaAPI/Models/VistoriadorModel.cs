@@ -27,7 +27,7 @@ namespace TeiaAPI.Models
             public ImovelModel Imovel { get; set; }
 
             public ApartamentoModel? Apartamento { get; set; }
-
+            public ObraModel? Obra { get; set; }
             public LoteModel? Lote { get; set; }
             public List<AreaProps> areas {get;set;}
             public DivisaoModel.DivisaoManyToManyProps divisaoProps {get;set;} 

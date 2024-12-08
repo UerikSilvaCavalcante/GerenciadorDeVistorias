@@ -15,13 +15,17 @@ namespace TeiaAPI.Repositorios
         private readonly IEnderecoRepositorio _enderecoRepositorio;
         private readonly IimovelRepositorio _imovelRepositorio;
         private readonly IApartamentoRepositorio _apartamentoRepositorio;
-        
-        public EngenheiroRepositorio(TeiaApiDBContext context, IEnderecoRepositorio enderecoRepositorio, IimovelRepositorio imovelRepositorio, IApartamentoRepositorio apartamentoRepositorio)
+        private readonly ILoteRepositorio _loteRepositorio;
+        private readonly IObraRepositorio _obraRepositorio;
+
+        public EngenheiroRepositorio(TeiaApiDBContext context, IEnderecoRepositorio enderecoRepositorio, IimovelRepositorio imovelRepositorio, IApartamentoRepositorio apartamentoRepositorio, ILoteRepositorio loteRepositorio, IObraRepositorio obraRepositorio)
         {
             _context = context;
             _enderecoRepositorio = enderecoRepositorio;
             _imovelRepositorio = imovelRepositorio;
             _apartamentoRepositorio = apartamentoRepositorio;
+            _loteRepositorio = loteRepositorio;
+            _obraRepositorio = obraRepositorio;
         }
 
         public async Task<VistoriaModel> AddVistoria(EngenheiroModel.EngenheiroProps engenheiroProps)
@@ -35,7 +39,7 @@ namespace TeiaAPI.Repositorios
         
             vistoria.URLMatricula = engenheiroProps.URLMatricula;
             vistoria.URLImagens = engenheiroProps.URLImagens;
-            vistoria.DataVistoria = engenheiroProps.DataLancamento;
+            vistoria.DataAbertura = engenheiroProps.DataAbertura;
             vistoria.Type = engenheiroProps.Tipo;
             vistoria.Contratante = engenheiroProps.Contratante;
             vistoria.Tel_Contratante = engenheiroProps.Tel_Contratante;
@@ -61,6 +65,12 @@ namespace TeiaAPI.Repositorios
                 if (vistoria.Endereco.TipoImovel == EnderecoModel.tipoImovel_Enum.Apartamento)
                 {
                     await _apartamentoRepositorio.Delete((int)vistoria.IdTipoImovel);
+                }else if (vistoria.Endereco.TipoImovel == EnderecoModel.tipoImovel_Enum.Lote)
+                {
+                    await _loteRepositorio.Delete((int)vistoria.IdTipoImovel);
+                }else if (vistoria.Endereco.TipoImovel == EnderecoModel.tipoImovel_Enum.Obra)
+                {
+                    await _obraRepositorio.DeleteObra((int)vistoria.IdTipoImovel);
                 }
                 await _imovelRepositorio.Delete((int)vistoria.IdImovel);
             }
@@ -108,7 +118,7 @@ namespace TeiaAPI.Repositorios
             existingVistoria.NumOs = engenheiroProps.numOs;
             existingVistoria.URLMatricula = engenheiroProps.URLMatricula;
             existingVistoria.URLImagens = engenheiroProps.URLImagens;
-            existingVistoria.DataVistoria = engenheiroProps.DataLancamento;
+            existingVistoria.DataAbertura = engenheiroProps.DataAbertura;
             existingVistoria.Type = engenheiroProps.Tipo;
             existingVistoria.Contratante = engenheiroProps.Contratante;
             existingVistoria.Tel_Contratante = engenheiroProps.Tel_Contratante;

@@ -29,6 +29,7 @@ namespace TeiaAPI
             builder.Services.AddScoped<IBlocoRepositorio, BlocoRepositorio>();
             builder.Services.AddScoped<ILoteRepositorio, LoteRepositorio>();
             builder.Services.AddScoped<ISolucoesRepositorio, SolucoesRepositorio>();
+            builder.Services.AddScoped<IObraRepositorio, ObraRepositorio>();
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();

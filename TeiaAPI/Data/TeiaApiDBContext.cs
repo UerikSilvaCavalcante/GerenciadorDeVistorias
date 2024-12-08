@@ -25,6 +25,7 @@ namespace TeiaAPI.Data
         public DbSet<BlocoPredioModel> BlocoPredio {get; set;}
         public DbSet<LoteModel> Lotes {get; set;}
         public DbSet<SolucoesModel> Solucoes {get; set;}
+        public DbSet<ObraModel> Obras {get; set;}
 
         //?Props
         public DbSet<PortasProps> Portas {get; set;}

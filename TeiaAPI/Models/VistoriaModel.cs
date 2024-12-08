@@ -53,9 +53,18 @@ namespace TeiaAPI.Models
         [Display(Name="URLMatricula")]
         public string? URLMatricula { get; set; }
 
-        [Column("data_vistoria")]
-        [Display(Name="DataVistoria")]
-        public DateTime DataVistoria { get; set; }
+        [Column("data_lancamento")]
+        [Display(Name="DataLancamento")]
+        [DefaultValue("CURRENT_TIMESTAMP")]
+        public DateTime DataLancamento { get; set; }
+
+        [Column("Data_abertura")]
+        [Display(Name="DataAbertura")]
+        public DateTime DataAbertura { get; set; }
+
+        [Column("data_conclusao")]
+        [Display(Name="DataConclusao")]
+        public DateTime DataConclusao { get; set; }
 
         [Column("tipo")]
         [Display(Name="Tipo")]

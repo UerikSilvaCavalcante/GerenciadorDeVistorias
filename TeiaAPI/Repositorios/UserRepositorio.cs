@@ -49,6 +49,8 @@ namespace TeiaAPI.Repositorios
             existingUser.SetNewPassword(user.Password);
             existingUser.Type = user.Type;
             existingUser.Status = user.Status;
+            existingUser.Email = user.Email;
+            existingUser.Phone = user.Phone;
             _context.Users.Update(existingUser);
             await _context.SaveChangesAsync();
             return existingUser;

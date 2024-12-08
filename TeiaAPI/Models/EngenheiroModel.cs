@@ -19,7 +19,7 @@ namespace TeiaAPI.Models
             public long numOs { get; set; }
             public string? URLMatricula { get; set; }
             public string? URLImagens { get; set; }
-            public DateTime DataLancamento { get; set; }
+            public DateTime DataAbertura { get; set; }
             public TypeEnum Tipo { get; set; }
             public string? Contratante { get; set; }
             public string? Tel_Contratante { get; set; }

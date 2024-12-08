@@ -12,6 +12,9 @@ namespace TeiaAPI.Data.Map
             builder.Property(x => x.Name).IsRequired().HasMaxLength(80);
             builder.Property(x => x.UserName).IsRequired().HasMaxLength(100);
             builder.Property(x => x.Password).IsRequired().HasMaxLength(80);
+            builder.Property(x => x.Email).IsRequired().HasMaxLength(100);
+            builder.Property(x => x.Phone).IsRequired().HasMaxLength(20);
+            builder.Property(x => x.CreatedAt);
         }
     }
 }

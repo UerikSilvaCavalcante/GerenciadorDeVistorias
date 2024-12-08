@@ -43,7 +43,8 @@ namespace TeiaAPI.Controllers
                     numero_os = vistoria.NumOs,
                     url_imagens = vistoria.URLImagens,
                     url_matricula = vistoria.URLMatricula,
-                    dataContratacao = vistoria.DataVistoria,
+                    dataLancamento = vistoria.DataLancamento,
+                    dataAbertura = vistoria.DataAbertura,
                     tipo = Enum.GetName(typeof(TypeEnum), vistoria.Type),
                     contratante = vistoria.Contratante,
                     telefone_contratante = vistoria.Tel_Contratante,
@@ -172,7 +173,9 @@ namespace TeiaAPI.Controllers
                                 numero_os = vistoria.NumOs,
                                 url_imagens = vistoria.URLImagens,
                                 url_matricula = vistoria.URLMatricula,
-                                dataContratacao = vistoria.DataVistoria,
+                                dataLancamento = vistoria.DataLancamento,
+                                dataAbertura = vistoria.DataAbertura,
+                                dataConclusao = vistoria.DataConclusao,
                                 tipo = Enum.GetName(typeof(TypeEnum), vistoria.Type),
                                 contratante = vistoria.Contratante,
                                 telefone_contratante = vistoria.Tel_Contratante,
@@ -191,7 +194,8 @@ namespace TeiaAPI.Controllers
                             numero_os = vistoria.NumOs,
                             url_imagens = vistoria.URLImagens,
                             url_matricula = vistoria.URLMatricula,
-                            dataContratacao = vistoria.DataVistoria,
+                            dataLancamento = vistoria.DataLancamento,
+                            dataAbertura = vistoria.DataAbertura,
                             tipo = Enum.GetName(typeof(TypeEnum), vistoria.Type),
                             contratante = vistoria.Contratante,
                             telefone_contratante = vistoria.Tel_Contratante,
@@ -205,7 +209,7 @@ namespace TeiaAPI.Controllers
                         return BadRequest("Vistoria Cancelada");
                     }
                 } else {
-                    return NotFound("Vistoria não encontrada!")
+                    return NotFound("Vistoria não encontrada!");
                 }
             } catch (Exception e)
             {
@@ -227,7 +231,8 @@ namespace TeiaAPI.Controllers
                     numero_os = vistoriaModel.NumOs,
                     url_imagens = vistoriaModel.URLImagens,
                     url_matricula = vistoriaModel.URLMatricula,
-                    dataContratacao = vistoriaModel.DataVistoria,
+                    dataLancamento = vistoriaModel.DataLancamento,
+                    dataAbertura = vistoriaModel.DataAbertura,
                     tipo = Enum.GetName(typeof(TypeEnum), vistoriaModel.Type),
                     contratante = vistoriaModel.Contratante,
                     telefone_contratante = vistoriaModel.Tel_Contratante,
@@ -256,7 +261,8 @@ namespace TeiaAPI.Controllers
                     numero_os = vistoria.NumOs,
                     url_imagens = vistoria.URLImagens,
                     url_matricula = vistoria.URLMatricula,
-                    dataContratacao = vistoria.DataVistoria,
+                    dataLancamento = vistoria.DataLancamento,
+                    dataAbertura = vistoria.DataAbertura,
                     tipo = Enum.GetName(typeof(TypeEnum), vistoria.Type),
                     contratante = vistoria.Contratante,
                     telefone_contratante = vistoria.Tel_Contratante,

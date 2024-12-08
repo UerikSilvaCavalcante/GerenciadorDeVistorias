@@ -31,7 +31,7 @@ namespace TeiaAPI.Repositorios
                 return false;
             }
             _context.Solucoes.Remove(solucoes);
-            await _context.SaveChangesAsync();
+            // await _context.SaveChangesAsync();
             return true;
         }
 
