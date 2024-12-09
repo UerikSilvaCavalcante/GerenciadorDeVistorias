@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
+using TeiaAPI.enums.Vistoria;
 
 namespace TeiaAPI.Models
 {
@@ -44,13 +45,7 @@ namespace TeiaAPI.Models
 
         [Column("tipoImovel")]
         [Display(Name = "TipoImovel")]
-        public tipoImovel_Enum TipoImovel { get; set; }
-        public enum tipoImovel_Enum{
-            Casa,
-            Apartamento,
-            Lote,
-            Obra,
-            Infraestrutura
-        }
+        public tipoImovelEnum TipoImovel { get; set; }
+        
     }
 }

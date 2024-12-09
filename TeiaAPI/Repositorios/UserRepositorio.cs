@@ -31,6 +31,7 @@ namespace TeiaAPI.Repositorios
         public async Task<UserModel> PostUser(UserModel user)
         {
             UserModel newUser = user;
+            newUser.SetCreated();
             newUser.SetPassword();
             await _context.Users.AddAsync(newUser);
             await _context.SaveChangesAsync();

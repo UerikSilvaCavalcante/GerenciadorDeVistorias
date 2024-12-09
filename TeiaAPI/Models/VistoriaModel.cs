@@ -55,8 +55,8 @@ namespace TeiaAPI.Models
 
         [Column("data_lancamento")]
         [Display(Name="DataLancamento")]
-        [DefaultValue("CURRENT_TIMESTAMP")]
-        public DateTime DataLancamento { get; set; }
+        // [DefaultValue("CURRENT_TIMESTAMP")]
+        public DateTime? DataLancamento { get; set; }
 
         [Column("Data_abertura")]
         [Display(Name="DataAbertura")]
@@ -96,5 +96,13 @@ namespace TeiaAPI.Models
         [DefaultValue(StatusVistoriaEnum.Pendente)]
         public StatusVistoriaEnum Status { get; set; }
         
+        public void SetDataLancamento()
+        {
+            this.DataLancamento = DateTime.UtcNow;
+        }
+        public void SetDataConclusao()
+        {
+            this.DataConclusao = DateTime.UtcNow;
+        }
     }
 }

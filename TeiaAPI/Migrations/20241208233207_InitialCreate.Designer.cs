@@ -12,8 +12,8 @@ using TeiaAPI.Data;
 namespace TeiaAPI.Migrations
 {
     [DbContext(typeof(TeiaApiDBContext))]
-    [Migration("20241207032028_IntialCreate")]
-    partial class IntialCreate
+    [Migration("20241208233207_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -510,6 +510,100 @@ namespace TeiaAPI.Migrations
                     b.ToTable("lote");
                 });
 
+            modelBuilder.Entity("TeiaAPI.Models.ObraModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<float>("Acabamentos")
+                        .HasColumnType("real")
+                        .HasColumnName("acabamentos");
+
+                    b.Property<float>("Cobertura")
+                        .HasColumnType("real")
+                        .HasColumnName("cobertura");
+
+                    b.Property<float>("Complementos")
+                        .HasColumnType("real")
+                        .HasColumnName("complementos");
+
+                    b.Property<float>("Esquadrias")
+                        .HasColumnType("real")
+                        .HasColumnName("esquadrias");
+
+                    b.Property<float>("Forros")
+                        .HasColumnType("real")
+                        .HasColumnName("forros");
+
+                    b.Property<float>("Impermeabilizacao")
+                        .HasColumnType("real")
+                        .HasColumnName("impermeabilizacao");
+
+                    b.Property<float>("Infraestrutura")
+                        .HasColumnType("real")
+                        .HasColumnName("infraestrutura");
+
+                    b.Property<float>("InstalacoesEletricas")
+                        .HasColumnType("real")
+                        .HasColumnName("instalacoes_eletricas");
+
+                    b.Property<float>("InstalacoesEsgoto")
+                        .HasColumnType("real")
+                        .HasColumnName("instalacoes_esgoto");
+
+                    b.Property<float>("InstalacoesHidraulicas")
+                        .HasColumnType("real")
+                        .HasColumnName("instalacoes_hidraulicas");
+
+                    b.Property<float>("LoucasMetais")
+                        .HasColumnType("real")
+                        .HasColumnName("locas_metais");
+
+                    b.Property<string>("Outros")
+                        .HasColumnType("text")
+                        .HasColumnName("outros");
+
+                    b.Property<float>("Paredes")
+                        .HasColumnType("real")
+                        .HasColumnName("paredes");
+
+                    b.Property<float>("Pinturas")
+                        .HasColumnType("real")
+                        .HasColumnName("pintura");
+
+                    b.Property<float>("Pisos")
+                        .HasColumnType("real")
+                        .HasColumnName("pisos");
+
+                    b.Property<float>("RevestimentosExternos")
+                        .HasColumnType("real")
+                        .HasColumnName("revestimentos_externos");
+
+                    b.Property<float>("RevestimentosInternos")
+                        .HasColumnType("real")
+                        .HasColumnName("revestimentos_internos");
+
+                    b.Property<float>("Servico")
+                        .HasColumnType("real")
+                        .HasColumnName("servico");
+
+                    b.Property<float>("SupraEstrutura")
+                        .HasColumnType("real")
+                        .HasColumnName("supra_estrutura");
+
+                    b.Property<float>("VidrosPlasticos")
+                        .HasColumnType("real")
+                        .HasColumnName("vidros_plasticos");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("obra");
+                });
+
             modelBuilder.Entity("TeiaAPI.Models.Props.AreaProps", b =>
                 {
                     b.Property<int>("Id")
@@ -739,6 +833,16 @@ namespace TeiaAPI.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime?>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("email");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(80)
@@ -750,6 +854,12 @@ namespace TeiaAPI.Migrations
                         .HasMaxLength(80)
                         .HasColumnType("character varying(80)")
                         .HasColumnName("password");
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)")
+                        .HasColumnName("phone");
 
                     b.Property<int?>("Status")
                         .HasColumnType("integer")
@@ -791,9 +901,17 @@ namespace TeiaAPI.Migrations
                         .HasColumnType("character varying(100)")
                         .HasColumnName("contratante");
 
-                    b.Property<DateTime>("DataVistoria")
+                    b.Property<DateTime>("DataAbertura")
                         .HasColumnType("timestamp with time zone")
-                        .HasColumnName("data_vistoria");
+                        .HasColumnName("Data_abertura");
+
+                    b.Property<DateTime>("DataConclusao")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("data_conclusao");
+
+                    b.Property<DateTime?>("DataLancamento")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("data_lancamento");
 
                     b.Property<int>("IdEndereco")
                         .HasColumnType("integer")

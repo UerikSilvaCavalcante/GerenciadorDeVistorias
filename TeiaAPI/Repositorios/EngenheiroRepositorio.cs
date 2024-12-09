@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using TeiaAPI.Data;
+using TeiaAPI.enums.Vistoria;
 using TeiaAPI.Models;
 using TeiaAPI.Repositorios.Interfaces;
 
@@ -36,7 +37,7 @@ namespace TeiaAPI.Repositorios
             vistoria.IdVistoriador = engenheiroProps.IdVistoriador;
             vistoria.IdEndereco = endereco.Id;
             vistoria.NumOs = engenheiroProps.numOs;
-        
+            vistoria.DataAbertura = engenheiroProps.DataAbertura;
             vistoria.URLMatricula = engenheiroProps.URLMatricula;
             vistoria.URLImagens = engenheiroProps.URLImagens;
             vistoria.DataAbertura = engenheiroProps.DataAbertura;
@@ -47,6 +48,7 @@ namespace TeiaAPI.Repositorios
             vistoria.Latitude = engenheiroProps.Latitude;
             vistoria.Longitude = engenheiroProps.Longitude;
             vistoria.Obs = engenheiroProps.Obs;
+            vistoria.SetDataLancamento();
 
             await _context.Vistorias.AddAsync(vistoria);
             await _context.SaveChangesAsync();
@@ -62,13 +64,13 @@ namespace TeiaAPI.Repositorios
             }
             if(vistoria.Status == enums.Vistoria.StatusVistoriaEnum.Concluida)
             {
-                if (vistoria.Endereco.TipoImovel == EnderecoModel.tipoImovel_Enum.Apartamento)
+                if (vistoria.Endereco.TipoImovel == tipoImovelEnum.Apartamento)
                 {
                     await _apartamentoRepositorio.Delete((int)vistoria.IdTipoImovel);
-                }else if (vistoria.Endereco.TipoImovel == EnderecoModel.tipoImovel_Enum.Lote)
+                }else if (vistoria.Endereco.TipoImovel == tipoImovelEnum.Lote)
                 {
                     await _loteRepositorio.Delete((int)vistoria.IdTipoImovel);
-                }else if (vistoria.Endereco.TipoImovel == EnderecoModel.tipoImovel_Enum.Obra)
+                }else if (vistoria.Endereco.TipoImovel == tipoImovelEnum.Obra)
                 {
                     await _obraRepositorio.DeleteObra((int)vistoria.IdTipoImovel);
                 }
@@ -80,12 +82,42 @@ namespace TeiaAPI.Repositorios
             return true;
         }
 
-        public async Task<List<VistoriaModel>> GetAllVistorias(int id)
+        public async Task<List<VistoriaModel>> GetAllVistorias(int id, StatusVistoriaEnum? status = null, TypeEnum? tipoServico = null, DateTime? dataInicio = null, DateTime? dataFim = null, tipoImovelEnum? tipoImovel = null)
         {
-            return await _context.Vistorias.Where(v => v.IdEngenheiro == id)
-                .Include(v => v.Vistoriador)
-                .Include(v => v.Endereco)
-                .ToListAsync();   
+            List<VistoriaModel> vistorias = new List<VistoriaModel>();
+            var query = _context.Vistorias.AsQueryable();
+                if (status != null)
+                {
+                    query = query.Where(v => v.Status == status);
+                }
+
+                if (tipoServico != null)
+                {
+                    query = query.Where(v => v.Type == tipoServico);
+                }
+
+                if (dataInicio != null)
+                {
+                    query = query.Where(v => v.DataAbertura >= dataInicio);
+                }
+
+                if (dataFim != null)
+                {
+                    query = query.Where(v => v.DataAbertura <= dataFim);
+                }
+
+                if (tipoImovel != null)
+                {
+                    query = query.Where(v => v.Endereco.TipoImovel == tipoImovel);
+                }
+
+                vistorias = await query
+                    .Where(v => v.IdEngenheiro == id)
+                    .Include(v => v.Endereco)
+                    .Include(v => v.Vistoriador)
+                    .ToListAsync();
+                
+            return vistorias;    
         }
 
         public async Task<VistoriaModel> GetVistoriaById(int id, int idEngenheiro)
@@ -126,6 +158,7 @@ namespace TeiaAPI.Repositorios
             existingVistoria.Latitude = engenheiroProps.Latitude;
             existingVistoria.Longitude = engenheiroProps.Longitude;
             existingVistoria.Obs = engenheiroProps.Obs;
+            existingVistoria.SetDataLancamento();
             _context.Vistorias.Update(existingVistoria);
             await _context.SaveChangesAsync();
             return existingVistoria;

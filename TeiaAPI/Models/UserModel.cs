@@ -41,7 +41,7 @@ namespace TeiaAPI.Models
 
         [Column("created_at")]
         [Display(Name="Created At")]
-        [DefaultValue("CURRENT_TIMESTAMP")]
+        // [DefaultValue("CURRENT_TIMESTAMP")]
         public DateTime? CreatedAt {get; set;}
 
         [Column("status")]
@@ -56,6 +56,11 @@ namespace TeiaAPI.Models
         public void SetPassword()
         {
             this.Password = this.Password.Encrypt();
+        }
+
+        public void SetCreated()
+        {
+            this.CreatedAt = DateTime.UtcNow;
         }
 
         public void SetNewPassword(string newPassword)

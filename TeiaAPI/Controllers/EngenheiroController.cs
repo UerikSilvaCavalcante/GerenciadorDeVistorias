@@ -28,33 +28,51 @@ namespace TeiaAPI.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<List<VistoriaModel>>> GetAllVistorias(int id)
+        public async Task<ActionResult<List<VistoriaModel>>> GetAllVistorias(int id, [FromQuery] StatusVistoriaEnum? status = null, [FromQuery] TypeEnum? TipoServico = null, [FromQuery] tipoImovelEnum? TipoImovel = null, [FromQuery] DateTime? dataInicio = null, [FromQuery] DateTime? dataFim = null)
         {
-            UserModel user = await _userRepositorio.GetUserById(id);
-            if (user.Type != TypeUserEnum.Engenheiro && user.Status != StatusEnum.Ativado) 
+            try
             {
-                return BadRequest("Usuario não tem permissão para acessar essa rota");	
+                UserModel user = await _userRepositorio.GetUserById(id);
+                if (user.Type != TypeUserEnum.Engenheiro && user.Status != StatusEnum.Ativado) 
+                {
+                    return BadRequest("Usuario não tem permissão para acessar essa rota");	
+                }
+
+                List<VistoriaModel> vistorias = await _engenheiroRepositorio.GetAllVistorias(id, status, TipoServico, dataInicio, dataFim, TipoImovel);
+                return Ok( new {Engenheiro = user.Name, vistorias = vistorias.Select(vistoria => new{
+                        id = vistoria.Id,
+                        vistoriador = vistoria.Vistoriador,
+                        numero_os = vistoria.NumOs,
+                        url_imagens = vistoria.URLImagens,
+                        url_matricula = vistoria.URLMatricula,
+                        dataLancamento = vistoria.DataLancamento,
+                        dataAbertura = vistoria.DataAbertura,
+                        endereco = new {
+                                    id = vistoria.Endereco.Id,
+                                    rua = vistoria.Endereco.Rua,
+                                    numero = vistoria.Endereco.Numero,
+                                    bairro = vistoria.Endereco.Bairro,
+                                    cidade = vistoria.Endereco.Cidade,
+                                    estado = vistoria.Endereco.Estado,
+                                    cep = vistoria.Endereco.Cep,
+                                    complemento = vistoria.Endereco.Complemento,
+                                    tipoImovel = Enum.GetName(typeof(tipoImovelEnum), vistoria.Endereco.TipoImovel)
+                                },
+                        tipo = Enum.GetName(typeof(TypeEnum), vistoria.Type),
+                        contratante = vistoria.Contratante,
+                        telefone_contratante = vistoria.Tel_Contratante,
+                        cliente = vistoria.Cliente,
+                        latitude = vistoria.Latitude,
+                        longitude = vistoria.Longitude,
+                        obs =  vistoria.Obs != null ? vistoria.Obs : "",
+                        status = Enum.GetName(typeof(StatusVistoriaEnum), vistoria.Status)
+
+                    })});
+            }catch (Exception e)
+            {
+                return BadRequest($"Erro ao buscar Vistorias: {e}");
             }
-
-            List<VistoriaModel> vistorias = await _engenheiroRepositorio.GetAllVistorias(id);
-            return Ok( new {Engenheiro = new {idEngenhiro = id}, vistorias = vistorias.Select(vistoria => new{
-                    id = vistoria.Id,
-                    vistoriador = vistoria.Vistoriador,
-                    numero_os = vistoria.NumOs,
-                    url_imagens = vistoria.URLImagens,
-                    url_matricula = vistoria.URLMatricula,
-                    dataLancamento = vistoria.DataLancamento,
-                    dataAbertura = vistoria.DataAbertura,
-                    tipo = Enum.GetName(typeof(TypeEnum), vistoria.Type),
-                    contratante = vistoria.Contratante,
-                    telefone_contratante = vistoria.Tel_Contratante,
-                    cliente = vistoria.Cliente,
-                    latitude = vistoria.Latitude,
-                    longitude = vistoria.Longitude,
-                    obs =  vistoria.Obs != null ? vistoria.Obs : "",
-                    status = Enum.GetName(typeof(StatusVistoriaEnum), vistoria.Status)
-
-                })});
+            
         }
 
         [HttpGet("{id}/{idVistoria}")]
@@ -63,7 +81,7 @@ namespace TeiaAPI.Controllers
             try
             {
                 UserModel user = await _userRepositorio.GetUserById(id);
-                if (user.Type != TypeUserEnum.Engenheiro)
+                if (user.Type != TypeUserEnum.Engenheiro && user.Status != StatusEnum.Ativado)
                 {
                     return BadRequest("Usuario não tem permissão para acessar essa rota");	
                 }
@@ -73,9 +91,9 @@ namespace TeiaAPI.Controllers
                     if (vistoria.Status == StatusVistoriaEnum.Concluida)
                     {
                         var tipoImovel = new object();
-                        if (vistoria.Endereco.TipoImovel == EnderecoModel.tipoImovel_Enum.Apartamento){
+                        if (vistoria.Endereco.TipoImovel == tipoImovelEnum.Apartamento){
                             tipoImovel = await _apartamentoRepositorio.GetApartamentoById((int)vistoria.IdTipoImovel);
-                        }else if(vistoria.Endereco.TipoImovel == EnderecoModel.tipoImovel_Enum.Lote){
+                        }else if(vistoria.Endereco.TipoImovel == tipoImovelEnum.Lote){
                             tipoImovel = await _loteRepositorio.Get((int)vistoria.IdTipoImovel);
                         }else {
                             tipoImovel = null;
@@ -168,7 +186,7 @@ namespace TeiaAPI.Controllers
                                     estado = vistoria.Endereco.Estado,
                                     cep = vistoria.Endereco.Cep,
                                     complemento = vistoria.Endereco.Complemento,
-                                    tipoImovel = Enum.GetName(typeof(EnderecoModel.tipoImovel_Enum), vistoria.Endereco.TipoImovel)
+                                    tipoImovel = Enum.GetName(typeof(tipoImovelEnum), vistoria.Endereco.TipoImovel)
                                 },
                                 numero_os = vistoria.NumOs,
                                 url_imagens = vistoria.URLImagens,
@@ -222,6 +240,16 @@ namespace TeiaAPI.Controllers
         {
             try
             {
+                if (engenheiroProps.Tipo == TypeEnum.E401 && engenheiroProps.Endereco.TipoImovel != tipoImovelEnum.Obra)
+                {
+                    return BadRequest("Tipo de serviço não compativel com o tipo de imovel");
+                }else if (engenheiroProps.Tipo == TypeEnum.B438 || engenheiroProps.Tipo == TypeEnum.B437  && engenheiroProps.Endereco.TipoImovel != tipoImovelEnum.Lote)
+                {
+                    return BadRequest("Tipo de serviço não compativel com o tipo de imovel");
+                }else if (engenheiroProps.Tipo == TypeEnum.A413 && engenheiroProps.Endereco.TipoImovel != tipoImovelEnum.Apartamento || engenheiroProps.Endereco.TipoImovel != tipoImovelEnum.Casa)
+                {
+                    return BadRequest("Tipo de serviço não compativel com o tipo de imovel");
+                }
                 
                 VistoriaModel vistoriaModel = await _engenheiroRepositorio.AddVistoria(engenheiroProps);    
                 return Ok(new {vistoria = new{

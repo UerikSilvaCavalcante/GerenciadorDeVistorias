@@ -37,7 +37,7 @@ namespace TeiaAPI.Repositorios
             {
                 return null;
             }
-            vistoriaAtualizada.DataConclusao = DateTime.Now;
+            vistoriaAtualizada.SetDataConclusao();
             vistoriaAtualizada.URLImagens = vistoria.URLImagens;
             vistoriaAtualizada.Latitude = vistoria.Latitude;
             vistoriaAtualizada.Longitude = vistoria.Longitude;
@@ -48,11 +48,11 @@ namespace TeiaAPI.Repositorios
                     int imovelId = await _imovelRepositorio.AddImovel(vistoria.Imovel, vistoria);
                     vistoriaAtualizada.IdImovel = imovelId;
                     switch (vistoriaAtualizada.Endereco.TipoImovel){
-                        case EnderecoModel.tipoImovel_Enum.Apartamento:
+                        case tipoImovelEnum.Apartamento:
                             ApartamentoModel apartamento = await _apartamentoRepositorio.AddApartamento(vistoria.Apartamento);
                             vistoriaAtualizada.IdTipoImovel = apartamento.Id;
                             break;
-                        case EnderecoModel.tipoImovel_Enum.Casa:
+                        case tipoImovelEnum.Casa:
                             vistoriaAtualizada.Imovel.Telhado = (ImovelModel.Telhado_enum?)vistoria.Imovel.Telhado;
                             break;
                 }
@@ -71,11 +71,11 @@ namespace TeiaAPI.Repositorios
                 vistoriaAtualizada.IdImovel = imovel.Id;
                     if (vistoriaAtualizada.Type == TypeEnum.A413){
                         switch (vistoriaAtualizada.Endereco.TipoImovel){
-                            case EnderecoModel.tipoImovel_Enum.Apartamento:
+                            case tipoImovelEnum.Apartamento:
                                 ApartamentoModel apartamento = await _apartamentoRepositorio.UpdateApartamento(vistoria.Apartamento, (int)vistoriaAtualizada.IdTipoImovel);
                                 vistoriaAtualizada.IdTipoImovel = apartamento.Id;
                                 break;
-                            case EnderecoModel.tipoImovel_Enum.Casa:
+                            case tipoImovelEnum.Casa:
                                 vistoriaAtualizada.Imovel.Telhado = (ImovelModel.Telhado_enum?)vistoria.Imovel.Telhado;
                                 break;
                         }
@@ -93,20 +93,44 @@ namespace TeiaAPI.Repositorios
             return vistoriaAtualizada;
         }
 
-        public async Task<List<VistoriaModel>> GetAllVistorias(int id)
+        public async Task<List<VistoriaModel>> GetAllVistorias(int id, StatusVistoriaEnum? status = null, TypeEnum? tipoServico = null, DateTime? dataInicio = null, DateTime? dataFim = null, tipoImovelEnum? tipoImovel = null)
         {
-            return await _context.Vistorias.Where(v => v.IdVistoriador == id)
-            .Include(v => v.Engenheiro)
-            .Include(v => v.Endereco)
-            // .Include(v => v.Imovel).ThenInclude(i => i.AreaImovel)
-            // .Include(v => v.Imovel).ThenInclude(i => i.Acabamento).ThenInclude(a => a.Pinturas)
-            // .Include(v => v.Imovel).ThenInclude(i => i.Acabamento).ThenInclude(a => a.Portas)
-            // .Include(v => v.Imovel).ThenInclude(i => i.Acabamento).ThenInclude(a => a.Revestimentos)
-            // .Include(v => v.Imovel).ThenInclude(i => i.Divisao).ThenInclude(d => d.AreaServico)
-            // .Include(v => v.Imovel).ThenInclude(i => i.Divisao).ThenInclude(d => d.Banheiros)
-            // .Include(v => v.Imovel).ThenInclude(i => i.Divisao).ThenInclude(d => d.Garagems)
-            // .Include(v => v.Imovel).ThenInclude(i => i.Infraestrutura)
-            .ToListAsync();
+            List<VistoriaModel> vistorias = new List<VistoriaModel>();
+          
+                    var query = _context.Vistorias.AsQueryable();
+
+                    if (status != null)
+                    {
+                        query = query.Where(v => v.Status == status);
+                    }
+
+                    if (tipoServico != null)
+                    {
+                        query = query.Where(v => v.Type == tipoServico);
+                    }
+
+                    if (dataInicio != null)
+                    {
+                        query = query.Where(v => v.DataAbertura >= dataInicio);
+                    }
+
+                    if (dataFim != null)
+                    {
+                        query = query.Where(v => v.DataAbertura <= dataFim);
+                    }
+
+                    if (tipoImovel != null)
+                    {
+                        query = query.Where(v => v.Endereco.TipoImovel == tipoImovel);
+                    }
+
+                    vistorias = await query
+                        .Where(v => v.IdEngenheiro == id)
+                        .Include(v => v.Endereco)
+                        .Include(v => v.Vistoriador)
+                        .ToListAsync();
+                
+            return vistorias;  
         }
 
         public Task<VistoriaModel> GetVistoriaById(int id, int idVistoria)

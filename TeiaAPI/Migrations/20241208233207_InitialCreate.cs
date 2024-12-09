@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace TeiaAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class IntialCreate : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -167,6 +167,38 @@ namespace TeiaAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "obra",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    servico = table.Column<float>(type: "real", nullable: false),
+                    infraestrutura = table.Column<float>(type: "real", nullable: false),
+                    supra_estrutura = table.Column<float>(type: "real", nullable: false),
+                    paredes = table.Column<float>(type: "real", nullable: false),
+                    esquadrias = table.Column<float>(type: "real", nullable: false),
+                    vidros_plasticos = table.Column<float>(type: "real", nullable: false),
+                    cobertura = table.Column<float>(type: "real", nullable: false),
+                    impermeabilizacao = table.Column<float>(type: "real", nullable: false),
+                    revestimentos_internos = table.Column<float>(type: "real", nullable: false),
+                    revestimentos_externos = table.Column<float>(type: "real", nullable: false),
+                    forros = table.Column<float>(type: "real", nullable: false),
+                    pisos = table.Column<float>(type: "real", nullable: false),
+                    pintura = table.Column<float>(type: "real", nullable: false),
+                    acabamentos = table.Column<float>(type: "real", nullable: false),
+                    instalacoes_eletricas = table.Column<float>(type: "real", nullable: false),
+                    instalacoes_hidraulicas = table.Column<float>(type: "real", nullable: false),
+                    instalacoes_esgoto = table.Column<float>(type: "real", nullable: false),
+                    locas_metais = table.Column<float>(type: "real", nullable: false),
+                    complementos = table.Column<float>(type: "real", nullable: false),
+                    outros = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_obra", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "pintura",
                 columns: table => new
                 {
@@ -243,6 +275,9 @@ namespace TeiaAPI.Migrations
                     username = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     password = table.Column<string>(type: "character varying(80)", maxLength: 80, nullable: false),
                     type = table.Column<int>(type: "integer", nullable: true),
+                    email = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    phone = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
+                    created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     status = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
@@ -516,7 +551,9 @@ namespace TeiaAPI.Migrations
                     num_os = table.Column<long>(type: "bigint", nullable: false),
                     url_imagens = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
                     url_matricula = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
-                    data_vistoria = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    data_lancamento = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    Data_abertura = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    data_conclusao = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     tipo = table.Column<int>(type: "integer", nullable: false),
                     contratante = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     tel_contratante = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
@@ -663,6 +700,9 @@ namespace TeiaAPI.Migrations
 
             migrationBuilder.DropTable(
                 name: "lote");
+
+            migrationBuilder.DropTable(
+                name: "obra");
 
             migrationBuilder.DropTable(
                 name: "pintura_acabamento");

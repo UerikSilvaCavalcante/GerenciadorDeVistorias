@@ -29,12 +29,12 @@ namespace TeiaAPI.Controllers
         }
         
         [HttpGet("{id}")]
-        public async Task<ActionResult<List<VistoriaModel>>> GetAllVistorias(int id)
+        public async Task<ActionResult<List<VistoriaModel>>> GetAllVistorias(int id,[FromQuery] StatusVistoriaEnum? status = null, [FromQuery] TypeEnum? TipoServico = null, [FromQuery] tipoImovelEnum? TipoImovel = null, [FromQuery] DateTime? dataInicio = null, [FromQuery] DateTime? dataFim = null)
         {
             UserModel user = await _userRepositorio.GetUserById(id);
-            if (user.Type == TypeUserEnum.Vistoriador)
+            if (user.Type == TypeUserEnum.Vistoriador && user.Status == StatusEnum.Ativado)
             {
-                List<VistoriaModel> vistorias = await _vistoriadorRepositorio.GetAllVistorias(id);
+                List<VistoriaModel> vistorias = await _vistoriadorRepositorio.GetAllVistorias(id , status, TipoServico, dataInicio, dataFim, TipoImovel);
                
                 return Ok(new
                 {
@@ -53,7 +53,7 @@ namespace TeiaAPI.Controllers
                         estado = vistoria.Endereco.Estado,
                         cep = vistoria.Endereco.Cep,
                         complemento = vistoria.Endereco.Complemento,
-                        tipoImovel = Enum.GetName(typeof(EnderecoModel.tipoImovel_Enum), vistoria.Endereco.TipoImovel)
+                        tipoImovel = Enum.GetName(typeof(tipoImovelEnum), vistoria.Endereco.TipoImovel)
                     },
                     numero_os = vistoria.NumOs,
                     url_imagens = vistoria.URLImagens,
@@ -90,9 +90,9 @@ namespace TeiaAPI.Controllers
                     }
                     if (vistoria.Status == StatusVistoriaEnum.Concluida){
                         var tipoImovel = new object();
-                        if (vistoria.Endereco.TipoImovel == EnderecoModel.tipoImovel_Enum.Apartamento){
+                        if (vistoria.Endereco.TipoImovel == tipoImovelEnum.Apartamento){
                             tipoImovel = await _apartamentoRepositorio.GetApartamentoById((int)vistoria.IdTipoImovel);
-                        }else if(vistoria.Endereco.TipoImovel == EnderecoModel.tipoImovel_Enum.Lote){
+                        }else if(vistoria.Endereco.TipoImovel == tipoImovelEnum.Lote){
                             tipoImovel = await _loteRepositorio.Get((int)vistoria.IdTipoImovel);
                         }else {
                             tipoImovel = null;
@@ -184,7 +184,7 @@ namespace TeiaAPI.Controllers
                                     estado = vistoria.Endereco.Estado,
                                     cep = vistoria.Endereco.Cep,
                                     complemento = vistoria.Endereco.Complemento,
-                                    tipoImovel = Enum.GetName(typeof(EnderecoModel.tipoImovel_Enum), vistoria.Endereco.TipoImovel)
+                                    tipoImovel = Enum.GetName(typeof(tipoImovelEnum), vistoria.Endereco.TipoImovel)
                                 },
                                 numero_os = vistoria.NumOs,
                                 url_imagens = vistoria.URLImagens,
@@ -233,7 +233,7 @@ namespace TeiaAPI.Controllers
                             estado = vistoria.Endereco.Estado,
                             cep = vistoria.Endereco.Cep,
                             complemento = vistoria.Endereco.Complemento,
-                            tipoImovel = Enum.GetName(typeof(EnderecoModel.tipoImovel_Enum), vistoria.Endereco.TipoImovel)
+                            tipoImovel = Enum.GetName(typeof(tipoImovelEnum), vistoria.Endereco.TipoImovel)
                         },
                         numero_os = vistoria.NumOs,
                         url_imagens = vistoria.URLImagens,
@@ -268,13 +268,13 @@ namespace TeiaAPI.Controllers
                 VistoriaModel vistoriaAtualizada = await _vistoriadorRepositorio.GetVistoriaById(id, vistoria.IdVistoria);
                 switch (vistoriaAtualizada.Endereco.TipoImovel)
                 {
-                    case EnderecoModel.tipoImovel_Enum.Apartamento:
+                    case tipoImovelEnum.Apartamento:
                         if (vistoria.Apartamento == null)
                         {
                             return BadRequest("Apartamento não pode ser nulo");
                         }
                         break;
-                    case EnderecoModel.tipoImovel_Enum.Lote:
+                    case tipoImovelEnum.Lote:
                         if (vistoria.Lote == null)
                         {
                             return BadRequest("Lote não pode ser nulo");

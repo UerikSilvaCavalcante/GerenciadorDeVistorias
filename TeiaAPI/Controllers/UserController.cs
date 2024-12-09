@@ -60,7 +60,7 @@ namespace TeiaAPI.Controllers
         public async Task<ActionResult<UserModel>> PostUser([FromBody] UserModel user)
         {
             try
-            {
+            {   
                 UserModel newUser = await _userRepositorio.PostUser(user);
                 return Ok(newUser);
             } catch (Exception e)
