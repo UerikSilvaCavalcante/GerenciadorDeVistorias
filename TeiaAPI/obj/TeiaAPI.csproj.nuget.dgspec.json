@@ -1,28 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\ueris\\OneDrive\\Documentos\\Progamação\\Teia_Proj\\TeiaAPI\\TeiaAPI.csproj": {}
+    "/home/uerik/Documentos/Progamacao/C#Projects/TEIAProject/GerenciadorDeVistorias/TeiaAPI/TeiaAPI.csproj": {}
   },
   "projects": {
-    "C:\\Users\\ueris\\OneDrive\\Documentos\\Progamação\\Teia_Proj\\TeiaAPI\\TeiaAPI.csproj": {
+    "/home/uerik/Documentos/Progamacao/C#Projects/TEIAProject/GerenciadorDeVistorias/TeiaAPI/TeiaAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\ueris\\OneDrive\\Documentos\\Progamação\\Teia_Proj\\TeiaAPI\\TeiaAPI.csproj",
+        "projectUniqueName": "/home/uerik/Documentos/Progamacao/C#Projects/TEIAProject/GerenciadorDeVistorias/TeiaAPI/TeiaAPI.csproj",
         "projectName": "TeiaAPI",
-        "projectPath": "C:\\Users\\ueris\\OneDrive\\Documentos\\Progamação\\Teia_Proj\\TeiaAPI\\TeiaAPI.csproj",
-        "packagesPath": "C:\\Users\\ueris\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\ueris\\OneDrive\\Documentos\\Progamação\\Teia_Proj\\TeiaAPI\\obj\\",
+        "projectPath": "/home/uerik/Documentos/Progamacao/C#Projects/TEIAProject/GerenciadorDeVistorias/TeiaAPI/TeiaAPI.csproj",
+        "packagesPath": "/home/uerik/.nuget/packages/",
+        "outputPath": "/home/uerik/Documentos/Progamacao/C#Projects/TEIAProject/GerenciadorDeVistorias/TeiaAPI/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\ueris\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/home/uerik/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -35,11 +32,6 @@
           "warnAsError": [
             "NU1605"
           ]
-        },
-        "restoreAuditProperties": {
-          "enableAudit": "true",
-          "auditLevel": "low",
-          "auditMode": "direct"
         }
       },
       "frameworks": {
@@ -48,19 +40,19 @@
           "dependencies": {
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
-              "version": "[8.0.10, )"
+              "version": "[9.0.0, )"
             },
             "Microsoft.EntityFrameworkCore.Design": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
               "target": "Package",
-              "version": "[8.0.10, )"
+              "version": "[9.0.0, )"
             },
             "Microsoft.EntityFrameworkCore.Tools": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
               "target": "Package",
-              "version": "[8.0.10, )"
+              "version": "[9.0.0, )"
             },
             "Microsoft.VisualStudio.Azure.Containers.Tools.Targets": {
               "target": "Package",
@@ -68,7 +60,7 @@
             },
             "Npgsql.EntityFrameworkCore.PostgreSQL": {
               "target": "Package",
-              "version": "[8.0.10, )"
+              "version": "[9.0.2, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
@@ -94,7 +86,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.303/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/8.0.111/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
