@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/home/uerik/Documentos/Progamacao/C#Projects/TEIAProject/GerenciadorDeVistorias/TeiaAPI/TeiaAPI.csproj": {}
+    "/home/uerik/Documentos/Progamacao/CSharpProjects/TEIAProject/GerenciadorDeVistorias/TeiaAPI/TeiaAPI.csproj": {}
   },
   "projects": {
-    "/home/uerik/Documentos/Progamacao/C#Projects/TEIAProject/GerenciadorDeVistorias/TeiaAPI/TeiaAPI.csproj": {
+    "/home/uerik/Documentos/Progamacao/CSharpProjects/TEIAProject/GerenciadorDeVistorias/TeiaAPI/TeiaAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/uerik/Documentos/Progamacao/C#Projects/TEIAProject/GerenciadorDeVistorias/TeiaAPI/TeiaAPI.csproj",
+        "projectUniqueName": "/home/uerik/Documentos/Progamacao/CSharpProjects/TEIAProject/GerenciadorDeVistorias/TeiaAPI/TeiaAPI.csproj",
         "projectName": "TeiaAPI",
-        "projectPath": "/home/uerik/Documentos/Progamacao/C#Projects/TEIAProject/GerenciadorDeVistorias/TeiaAPI/TeiaAPI.csproj",
+        "projectPath": "/home/uerik/Documentos/Progamacao/CSharpProjects/TEIAProject/GerenciadorDeVistorias/TeiaAPI/TeiaAPI.csproj",
         "packagesPath": "/home/uerik/.nuget/packages/",
-        "outputPath": "/home/uerik/Documentos/Progamacao/C#Projects/TEIAProject/GerenciadorDeVistorias/TeiaAPI/obj/",
+        "outputPath": "/home/uerik/Documentos/Progamacao/CSharpProjects/TEIAProject/GerenciadorDeVistorias/TeiaAPI/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/uerik/.nuget/NuGet/NuGet.Config"

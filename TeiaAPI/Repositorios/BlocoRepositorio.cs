@@ -31,7 +31,7 @@ namespace TeiaAPI.Repositorios
                 return false;
             }
             _context.BlocoPredio.Remove(bloco);
-            await _context.SaveChangesAsync();
+            // await _context.SaveChangesAsync();
             return true;
         }
 
@@ -51,7 +51,7 @@ namespace TeiaAPI.Repositorios
             newBloco.Blocos = bloco.Blocos;
             newBloco.Outros = bloco.Outros;
             _context.BlocoPredio.Update(newBloco);
-            // await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
             return newBloco;
         }
     }

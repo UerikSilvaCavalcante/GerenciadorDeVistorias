@@ -20,11 +20,11 @@ namespace TeiaAPI.Repositorios
             _context = context;
             
         }
-        public async Task<int> AddAcabamento(AcabamentoModel acabamento, AcabamentoModel.AcabamentoManyToManyProps manyToManyProps)
+        public async Task<int> AddAcabamento(AcabamentoModel acabamento)//, AcabamentoModel.AcabamentoManyToManyProps manyToManyProps)
         {
-            acabamento.Pinturas = manyToManyProps.pintura;
-            acabamento.Revestimentos = manyToManyProps.revestimento;    
-            acabamento.Portas = manyToManyProps.portas;
+            //acabamento.Pinturas = manyToManyProps.pintura;
+            //acabamento.Revestimentos = manyToManyProps.revestimento;    
+            //acabamento.Portas = manyToManyProps.portas;
 
             await _context.Acabamentos.AddAsync(acabamento);
             await _context.SaveChangesAsync();
@@ -85,7 +85,7 @@ namespace TeiaAPI.Repositorios
             return true;
         }
 
-        public async Task<AcabamentoModel> Update(int id, AcabamentoModel acabamento, AcabamentoModel.AcabamentoManyToManyProps manyToManyProps)
+        public async Task<AcabamentoModel> Update(int id, AcabamentoModel acabamento)//, AcabamentoModel.AcabamentoManyToManyProps manyToManyProps)
         {
             AcabamentoModel acabamentoAtualizado = await GetAcabamentoById(id);
             if (acabamentoAtualizado == null)
@@ -96,12 +96,12 @@ namespace TeiaAPI.Repositorios
             await ExcludeManyToManyProps(acabamentoAtualizado);
 
             acabamentoAtualizado.Muro = acabamento.Muro;
-            acabamentoAtualizado.Pinturas = manyToManyProps.pintura;
-            acabamentoAtualizado.Portas = manyToManyProps.portas;
+            //acabamentoAtualizado.Pinturas = manyToManyProps.pintura;
+            //acabamentoAtualizado.Portas = manyToManyProps.portas;
             acabamentoAtualizado.Piso = acabamento.Piso;
             acabamentoAtualizado.Janelas = acabamento.Janelas;
             acabamentoAtualizado.Bancada = acabamento.Bancada;
-            acabamentoAtualizado.Revestimentos = manyToManyProps.revestimento;
+            //acabamentoAtualizado.Revestimentos = manyToManyProps.revestimento;
             acabamentoAtualizado.Padrao = acabamento.Padrao;
             acabamentoAtualizado.EstadoConservacao = acabamento.EstadoConservacao;
             acabamentoAtualizado.Teto = acabamento.Teto;

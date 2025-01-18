@@ -10,8 +10,8 @@ namespace TeiaAPI.Repositorios.Interfaces
     public interface IimovelRepositorio
     {
         
-        public Task<int> AddImovel(ImovelModel imovel, VistoriadorModel.VistoriadorProps vistoriador);
+        public Task<int> AddImovel(ImovelModel imovel); //VistoriadorModel.VistoriadorProps vistoriador);
         public Task<bool> Delete(int id);
-        public Task<ImovelModel> Update(int id, ImovelModel imovel, VistoriadorModel.VistoriadorProps vistoriador);
+        public Task<ImovelModel> Update(int id, ImovelModel imovel);//, VistoriadorModel.VistoriadorProps vistoriador);
     }
 }

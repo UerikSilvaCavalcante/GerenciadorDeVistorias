@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "ZeRtPA6Jq6BfE6j6xi9c0jPNb4eTNRl1nRyTv8L83BJvJPLS3KsHhr0wUKVHTkPfC1ahGL65+7dTmWa7QCuYcQ==",
+  "dgSpecHash": "si3CWSfJPJXXG8QzWaOpDl3YUmWfpTq2Ynycxfuy7V1XeMgeAwdcjvfss+DxQ6h1ZgAwS0h05IHGZ9kgCprn5Q==",
   "success": true,
-  "projectFilePath": "/home/uerik/Documentos/Progamacao/C#Projects/TEIAProject/GerenciadorDeVistorias/TeiaAPI/TeiaAPI.csproj",
+  "projectFilePath": "/home/uerik/Documentos/Progamacao/CSharpProjects/TEIAProject/GerenciadorDeVistorias/TeiaAPI/TeiaAPI.csproj",
   "expectedPackageFiles": [
     "/home/uerik/.nuget/packages/humanizer.core/2.14.1/humanizer.core.2.14.1.nupkg.sha512",
     "/home/uerik/.nuget/packages/microsoft.bcl.asyncinterfaces/7.0.0/microsoft.bcl.asyncinterfaces.7.0.0.nupkg.sha512",

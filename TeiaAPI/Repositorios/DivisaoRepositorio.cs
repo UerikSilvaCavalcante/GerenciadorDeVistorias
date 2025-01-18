@@ -20,11 +20,11 @@ namespace TeiaAPI.Repositorios
             _context = context;
         }
     
-        public async Task<int> AddDivisao(DivisaoModel divisao, DivisaoModel.DivisaoManyToManyProps manyToManyProps)
+        public async Task<int> AddDivisao(DivisaoModel divisao)//, DivisaoModel.DivisaoManyToManyProps manyToManyProps)
         {
-            divisao.Garagems = manyToManyProps.garagem;
-            divisao.AreaServico = manyToManyProps.areaServico;
-            divisao.Banheiros = manyToManyProps.banheiro;
+            //divisao.Garagems = manyToManyProps.garagem;
+            //divisao.AreaServico = manyToManyProps.areaServico;
+            //divisao.Banheiros = manyToManyProps.banheiro;
             await _context.Divisoes.AddAsync(divisao);
             await _context.SaveChangesAsync();
             return divisao.Id;
@@ -86,7 +86,7 @@ namespace TeiaAPI.Repositorios
                 .FirstOrDefaultAsync(d => d.Id == id); 
         }
 
-        public async Task<DivisaoModel> Update(int id, DivisaoModel divisao, DivisaoModel.DivisaoManyToManyProps manyToManyProps)
+        public async Task<DivisaoModel> Update(int id, DivisaoModel divisao)//, DivisaoModel.DivisaoManyToManyProps manyToManyProps)
         {
             DivisaoModel divisaoAtualizada = await GetDivisaoById(id);
             if (divisaoAtualizada == null)
@@ -95,19 +95,19 @@ namespace TeiaAPI.Repositorios
             }
             await ExcludeManyToManyProps(divisaoAtualizada);
 
-            divisaoAtualizada.AreaServico = manyToManyProps.areaServico;
+            //divisaoAtualizada.AreaServico = manyToManyProps.areaServico;
             divisaoAtualizada.Quartos = divisao.Quartos;
             divisaoAtualizada.Salas = divisao.Salas;
             divisaoAtualizada.Cozinhas = divisao.Cozinhas;
-            divisaoAtualizada.Banheiros = manyToManyProps.banheiro;
+            //divisaoAtualizada.Banheiros = manyToManyProps.banheiro;
             divisaoAtualizada.SacadaVaranda = divisao.SacadaVaranda;
-            divisaoAtualizada.Garagems = manyToManyProps.garagem;
+            //divisaoAtualizada.Garagems = manyToManyProps.garagem;
             divisaoAtualizada.Lavabos = divisao.Lavabos;
             divisaoAtualizada.ArCondicionado = divisao.ArCondicionado;
             divisaoAtualizada.Piscina = divisao.Piscina;
             divisaoAtualizada.Outros = divisao.Outros;
             _context.Divisoes.Update(divisaoAtualizada);
-            await _context.SaveChangesAsync();
+             await _context.SaveChangesAsync();
             return divisaoAtualizada;
         }
     }

@@ -6,6 +6,7 @@ using TeiaAPI.Repositorios.Interfaces;
 using TeiaAPI.Models;
 using TeiaAPI.Data;
 using Microsoft.EntityFrameworkCore;
+using TeiaAPI.enums.User;
 
 namespace TeiaAPI.Repositorios
 {
@@ -85,6 +86,11 @@ namespace TeiaAPI.Repositorios
             await _context.SaveChangesAsync();
 
             return true;
+        }
+
+        public async Task<List<UserModel>> GetAllVistoriadores()
+        {
+            return await _context.Users.Where(u => u.Type == TypeUserEnum.Vistoriador).ToListAsync();
         }
     }
 }

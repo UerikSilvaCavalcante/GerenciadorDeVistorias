@@ -66,7 +66,7 @@ namespace TeiaAPI.Repositorios
         {
             EnderecoModel endereco = await _enderecoRepositorio.Add(vistoria.Endereco);
             vistoria.IdEndereco = endereco.Id;
-            int imovelId = await _imovelRepositorio.AddImovel(vistoria.Imovel, vistoriaProps);
+            int imovelId = await _imovelRepositorio.AddImovel(vistoria.Imovel);//, vistoriaProps);
             vistoria.IdImovel = imovelId;
             await _context.Vistorias.AddAsync(vistoria);
 

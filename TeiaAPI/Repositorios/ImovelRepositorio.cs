@@ -24,16 +24,16 @@ namespace TeiaAPI.Repositorios
             _infraestruturaRepositorio = infraestruturaRepositorio;
             _divisaoRepositorio = divisaoRepositorio;
         }
-        public async Task<int> AddImovel(ImovelModel imovel, VistoriadorModel.VistoriadorProps vistoriador)
+        public async Task<int> AddImovel(ImovelModel imovel)//, VistoriadorModel.VistoriadorProps vistoriador)
         {
-            int acabamentoId = await _acabamentoRepositorio.AddAcabamento(imovel.Acabamento, vistoriador.acabamentoProps);
-            int divisaoId = await _divisaoRepositorio.AddDivisao(imovel.Divisao, vistoriador.divisaoProps);
+            int acabamentoId = await _acabamentoRepositorio.AddAcabamento(imovel.Acabamento);//, vistoriador.acabamentoProps);
+            int divisaoId = await _divisaoRepositorio.AddDivisao(imovel.Divisao);//, vistoriador.divisaoProps);
             int infraestruturaId = await _infraestruturaRepositorio.AddInfraestrutura(imovel.Infraestrutura);
                         
 
             imovel.IdDivisao = divisaoId;
             imovel.IdInfraestrura = infraestruturaId;
-            imovel.AreaImovel = vistoriador.areas;
+            //imovel.AreaImovel = vistoriador.areas;
             imovel.IdAcabamento = acabamentoId;
             await _context.Imoveis.AddAsync(imovel);
             await _context.SaveChangesAsync();
@@ -65,7 +65,7 @@ namespace TeiaAPI.Repositorios
             return true;
         }
 
-        public async Task<ImovelModel> Update(int id, ImovelModel imovel, VistoriadorModel.VistoriadorProps vistoriador)
+        public async Task<ImovelModel> Update(int id, ImovelModel imovel)//, VistoriadorModel.VistoriadorProps vistoriador)
         {
             ImovelModel imovelAtualizado = await _context.Imoveis.Include(i => i.AreaImovel).FirstOrDefaultAsync(x => x.Id == id);
             if (imovelAtualizado == null)
@@ -82,18 +82,20 @@ namespace TeiaAPI.Repositorios
                 await _context.SaveChangesAsync();
             }
 
-            imovelAtualizado.AreaImovel = vistoriador.areas;
+            //imovelAtualizado.AreaImovel = vistoriador.areas;
             imovelAtualizado.Frente = imovel.Frente;
             imovelAtualizado.Telhado = imovel.Telhado;
-            AcabamentoModel acabamentoAtualizado = await _acabamentoRepositorio.Update((int)imovelAtualizado.IdAcabamento, imovel.Acabamento, vistoriador.acabamentoProps);
-            DivisaoModel divisaoAtualizada = await _divisaoRepositorio.Update((int)imovelAtualizado.IdDivisao, imovel.Divisao, vistoriador.divisaoProps);
+            AcabamentoModel acabamentoAtualizado = await _acabamentoRepositorio.Update((int)imovelAtualizado.IdAcabamento, imovel.Acabamento);//, vistoriador.acabamentoProps);
+            DivisaoModel divisaoAtualizada = await _divisaoRepositorio.Update((int)imovelAtualizado.IdDivisao, imovel.Divisao);//, vistoriador.divisaoProps);
             InfraestruturaModel infraestruturaAtualizada = await _infraestruturaRepositorio.Update((int)imovelAtualizado.IdInfraestrura, imovel.Infraestrutura);
             imovelAtualizado.IdAcabamento = acabamentoAtualizado.Id;
             imovelAtualizado.IdDivisao = divisaoAtualizada.Id;
             imovelAtualizado.IdInfraestrura = infraestruturaAtualizada.Id;
             _context.Imoveis.Update(imovelAtualizado);
-            // await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
             return imovelAtualizado;
         }
+
+        
     }
 }

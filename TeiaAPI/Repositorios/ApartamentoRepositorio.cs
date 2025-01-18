@@ -44,7 +44,7 @@ namespace TeiaAPI.Repositorios
             }
             await _blocoRepositorio.Delete(apartamento.BlocoPredioId);
             _context.Apartamentos.Remove(apartamento);
-            // await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
             return true;
         }
 

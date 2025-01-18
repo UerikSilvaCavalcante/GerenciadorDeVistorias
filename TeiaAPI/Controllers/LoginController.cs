@@ -23,7 +23,8 @@ namespace TeiaAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<UserModel>> GetLogin([FromBody] LoginModel login)
         {
-          
+
+            Console.WriteLine(login.UserName);
             UserModel user = await _userRepositorio.GetLogin(login.UserName);
             if (user == null)
             {
@@ -31,7 +32,9 @@ namespace TeiaAPI.Controllers
             }
             if (user.PasswordValid(login.Password))
             {
-                return Ok(new { User = new
+                return Ok(new
+                {
+                    User = new
                     {
                         Id = user.Id,
                         Name = user.Name,
@@ -39,21 +42,14 @@ namespace TeiaAPI.Controllers
                         Type = Enum.GetName(typeof(TypeUserEnum), user.Type),
                         Status = Enum.GetName(typeof(StatusEnum), user.Status),
                     }
-                    });
-
-                return Ok(new { User = new
-                {
-                    Id = user.Id,
-                    Name = user.Name,
-                    UserName = user.UserName,
-                    Type = Enum.GetName(typeof(TypeUserEnum), user.Type),
-                    Status = Enum.GetName(typeof(StatusEnum), user.Status),
-                }
                 });
-            }else
+
+
+            }
+            else
             {
                 return BadRequest("Senha incorreta");
             }
-          }
+        }
     }
 }

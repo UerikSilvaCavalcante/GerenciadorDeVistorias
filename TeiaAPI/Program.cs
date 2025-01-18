@@ -14,6 +14,7 @@ namespace TeiaAPI
 
             // Add services to the container.
 
+
             builder.Services.AddControllers();
             builder.Services.AddEntityFrameworkNpgsql().AddDbContext<TeiaApiDBContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DataBase")));
             builder.Services.AddScoped<IUserRepositorio, UserRepositorio>();
@@ -31,10 +32,19 @@ namespace TeiaAPI
             builder.Services.AddScoped<ISolucoesRepositorio, SolucoesRepositorio>();
             builder.Services.AddScoped<IObraRepositorio, ObraRepositorio>();
 
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy(name: "APIPolicy", policy =>
+                {
+                    policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+
+                });
+            });
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-            
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -44,6 +54,7 @@ namespace TeiaAPI
                 app.UseSwaggerUI();
             }
 
+            app.UseCors("APIPolicy");
             app.UseHttpsRedirection();
 
             app.UseAuthorization();

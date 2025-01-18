@@ -2,4 +2,41 @@ mydb.sql
 projeto.drawio
 TeiaAPI/.vs/
 TeiaAPI/bin/
-TeiaAPI/entrypoint.sh
+
+frontendComponents/
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+teia_web/node_modules
+teia_web/.pnp
+teia_web/.pnp.*
+teia_web/.yarn/*
+teia_web/!.yarn/patches
+teia_web/!.yarn/plugins
+teia_web/!.yarn/releases
+teia_web/!.yarn/versions
+
+# testing
+teia_web/coverage
+
+# next.js
+teia_web/.next/
+teia_web/out/
+# production
+teia_web/build
+# misc
+teia_web/.DS_Store
+teia_web/*.pem
+# debug
+teia_web/npm-debug.log*
+teia_web/yarn-debug.log*
+teia_web/yarn-error.log*
+teia_web/.pnpm-debug.log*
+
+# env files (can opt-in for committing if needed)
+teia_web/.env*
+# vercel
+teia_web/.vercel
+# typescript
+teia_web/*.tsbuildinfo
+teia_web/next-env.d.ts

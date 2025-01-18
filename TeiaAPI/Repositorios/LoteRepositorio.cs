@@ -25,7 +25,7 @@ namespace TeiaAPI.Repositorios
             int id = await _solucoesRepositorio.AddSolucoes(lote.Solucoes);
             lote.SolucoesId = id;
             await _context.Lotes.AddAsync(lote);
-            await _context.SaveChangesAsync();
+            //await _context.SaveChangesAsync();
             return lote.Id;       
         }
 
