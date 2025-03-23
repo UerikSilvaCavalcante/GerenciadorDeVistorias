@@ -14,6 +14,7 @@ namespace TeiaAPI.Repositorios.Interfaces
         Task<UserModel> PutUser(UserModel user,  int id);
         Task<List<UserModel>> GetAllVistoriadores();
 
+        Task<bool> UpdatePassword(int id, string password);
         Task<bool> DeleteUser(int id);
 
         Task<UserModel> GetLogin(string userName);

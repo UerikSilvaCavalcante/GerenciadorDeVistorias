@@ -27,7 +27,7 @@ type responseProps = {
   erro?: string;
 }
 
-export default async function postNewVistoria(form: FormPorps):Promise<responseProps> {
+export default async function postNewVistoria(form: FormPorps, token:string):Promise<responseProps> {
   const engenheiro: EngenheiroProps = {
     idEngenheiro: 1,
     idVistoriador: parseInt(form.idVistoriador),
@@ -35,7 +35,7 @@ export default async function postNewVistoria(form: FormPorps):Promise<responseP
     urlMatricula: "",
     numOS: parseInt(form.numOs),
     dataAbertura: new Date(form.dataAbertura),
-    tipo: parseInt(form.tipo) + 1 as Tipo,
+    tipo: parseInt(form.tipo) as Tipo,
     contratante: form.contratante,
     tel_Contratante: form.tel_Contratante,
     cliente: form.cliente,
@@ -47,7 +47,7 @@ export default async function postNewVistoria(form: FormPorps):Promise<responseP
       cidade: form.cidade,
       estado: form.estado,
       cep: form.cep,
-      tipoImovel: parseInt(form.tipoImovel) + 1 as TipoImovel,
+      tipoImovel: parseInt(form.tipoImovel)  as TipoImovel,
     },
     latitude: form.latitude as string,
     longitude: form.longitude as string,
@@ -56,11 +56,11 @@ export default async function postNewVistoria(form: FormPorps):Promise<responseP
   const response = await fetch("http://localhost:5017/api/Engenheiro", {
     method: "POST",
     headers: {
+      "Authorization": `Bearer ${token}`,
       "Content-Type": "application/json",
     },
     body: JSON.stringify(engenheiro),
   });
 
-  
   return response.json();
 }

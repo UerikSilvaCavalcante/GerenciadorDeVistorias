@@ -15,7 +15,7 @@ import { useState } from "react";
 import { Status } from "../enums/vistoria";
 import { Select } from "../components/UI/input";
 import Label from "../components/UI/label";
-import { ModalEdit } from "../components/modalEdit";
+import { parseCookies } from "nookies";
 
 export default function Demandas() {
   const [filterStatus, setFilterStatus] = useState<Status | "">("");
@@ -114,7 +114,11 @@ export default function Demandas() {
       <div className="flex items-center justify-between gap-2 w-full">
         <div className="flex items-center justify-center gap-2 text-nowrap">
           <Label htmlFor="limit">Limite de registros: </Label>
-          <Select id="limit" style={{ width: "100px" }} onChange={handleLimitChange}>
+          <Select
+            id="limit"
+            style={{ width: "100px" }}
+            onChange={handleLimitChange}
+          >
             <option value={10}>10</option>
             <option value={25}>25</option>
             <option value={50}>50</option>

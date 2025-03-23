@@ -1,4 +1,4 @@
-import { status, type } from "../enums/user";
+import { status, Type } from "../enums/user";
 import { Status, Tipo, TipoImovel } from "../enums/vistoria";
 import { EnderecoProps } from "./vistoriaTypes";
 
@@ -9,7 +9,7 @@ export type UserProps = {
   email: string;
   phone: string;
   password: string;
-  type: type;
+  type: Type;
   status: status;
   createAt: Date;
 };

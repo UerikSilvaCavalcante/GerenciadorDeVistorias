@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TeiaAPI.enums.User;
 using TeiaAPI.enums.Vistoria;
@@ -28,6 +29,7 @@ namespace TeiaAPI.Controllers
             _loteRepositorio = loteRepositorio;
         }
 
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<ActionResult<List<VistoriaModel>>> GetAllVistorias(int id, [FromQuery] StatusVistoriaEnum? status = null, [FromQuery] TypeEnum? TipoServico = null, [FromQuery] tipoImovelEnum? TipoImovel = null, [FromQuery] DateTime? dataInicio = null, [FromQuery] DateTime? dataFim = null)
         {
@@ -36,16 +38,13 @@ namespace TeiaAPI.Controllers
             {
                 List<VistoriaModel> vistorias = await _vistoriadorRepositorio.GetAllVistorias(id, status, TipoServico, dataInicio, dataFim, TipoImovel);
 
-                return Ok(new
-                {
-                    Vistoriador = user.Name ,
-                    vistorias 
-                });
+                return Ok(vistorias);
             }
 
             return BadRequest("Usuario não tem permissão para acessar essa rota");
         }
 
+        [Authorize]
         [HttpGet("{id}/{idVistoria}")]
         public async Task<ActionResult<VistoriaModel>> GetVistoriaById(int id, int idVistoria)
         {
@@ -55,42 +54,26 @@ namespace TeiaAPI.Controllers
                 if (user.Type == TypeUserEnum.Vistoriador)
                 {
                     VistoriaModel vistoria = await _vistoriadorRepositorio.GetVistoriaById(id, idVistoria);
-                    if (vistoria == null)
+                    if (vistoria != null)
                     {
-                        return NotFound("Vistoria não encontrada");
-                    }
-                    if (vistoria.Status == StatusVistoriaEnum.Concluida)
-                    {
-                        var tipoImovel = new object();
-                        if (vistoria.Endereco.TipoImovel == tipoImovelEnum.Apartamento)
+
+                        if (vistoria.Status != StatusVistoriaEnum.Cancelada)
                         {
-                            tipoImovel = await _apartamentoRepositorio.GetApartamentoById((int)vistoria.IdTipoImovel);
-                        }
-                        else if (vistoria.Endereco.TipoImovel == tipoImovelEnum.Lote)
-                        {
-                            tipoImovel = await _loteRepositorio.Get((int)vistoria.IdTipoImovel);
+
+                            return Ok(
+                                vistoria
+                            );
                         }
                         else
                         {
-                            tipoImovel = null;
+                            return BadRequest("Vistoria Cancelada");
                         }
-                        return Ok(
-                            new
-                            {
-                                User = user.Name,
-                                vistoria
-                            });
                     }
-                    return Ok(new
+                    else
                     {
-                        Vistoriador = user.Name ,
-                        id = vistoria.Id,
-                        engenheiro = vistoria.Engenheiro,
-                        vistoriador = vistoria.Vistoriador,
-                        vistoria       
-                    });
+                        return NotFound("Vistoria não encontrada!");
+                    }
                 }
-
                 return BadRequest("Usuario não tem permissão para acessar essa rota");
             }
             catch (Exception e)
@@ -99,6 +82,32 @@ namespace TeiaAPI.Controllers
             }
         }
 
+        [Authorize]
+        [HttpGet("TipoImovel/{id}")]
+        public async Task<ActionResult> GetTipoImovel(int id, [FromQuery] tipoImovelEnum tipoImovel)
+        {
+            try
+            {
+
+                switch (tipoImovel)
+                {
+                    case tipoImovelEnum.Apartamento:
+                        ApartamentoModel apartamentos = await _apartamentoRepositorio.GetApartamentoById(id);
+                        return Ok(apartamentos);
+                    case tipoImovelEnum.Lote:
+                        LoteModel lotes = await _loteRepositorio.Get(id);
+                        return Ok(lotes);
+                    default:
+                        return BadRequest("Tipo de Imovel não encontrado");
+                }
+            }
+            catch (Exception e)
+            {
+                return BadRequest($"Erro ao buscar Tipo de Imovel: {e}");
+            }
+        }
+
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<ActionResult<VistoriaModel>> AtualizarVistoria([FromBody] VistoriadorModel.VistoriadorProps vistoria, int id)
         {

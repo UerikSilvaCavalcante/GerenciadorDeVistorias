@@ -5,6 +5,7 @@ import down from "../assets/down.svg";
 import Image from "next/image";
 import { PrimaryButton, SecondaryButton } from "./UI/buttons";
 import { useState } from "react";
+import { toast } from "sonner";
 
 interface MessageLayoutProps {
   status: boolean;
@@ -36,7 +37,7 @@ export default function MesageLayout({
           </h2>
         </div>
         <div className="flex items-center gap-6 w-fit px-4">
-          <button>
+          <button onClick={() => toast.error("Mensagem deletada")}>
             <Image src={trash} alt="trash" />
           </button>
           <button onClick={handleOpen}>

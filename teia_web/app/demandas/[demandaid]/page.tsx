@@ -1,48 +1,53 @@
-import getAllVistorias from "@/app/data/getAllVistorias";
+"use server";
+
 import getVistoriaById from "@/app/data/getVistoriaById";
 import goBack from "../../assets/goBack.svg";
 import Image from "next/image";
 import { Status, Tipo, TipoImovel } from "@/app/enums/vistoria";
-import { Children, ReactNode } from "react";
 import Link from "next/link";
 import A413Content from "@/app/components/A413Content";
 import { TipoArea } from "@/app/enums/imovel";
 import B438Content from "@/app/components/B438Content";
+import { jwtDecode } from "jwt-decode";
+import { RowContent } from "@/app/components/UI/rowContent";
+import { ColumnContent } from "@/app/components/UI/columnContent";
+import getAllStaticVistorias from "@/app/data/getAllStaticVistorias";
+import { parseCookies } from "nookies";
+import { cookies } from "next/headers";
+import { AuthContext } from "@/app/actions/valid";
+import { Type } from "@/app/enums/user";
 
-export const dynamicParams = false;
+// export const  dynamicParams = false;
 
-export async function generateStaticParams() {
-  const res = await getAllVistorias(1);
-  const params = await res.map((vistoria, index) => ({
-    demandaid: vistoria.id.toString(),
-  }));
-
-  return params;
+interface getVistoriaProps {
+  id: number;
+  type: number;
+  idVistoria: number;
+  token: string;
 }
-
-export const RowContent = ({ children }: { children: ReactNode }) => {
-  return (
-    <div className="flex items-start justify-start w-full p-4 border-y-2 border-indigo-900 ">
-      {children}
-    </div>
-  );
-};
-
-export const ColumnContent = ({ children }: { children: ReactNode }) => {
-  return (
-    <div className="flex flex-col items-start justify-start px-3 h-full w-full border-x-2 border-indigo-900  text-zinc-950 text-nowrap gap-2">
-      {children}
-    </div>
-  );
-};
 
 export default async function DemandaId({
   params,
 }: {
-  params: { demandaid: string };
+  params: Promise<{ demandaid: string }>;
 }) {
   const { demandaid } = await params;
-  const vistoria = await getVistoriaById(parseInt(demandaid));
+  const token = await (await cookies()).get("token")?.value;
+  let user: { id: string; tipo: string } | null = null;
+  if (token) {
+    try {
+      user = jwtDecode<{ id: string; tipo: string }>(token as string);
+    } catch (error) {
+      console.error("Invalid token:", error);
+    }
+  }
+  const requestProps: getVistoriaProps = {
+    id: parseInt(user?.id as string),
+    type: Type[user?.tipo.toLowerCase() as keyof typeof Type],
+    idVistoria: parseInt(demandaid),
+    token: token as string,
+  };
+  const vistoria = await getVistoriaById(requestProps);
   if (vistoria) {
     return (
       <div className="flex flex-col pb-3 h-full w-full ">
@@ -174,7 +179,7 @@ export default async function DemandaId({
         </div>
         {vistoria.status === Status.Concluida ? (
           vistoria.type === Tipo.A413 ? (
-            <A413Content vistoria={vistoria} />
+            <A413Content vistoria={vistoria} token={token as string} />
           ) : vistoria.type === Tipo.B438 || vistoria.type === Tipo.B437 ? (
             <B438Content vistoria={vistoria} />
           ) : null

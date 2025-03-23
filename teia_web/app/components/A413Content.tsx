@@ -23,18 +23,27 @@ import {
   TipoGaragem,
 } from "@/app/enums/divisao";
 import { ApartamentoProps } from "@/app/@types/apartamentoTypes";
-import { RowContent, ColumnContent } from "../demandas/[demandaid]/page";
+
 import { VistoriaProps } from "../@types/vistoriaTypes";
 import { TipoImovel } from "../enums/vistoria";
 import getImovel from "../data/getImovel";
 import { TipoPosicao, TipoVista } from "../enums/apartamento";
+import { RowContent } from "./UI/rowContent";
+import { ColumnContent } from "./UI/columnContent";
 
-export default async function A413Content({vistoria}: {vistoria: VistoriaProps}) {
+export default async function A413Content({
+  vistoria,
+  token
+}: {
+  vistoria: VistoriaProps;
+  token:string
+}) {
   let Imovel = null;
   if (vistoria.endereco.tipoImovel == TipoImovel.Apartamento) {
     Imovel = await getImovel(
       vistoria.idTipoImovel as number,
-      vistoria.endereco.tipoImovel
+      vistoria.endereco.tipoImovel,
+      token
     );
     Imovel = Imovel as ApartamentoProps;
   }

@@ -9,6 +9,7 @@ using TeiaAPI.Models;
 using TeiaAPI.Repositorios.Interfaces;
 using TeiaAPI.Models.Props;
 using TeiaAPI.Helper;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TeiaAPI.Controllers
 {
@@ -28,7 +29,8 @@ namespace TeiaAPI.Controllers
             _apartamentoRepositorio = apartamentoRepositorio;
             _loteRepositorio = loteRepositorio;
         }
-
+        
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<ActionResult<List<VistoriaModel>>> GetAllVistorias(int id, [FromQuery] StatusVistoriaEnum? status = null, [FromQuery] TypeEnum? TipoServico = null, [FromQuery] tipoImovelEnum? TipoImovel = null, [FromQuery] DateTime? dataInicio = null, [FromQuery] DateTime? dataFim = null)
         {
@@ -49,7 +51,7 @@ namespace TeiaAPI.Controllers
             }
 
         }
-
+        [Authorize]
         [HttpGet("AllVistoriadores")]
         public async Task<ActionResult<List<UserModel>>> GetAllVistoriadores()
         {
@@ -64,6 +66,7 @@ namespace TeiaAPI.Controllers
             }
         }
 
+        [Authorize]
         [HttpGet("TipoImovel/{id}")]
         public async Task<ActionResult> GetTipoImovel(int id, [FromQuery] tipoImovelEnum tipoImovel)
         {
@@ -88,6 +91,7 @@ namespace TeiaAPI.Controllers
             }
         }
 
+        [Authorize]
         [HttpGet("{id}/{idVistoria}")]
         public async Task<ActionResult<VistoriaModel>> GetVistoriaById(int id, int idVistoria)
         {
@@ -126,6 +130,7 @@ namespace TeiaAPI.Controllers
             }
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult<bool>> AddVistoria(EngenheiroModel.EngenheiroProps engenheiroProps)
         {
@@ -173,6 +178,7 @@ namespace TeiaAPI.Controllers
             }
         }
 
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<ActionResult<VistoriaModel>> UpdateVistoria(int id, EngenheiroModel.EngenheiroProps engenheiroProps)
         {
@@ -187,6 +193,7 @@ namespace TeiaAPI.Controllers
             }
         }
 
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<ActionResult<bool>> DeleteVistoria(int id)
         {

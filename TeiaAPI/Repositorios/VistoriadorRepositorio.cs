@@ -135,6 +135,7 @@ namespace TeiaAPI.Repositorios
                 .Where(v => v.IdVistoriador == id)
                 .Include(v => v.Endereco)
                 .Include(v => v.Vistoriador)
+                .Include(v => v.Engenheiro)
                 .ToListAsync();
 
             return vistorias;

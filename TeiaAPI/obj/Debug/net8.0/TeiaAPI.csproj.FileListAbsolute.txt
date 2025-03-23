@@ -379,3 +379,12 @@ C:/Users/ueris/OneDrive/Documentos/Progamação/Teia_Proj/TeiaAPI/obj/Debug/net8
 /home/uerik/Documentos/Progamacao/CSharpProjects/TEIAProject/GerenciadorDeVistorias/TeiaAPI/obj/Debug/net8.0/TeiaAPI.pdb
 /home/uerik/Documentos/Progamacao/CSharpProjects/TEIAProject/GerenciadorDeVistorias/TeiaAPI/obj/Debug/net8.0/TeiaAPI.genruntimeconfig.cache
 /home/uerik/Documentos/Progamacao/CSharpProjects/TEIAProject/GerenciadorDeVistorias/TeiaAPI/obj/Debug/net8.0/ref/TeiaAPI.dll
+/home/uerik/Documentos/Progamacao/CSharpProjects/TEIAProject/GerenciadorDeVistorias/TeiaAPI/bin/Debug/net8.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll
+/home/uerik/Documentos/Progamacao/CSharpProjects/TEIAProject/GerenciadorDeVistorias/TeiaAPI/bin/Debug/net8.0/Microsoft.Bcl.Memory.dll
+/home/uerik/Documentos/Progamacao/CSharpProjects/TEIAProject/GerenciadorDeVistorias/TeiaAPI/bin/Debug/net8.0/Microsoft.IdentityModel.Abstractions.dll
+/home/uerik/Documentos/Progamacao/CSharpProjects/TEIAProject/GerenciadorDeVistorias/TeiaAPI/bin/Debug/net8.0/Microsoft.IdentityModel.JsonWebTokens.dll
+/home/uerik/Documentos/Progamacao/CSharpProjects/TEIAProject/GerenciadorDeVistorias/TeiaAPI/bin/Debug/net8.0/Microsoft.IdentityModel.Logging.dll
+/home/uerik/Documentos/Progamacao/CSharpProjects/TEIAProject/GerenciadorDeVistorias/TeiaAPI/bin/Debug/net8.0/Microsoft.IdentityModel.Protocols.dll
+/home/uerik/Documentos/Progamacao/CSharpProjects/TEIAProject/GerenciadorDeVistorias/TeiaAPI/bin/Debug/net8.0/Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+/home/uerik/Documentos/Progamacao/CSharpProjects/TEIAProject/GerenciadorDeVistorias/TeiaAPI/bin/Debug/net8.0/Microsoft.IdentityModel.Tokens.dll
+/home/uerik/Documentos/Progamacao/CSharpProjects/TEIAProject/GerenciadorDeVistorias/TeiaAPI/bin/Debug/net8.0/System.IdentityModel.Tokens.Jwt.dll

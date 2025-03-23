@@ -4,7 +4,7 @@ export enum status {
   Cancelado = 3,
 }
 
-export enum type {
+export enum Type {
   admin = 1,
   engenheiro = 2,
   vistoriador = 3

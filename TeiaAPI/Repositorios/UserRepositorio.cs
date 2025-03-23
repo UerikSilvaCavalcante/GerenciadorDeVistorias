@@ -60,19 +60,17 @@ namespace TeiaAPI.Repositorios
 
         public async Task<UserModel> GetLogin(string userName)
         {
-            try{
+            try
+            {
                 UserModel user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == userName);
-                if (user == null)
-                {
-                    throw new Exception("Usuario não encontrado");
-                }
+
                 return user;
             }
             catch (Exception e)
             {
                 throw new Exception(e.Message);
             }
-            
+
         }
 
         public async Task<bool> DeleteUser(int id)
@@ -91,6 +89,19 @@ namespace TeiaAPI.Repositorios
         public async Task<List<UserModel>> GetAllVistoriadores()
         {
             return await _context.Users.Where(u => u.Type == TypeUserEnum.Vistoriador).ToListAsync();
+        }
+
+        public async Task<bool> UpdatePassword(int id, string password)
+        {
+            UserModel user = await GetUserById(id);
+            if (user == null)
+            {
+                throw new Exception("Usuario não encontrado");
+            }
+            user.SetNewPassword(password);
+            _context.Users.Update(user);
+            await _context.SaveChangesAsync();
+            return true;
         }
     }
 }

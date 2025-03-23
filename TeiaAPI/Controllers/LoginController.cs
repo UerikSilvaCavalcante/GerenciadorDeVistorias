@@ -6,6 +6,10 @@ using Microsoft.AspNetCore.Mvc;
 using TeiaAPI.Repositorios.Interfaces;
 using TeiaAPI.Models;
 using TeiaAPI.enums.User;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace TeiaAPI.Controllers
 {
@@ -24,7 +28,6 @@ namespace TeiaAPI.Controllers
         public async Task<ActionResult<UserModel>> GetLogin([FromBody] LoginModel login)
         {
 
-            Console.WriteLine(login.UserName);
             UserModel user = await _userRepositorio.GetLogin(login.UserName);
             if (user == null)
             {
@@ -32,24 +35,36 @@ namespace TeiaAPI.Controllers
             }
             if (user.PasswordValid(login.Password))
             {
-                return Ok(new
-                {
-                    User = new
-                    {
-                        Id = user.Id,
-                        Name = user.Name,
-                        UserName = user.UserName,
-                        Type = Enum.GetName(typeof(TypeUserEnum), user.Type),
-                        Status = Enum.GetName(typeof(StatusEnum), user.Status),
-                    }
-                });
-
-
+                var token = GetToken(user.Id, user.UserName, user.Type);
+                return Ok(new { token });
             }
             else
             {
                 return BadRequest("Senha incorreta");
             }
+        }
+
+        private string GetToken(int id, string userName, TypeUserEnum? tipo)
+        {
+            string secreteKey = "f3b0678a-7869-4b58-822b-a06a7c39c4d6";
+            var chave = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secreteKey));
+            var credenciais = new SigningCredentials(chave, SecurityAlgorithms.HmacSha256);
+
+            var claims = new[]{
+                new Claim("id", id.ToString()),
+                new Claim("userName", userName),
+                new Claim("tipo", tipo.ToString())
+            };
+
+            var token = new JwtSecurityToken(
+                issuer: "uerikToken",
+                audience: "TEIA",
+                claims: claims,
+                expires: DateTime.Now.AddHours(1),
+                signingCredentials: credenciais
+            );
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }
 }

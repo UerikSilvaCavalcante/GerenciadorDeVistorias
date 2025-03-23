@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext, useCallback } from "react";
 import getAllVistorias from "../data/getAllVistorias";
 import getAllVistoriador from "../data/getAllVistoriador";
 import {
@@ -15,16 +15,23 @@ import {
   CircularProgress,
 } from "@mui/material";
 import { Status, Tipo, TipoImovel } from "../enums/vistoria";
-import { status } from "../enums/user";
+import { status, Type } from "../enums/user";
 import Link from "next/link";
 import Image from "next/image";
 import eye from "../assets/eye.svg";
 import trash from "../assets/trash.svg";
 import edit from "../assets/pencil-fill.svg";
 import down from "../assets/down.svg";
+import complete from "../assets/box-arrow-in-up-right.svg"
 import { VistoriaProps } from "../@types/vistoriaTypes";
 import { useQuery } from "@tanstack/react-query";
 import { UserProps } from "../@types/usersTypes";
+import { parseCookies } from "nookies";
+import { AuthContext } from "../actions/valid";
+import { jwtDecode } from "jwt-decode";
+import { deleteVistoria } from "../data/deleteVistoria";
+import { toast } from "sonner";
+import { queryClient } from "../helper/useQuery";
 
 interface Vistoria {
   vistoria: VistoriaProps[];
@@ -54,11 +61,39 @@ export function BasicTable({
     setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
   };
+  const { token } = parseCookies();
+  let user: { id: string; tipo: string } | null = null;
+  if (token) {
+    try {
+      user = jwtDecode<{ id: string; tipo: string }>(token as string);
+    } catch (error) {
+      console.error("Invalid token:", error);
+    }
+  }
 
   const { data, isLoading } = useQuery({
     queryKey: ["vistorias"],
-    queryFn: () => getAllVistorias(1),
+    queryFn: () =>
+      getAllVistorias(
+        parseInt(user?.id as string),
+        Type[user?.tipo.toLowerCase() as keyof typeof Type],
+        token
+      ),
   });
+
+  const handleDelete = async (id: number) => {
+    const response = deleteVistoria(id, token as string);
+    toast.promise(
+      response.then(() => true),
+      {
+        loading: "Deletando Vistoria...",
+        success: "Vistoria deletada com sucesso",
+        error: "Erro ao deletar Vistoria",
+      }
+    );
+    queryClient.invalidateQueries({ queryKey: ["vistorias"] });
+  };
+
   const filteredVistorias = data
     ? data.filter((vistoria) => {
         return filterStatus === "" || vistoria.status == filterStatus;
@@ -103,7 +138,7 @@ export function BasicTable({
         {isLoading ? (
           <div className="flex justify-center items-center h-[200px] ">
             <div className="flex flex-col items-center">
-              <svg viewBox="25 25 50 50">
+              <svg viewBox="25 25 50 50" className="svgCircle">
                 <circle r="20" cy="50" cx="50"></circle>
               </svg>
             </div>
@@ -280,28 +315,49 @@ export function BasicTable({
                     </Link>
                   </TableCell>
                   <TableCell>
-                    <Link
-                      href={`putDemanda/${vistoria.id}`}
-                      className="cursor-pointer flex justify-center items-center bg-blue-600 w-6 h-6 rounded-md"
-                    >
-                      <Image
-                        src={edit}
-                        alt="Visualizar"
-                        width={15}
-                        height={15}
-                      />
-                    </Link>
+                    {user?.tipo === "Engenheiro" ? (
+                      <Link
+                        href={`putDemanda/${vistoria.id}`}
+                        className="cursor-pointer flex justify-center items-center bg-blue-600 w-6 h-6 rounded-md"
+                      >
+                        <Image
+                          src={edit}
+                          alt="Visualizar"
+                          width={15}
+                          height={15}
+                        />
+                      </Link>
+                    ) : (
+                      <Link
+                        href={`completeDemanda/${vistoria.id}`}
+                        className="cursor-pointer flex justify-center items-center bg-blue-600 w-6 h-6 rounded-md"
+                      >
+                        <Image
+                          src={complete}
+                          alt="complete"
+                          width={15}
+                          height={15}
+                        />
+                      </Link>
+                    )}
                   </TableCell>
-                  <TableCell>
-                    <button className="cursor-pointer flex justify-center items-center bg-blue-600 w-6 h-6 rounded-md hover:bg-red-600 transition-colors duration-300">
-                      <Image
-                        src={trash}
-                        alt="Visualizar"
-                        width={10}
-                        height={10}
-                      />
-                    </button>
-                  </TableCell>
+                  {user &&
+                    Type[user.tipo.toLowerCase() as keyof typeof Type] ===
+                      Type.engenheiro && (
+                      <TableCell>
+                        <button
+                          className="cursor-pointer flex justify-center items-center bg-blue-600 w-6 h-6 rounded-md hover:bg-red-600 transition-colors duration-300"
+                          onClick={() => handleDelete(vistoria.id)}
+                        >
+                          <Image
+                            src={trash}
+                            alt="Visualizar"
+                            width={10}
+                            height={10}
+                          />
+                        </button>
+                      </TableCell>
+                    )}
                 </TableRow>
               ))}
             </TableBody>
@@ -328,12 +384,11 @@ export function VistoriadorTable({
   name: string | "";
   limit: number;
 }) {
-  
-  
-  const {data, isLoading} = useQuery({
+  const { token } = parseCookies();
+  const { data, isLoading } = useQuery({
     queryKey: ["vistoriadores"],
-    queryFn: getAllVistoriador,
-  })
+    queryFn: () => getAllVistoriador(token),
+  });
 
   const vistoriadores = data || [];
   // useEffect(() => {

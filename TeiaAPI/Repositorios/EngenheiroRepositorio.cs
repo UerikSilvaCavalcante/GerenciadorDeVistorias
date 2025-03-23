@@ -82,7 +82,7 @@ namespace TeiaAPI.Repositorios
             return true;
         }
 
-        public async Task<List<VistoriaModel>> GetAllVistorias(int id, StatusVistoriaEnum? status = null, TypeEnum? tipoServico = null, DateTime? dataInicio = null, DateTime? dataFim = null, tipoImovelEnum? tipoImovel = null)
+        public async Task<List<VistoriaModel>> GetAllVistorias(int? id = null, StatusVistoriaEnum? status = null, TypeEnum? tipoServico = null, DateTime? dataInicio = null, DateTime? dataFim = null, tipoImovelEnum? tipoImovel = null)
         {
             List<VistoriaModel> vistorias = new List<VistoriaModel>();
             var query = _context.Vistorias.AsQueryable();
@@ -111,11 +111,21 @@ namespace TeiaAPI.Repositorios
                     query = query.Where(v => v.Endereco.TipoImovel == tipoImovel);
                 }
 
-                vistorias = await query
-                    .Where(v => v.IdEngenheiro == id)
-                    .Include(v => v.Endereco)
-                    .Include(v => v.Vistoriador)
-                    .ToListAsync();
+                if (id != null)
+                {
+                    vistorias = await query
+                        .Where(v => v.IdEngenheiro == id)
+                        .Include(v => v.Endereco)
+                        .Include(v => v.Vistoriador)
+                        .ToListAsync();
+                }
+                else
+                {
+                    vistorias = await query
+                        .Include(v => v.Endereco)
+                        .Include(v => v.Vistoriador)
+                        .ToListAsync();
+                }
                 
             return vistorias;    
         }

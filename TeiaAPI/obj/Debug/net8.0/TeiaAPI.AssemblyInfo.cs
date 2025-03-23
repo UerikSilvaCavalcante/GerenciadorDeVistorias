@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("TeiaAPI")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d2334e7ffd6ff72a18eafa4ae023f380b995c0fc")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+21f441c6190b132eb398a2bea5cba139ffd1f9cb")]
 [assembly: System.Reflection.AssemblyProductAttribute("TeiaAPI")]
 [assembly: System.Reflection.AssemblyTitleAttribute("TeiaAPI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

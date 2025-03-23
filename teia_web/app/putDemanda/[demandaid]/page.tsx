@@ -6,16 +6,15 @@ import Link from "next/link";
 import goBack from "../../assets/goBack.svg";
 import Image from "next/image";
 import { TipoImovel } from "@/app/enums/vistoria";
+import { cookies } from "next/headers";
+import { jwtDecode } from "jwt-decode";
+import { Type } from "@/app/enums/user";
 
-export const dynamicParams = false;
-
-export async function generateStaticParams() {
-  const res = await getAllVistorias(1);
-  const params = await res.map((vistoria, index) => ({
-    demandaid: vistoria.id.toString(),
-  }));
-
-  return params;
+interface getVistoriaProps {
+  id: number,
+  type: number,
+  idVistoria: number,
+  token: string
 }
 
 export default async function DemandaId({
@@ -24,7 +23,24 @@ export default async function DemandaId({
   params: { demandaid: string };
 }) {
   const { demandaid } = await params;
-  const vistoria = await getVistoriaById(parseInt(demandaid));
+  const token = (await cookies()).get("token")?.value;
+  let user: { id: string, tipo:string } | null = null;
+  if (token) {
+    try {
+      user = jwtDecode<{ id: string, tipo:string }>(token as string);
+    } catch (error) {
+      console.error("Invalid token:", error);
+    }
+  }
+  const getVistoria:getVistoriaProps = {
+    id: parseInt(user?.id as string),
+    type: Type[user?.tipo.toLowerCase() as keyof typeof Type],
+    idVistoria: parseInt(demandaid),
+    token: token as string
+  }
+  const vistoria = await getVistoriaById(
+    getVistoria
+  );
 
   return (
     <div className="flex flex-col pb-3 h-full w-full">
@@ -41,8 +57,7 @@ export default async function DemandaId({
         </div>
       </div>
       <div className="flex flex-col items-center justify-center p-4">
-
-      <FormsDemanda vistoria={vistoria} />
+        <FormsDemanda vistoria={vistoria} token={token as string} />
       </div>
     </div>
   );

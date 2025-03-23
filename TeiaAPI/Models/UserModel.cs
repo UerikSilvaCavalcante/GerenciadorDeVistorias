@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 using TeiaAPI.enums.User;
 using TeiaAPI.Helper;
 
@@ -48,6 +49,7 @@ namespace TeiaAPI.Models
         [Display(Name="Status")]
         public StatusEnum? Status {get; set;}
 
+
         public bool PasswordValid(string password)
         {
             return this.Password == password.Encrypt();
@@ -58,6 +60,7 @@ namespace TeiaAPI.Models
             this.Password = this.Password.Encrypt();
         }
 
+
         public void SetCreated()
         {
             this.CreatedAt = DateTime.UtcNow;
@@ -67,5 +70,7 @@ namespace TeiaAPI.Models
         {
             this.Password = newPassword.Encrypt();
         }
+
+        
     }
 }

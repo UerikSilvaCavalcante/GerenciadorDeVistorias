@@ -23,6 +23,8 @@ import { VistoriaProps } from "../@types/vistoriaTypes";
 import putVistoria from "../data/putVistoriaEng";
 import { handleNotification } from "./UI/notifications";
 import getAllVistoriador from "../data/getAllVistoriador";
+import { toast } from "sonner";
+import { validData } from "@hookform/resolvers/class-validator/src/__tests__/__fixtures__/data.js";
 
 const getVistoriaForm = z.object({
   numOs: z.string().nonempty(),
@@ -62,12 +64,12 @@ type VistoriadorProps = {
   value: number;
 };
 
-
-
 export default function FormsDemanda({
   vistoria,
+  token,
 }: {
   vistoria?: VistoriaProps;
+  token: string;
 }) {
   const [errorMenssage, setErrorMenssage] = useState<string>("");
   const router = useRouter();
@@ -81,18 +83,23 @@ export default function FormsDemanda({
       console.log(dataForm);
       let res;
       if (vistoria) {
-        res = await putVistoria(dataForm, vistoria.id);
+        res =  putVistoria(dataForm, vistoria.id);
       } else {
-        res = await postNewVistoria(dataForm);
+        res =  postNewVistoria(dataForm, token);
       }
-      console.log(res);
-      if (res && res.message) {
-        queryClient.invalidateQueries({ queryKey: "vistorias" });
+      toast.promise(res.then(() => true), {
+        loading: "Salvando...",
+        success: `Vistoria ${dataForm.numOs} salva com sucesso`,
+        error: "Error",
+      });
+
+      const valid = await res;
+      if (valid) {
+        queryClient.invalidateQueries({ queryKey: ["vistorias"] });
         router.push("/demandas");
-      }else{
-        setErrorMenssage(`Erro ao salvar ${res.erro} `);
+      } else {
+        setErrorMenssage(`Erro ao salvar ${res} `);
       }
-      
     } catch (err) {
       setErrorMenssage(`Erro ao salvar ${err} `);
     }
@@ -101,7 +108,7 @@ export default function FormsDemanda({
   const [vistoriadores, setVistoriadores] = useState<VistoriadorProps[]>([]);
   useEffect(() => {
     const fetchData = async () => {
-      const data = await getAllVistoriador();
+      const data = await getAllVistoriador(token as string);
       if (data) {
         setVistoriadores(
           data.map((vistoriador) => ({
@@ -516,11 +523,14 @@ export default function FormsDemanda({
           id="fileInputValue"
         />
       </div>
-        <div className="flex gap-8 w-full justify-center items-center">
-        {errorMenssage && <span className="text-red-500 text-lg font-bold underline">{errorMenssage}</span>}
-        </div>
+      <div className="flex gap-8 w-full justify-center items-center">
+        {errorMenssage && (
+          <span className="text-red-500 text-lg font-bold underline">
+            {errorMenssage}
+          </span>
+        )}
+      </div>
       <div className="flex gap-8 w-full justify-start items-center">
-        
         <EspecialButton style={{ width: "100%" }} type="submit">
           Salvar
         </EspecialButton>

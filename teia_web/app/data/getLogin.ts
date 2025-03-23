@@ -3,7 +3,7 @@ import { UserProps } from "../@types/usersTypes";
 export default async function getLogin(
   userName: string,
   password: string
-): Promise<UserProps | null> {
+): Promise<string | null> {
   const response = await fetch("http://localhost:5017/api/Login", {
     method: "POST",
     headers: {
@@ -14,9 +14,9 @@ export default async function getLogin(
       userName,
     }),
   });
-  if (!response.ok) {
-    return null;
+  if (response.ok) {
+    const data = await response.json();
+    return data.token;
   }
-  const data = await response.json();
-  return data.user;
+  return null;
 }
