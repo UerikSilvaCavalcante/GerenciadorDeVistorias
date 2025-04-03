@@ -94,8 +94,12 @@ namespace TeiaAPI.Repositorios
             }
 
             await ExcludeManyToManyProps(acabamentoAtualizado);
+            acabamentoAtualizado.Pinturas = acabamento.Pinturas;
+            acabamentoAtualizado.Portas = acabamento.Portas;
+            acabamentoAtualizado.Revestimentos = acabamento.Revestimentos;
 
             acabamentoAtualizado.Muro = acabamento.Muro;
+
             //acabamentoAtualizado.Pinturas = manyToManyProps.pintura;
             //acabamentoAtualizado.Portas = manyToManyProps.portas;
             acabamentoAtualizado.Piso = acabamento.Piso;

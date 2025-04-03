@@ -48,6 +48,7 @@ export default async function DemandaId({
     token: token as string,
   };
   const vistoria = await getVistoriaById(requestProps);
+  console.log(vistoria);
   if (vistoria) {
     return (
       <div className="flex flex-col pb-3 h-full w-full ">
@@ -152,7 +153,7 @@ export default async function DemandaId({
                   </p>
                 </div>
                 <div className="flex gap-1 items-center justify-center">
-                  <h2 className="text-sm font-bold">Área Construida Padrão:</h2>
+                  <h2 className="text-sm font-bold">Área Externa Padrão:</h2>
                   <p className="text-sm">
                     {vistoria.imovel?.areaImovel
                       .filter((area) => area.tipoArea == TipoArea.Externa)

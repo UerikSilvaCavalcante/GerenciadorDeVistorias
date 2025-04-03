@@ -11,17 +11,20 @@ import { BasicTable } from "../components/tables";
 import Link from "next/link";
 import Image from "next/image";
 import plus from "../assets/plus.svg";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Status } from "../enums/vistoria";
 import { Select } from "../components/UI/input";
 import Label from "../components/UI/label";
 import { parseCookies } from "nookies";
+import { AuthContext } from "../actions/valid";
+import { Type } from "../enums/user";
 
 export default function Demandas() {
   const [filterStatus, setFilterStatus] = useState<Status | "">("");
   const handleFilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setFilterStatus(event.target.value as Status | "");
   };
+  const { user } = useContext(AuthContext);
   const [search, setSearch] = useState<number | "">("");
   const [de, setDe] = useState<Date | "">("");
   const [ate, setAte] = useState<Date | "">("");
@@ -124,11 +127,13 @@ export default function Demandas() {
             <option value={50}>50</option>
           </Select>
         </div>
-        <Link href="/cadDemandas">
-          <EspecialButton type="button">
-            <Image src={plus} alt="plus" /> Cadastrar Demanda
-          </EspecialButton>
-        </Link>
+        {user?.type === Type.engenheiro && (
+          <Link href="/cadDemandas">
+            <EspecialButton type="button">
+              <Image src={plus} alt="plus" /> Cadastrar Demanda
+            </EspecialButton>
+          </Link>
+        )}
       </div>
     </MainLayout>
   );

@@ -20,7 +20,7 @@ type GaragenProps ={
 }
 
 export type DivisaoProps = {
-  id: string;
+  id: number;
   areaServico: AreaServicoProps[];
   quartos: number;
   cozinhas: number;

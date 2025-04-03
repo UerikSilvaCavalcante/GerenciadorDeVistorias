@@ -12,15 +12,15 @@ using TeiaAPI.Data;
 namespace TeiaAPI.Migrations
 {
     [DbContext(typeof(TeiaApiDBContext))]
-    [Migration("20241208233207_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20250331010526_fixError")]
+    partial class fixError
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.10")
+                .HasAnnotation("ProductVersion", "9.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -385,6 +385,10 @@ namespace TeiaAPI.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("CotaGreide")
+                        .HasColumnType("integer")
+                        .HasColumnName("cota_greide");
+
                     b.Property<float>("Frente")
                         .HasColumnType("real")
                         .HasColumnName("Frente");
@@ -400,6 +404,14 @@ namespace TeiaAPI.Migrations
                     b.Property<int?>("IdInfraestrura")
                         .HasColumnType("integer")
                         .HasColumnName("id_infraestrutura");
+
+                    b.Property<string>("PosicaoUnidade")
+                        .HasColumnType("text")
+                        .HasColumnName("posicao_unidade");
+
+                    b.Property<int>("Situacao")
+                        .HasColumnType("integer")
+                        .HasColumnName("situacao");
 
                     b.Property<int?>("Telhado")
                         .HasColumnType("integer");

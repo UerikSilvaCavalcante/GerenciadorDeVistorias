@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Input, Select } from "../components/UI/input";
 import {
   EspecialButton,
@@ -25,6 +25,7 @@ import { handleNotification } from "./UI/notifications";
 import getAllVistoriador from "../data/getAllVistoriador";
 import { toast } from "sonner";
 import { validData } from "@hookform/resolvers/class-validator/src/__tests__/__fixtures__/data.js";
+import { AuthContext } from "../actions/valid";
 
 const getVistoriaForm = z.object({
   numOs: z.string().nonempty(),
@@ -74,7 +75,8 @@ export default function FormsDemanda({
   const [errorMenssage, setErrorMenssage] = useState<string>("");
   const router = useRouter();
   const { isOpen, open, close } = handleNotification();
-
+  const { user } = useContext(AuthContext);
+  console.log(user);
   const { register, control, handleSubmit, formState } = useForm<VistoriaForm>({
     resolver: zodResolver(getVistoriaForm),
   });
@@ -83,15 +85,18 @@ export default function FormsDemanda({
       console.log(dataForm);
       let res;
       if (vistoria) {
-        res =  putVistoria(dataForm, vistoria.id);
+        res = putVistoria(user?.id as number, dataForm, vistoria.id, token);
       } else {
-        res =  postNewVistoria(dataForm, token);
+        res = postNewVistoria(user?.id as number, dataForm, token);
       }
-      toast.promise(res.then(() => true), {
-        loading: "Salvando...",
-        success: `Vistoria ${dataForm.numOs} salva com sucesso`,
-        error: "Error",
-      });
+      toast.promise(
+        res.then(() => true),
+        {
+          loading: "Salvando...",
+          success: `Vistoria ${dataForm.numOs} salva com sucesso`,
+          error: "Erro ao salvar Vistoria",
+        }
+      );
 
       const valid = await res;
       if (valid) {

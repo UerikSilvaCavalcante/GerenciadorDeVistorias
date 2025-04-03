@@ -94,6 +94,9 @@ namespace TeiaAPI.Repositorios
                 return null;
             }
             await ExcludeManyToManyProps(divisaoAtualizada);
+            divisaoAtualizada.AreaServico = divisao.AreaServico;
+            divisaoAtualizada.Banheiros = divisao.Banheiros;
+            divisaoAtualizada.Garagems = divisao.Garagems;
 
             //divisaoAtualizada.AreaServico = manyToManyProps.areaServico;
             divisaoAtualizada.Quartos = divisao.Quartos;

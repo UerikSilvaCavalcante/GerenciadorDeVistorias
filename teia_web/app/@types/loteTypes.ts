@@ -1,5 +1,5 @@
 import { TipoAcabamento, TipoFormato, TipoSituacao, TipoSolucao, TipoTopografia, TipoUsoPredominante } from "../enums/lote";
-import { Tipo } from "../enums/lote";
+import { TipoLote } from "../enums/lote";
 
 type SolucoesProps = {
     id: number;
@@ -18,15 +18,15 @@ type SolucoesProps = {
 }
 
 export type LoteProps = {
-    id: number;
-    solucoesId: number;
-    solucoes: SolucoesProps;
-    tipo:Tipo;
-    formato:TipoFormato;
-    situacao:TipoSituacao;
-    topografia:TipoTopografia;
-    usoPredio: TipoUsoPredominante;
-    acabamento:TipoAcabamento;
-    densidade: string;
-    transportePublico: boolean;
+    id?: number;
+    solucoesId?: number;
+    solucoes?: SolucoesProps;
+    tipo?:TipoLote;
+    formato?:TipoFormato;
+    situacao?:TipoSituacao;
+    topografia?:TipoTopografia;
+    usoPredio?: TipoUsoPredominante;
+    acabamento?:TipoAcabamento;
+    densidade?: string;
+    transportePublico?: boolean;
 }

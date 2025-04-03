@@ -106,7 +106,7 @@ export default function Login() {
   return (
     <div className="flex h-screen justify-center items-center">
       <div
-        className={`flex items-start justify-between gap-5 p-5 bg-zinc-50 drop-shadow-2xl shadow-2xl rounded-lg w-[60%] h-[80%] relative before:bg-gradient-to-r before:from-blue-700 before:to-indigo-900 ${
+        className={`flex items-start justify-between gap-5 p-5 bg-zinc-50 drop-shadow-2xl shadow-2xl rounded-lg w-[60%] h-[85%] relative before:bg-gradient-to-r before:from-blue-700 before:to-indigo-900 ${
           logOrCad ? "log" : "cad"
         }`}
       >

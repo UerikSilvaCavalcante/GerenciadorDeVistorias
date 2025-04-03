@@ -27,9 +27,9 @@ type responseProps = {
   erro?: string;
 }
 
-export default async function postNewVistoria(form: FormPorps, token:string):Promise<responseProps> {
+export default async function postNewVistoria(id:number ,form: FormPorps, token:string):Promise<responseProps> {
   const engenheiro: EngenheiroProps = {
-    idEngenheiro: 1,
+    idEngenheiro: id,
     idVistoriador: parseInt(form.idVistoriador),
     urlImagens: "",
     urlMatricula: "",
@@ -62,5 +62,10 @@ export default async function postNewVistoria(form: FormPorps, token:string):Pro
     body: JSON.stringify(engenheiro),
   });
 
-  return response.json();
+
+  const data = await response.json();
+  if(!data.message){
+    throw new Error(data.erro);
+  }
+  return data;
 }

@@ -4,7 +4,7 @@ export enum TipoSolucao {
   Precario = 3,
 }
 
-export enum Tipo {
+export enum TipoLote {
   Unico = 1,
   Condominio = 2,
 }
@@ -41,3 +41,4 @@ export enum TipoSituacao {
   MeioDeQuadra = 1,
   Esquina = 2,
 }
+

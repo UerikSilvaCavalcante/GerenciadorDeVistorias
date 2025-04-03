@@ -29,7 +29,7 @@ namespace TeiaAPI.Repositorios
             int acabamentoId = await _acabamentoRepositorio.AddAcabamento(imovel.Acabamento);//, vistoriador.acabamentoProps);
             int divisaoId = await _divisaoRepositorio.AddDivisao(imovel.Divisao);//, vistoriador.divisaoProps);
             int infraestruturaId = await _infraestruturaRepositorio.AddInfraestrutura(imovel.Infraestrutura);
-                        
+
 
             imovel.IdDivisao = divisaoId;
             imovel.IdInfraestrura = infraestruturaId;
@@ -48,7 +48,8 @@ namespace TeiaAPI.Repositorios
                 return false;
             }
 
-            foreach(AreaProps area in imovel.AreaImovel){
+            foreach (AreaProps area in imovel.AreaImovel)
+            {
                 AreaProps? areaAtualizada = await _context.Areas.FirstOrDefaultAsync(a => a.Id == area.Id);
                 if (areaAtualizada == null)
                 {
@@ -72,7 +73,8 @@ namespace TeiaAPI.Repositorios
             {
                 return null;
             }
-            foreach(AreaProps area in imovelAtualizado.AreaImovel){
+            foreach (AreaProps area in imovelAtualizado.AreaImovel)
+            {
                 AreaProps? areaAtualizada = await _context.Areas.FirstOrDefaultAsync(a => a.Id == area.Id);
                 if (areaAtualizada == null)
                 {
@@ -83,6 +85,7 @@ namespace TeiaAPI.Repositorios
             }
 
             //imovelAtualizado.AreaImovel = vistoriador.areas;
+            imovelAtualizado.AreaImovel = imovel.AreaImovel;
             imovelAtualizado.Frente = imovel.Frente;
             imovelAtualizado.Telhado = imovel.Telhado;
             AcabamentoModel acabamentoAtualizado = await _acabamentoRepositorio.Update((int)imovelAtualizado.IdAcabamento, imovel.Acabamento);//, vistoriador.acabamentoProps);
@@ -96,6 +99,6 @@ namespace TeiaAPI.Repositorios
             return imovelAtualizado;
         }
 
-        
+
     }
 }

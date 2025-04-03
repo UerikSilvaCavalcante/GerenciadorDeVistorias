@@ -27,7 +27,7 @@ export default async function getAllVistorias(
     })
   }
   if (!response.ok) {
-    throw new Error(`HTTP error! status: ${response.status}`);
+    throw new Error(`HTTP error! status: ${response.json()}`);
   }
   const data = await response.json();
   return data;

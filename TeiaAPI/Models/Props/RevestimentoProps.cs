@@ -38,7 +38,8 @@ namespace TeiaAPI.Models.Props
             Quarto = 4,
             AreaServico = 5,
             Garagem = 6,
-            Outros = 7 
+            Tanque = 7,
+            Outros = 8
         }
 
         [JsonIgnore]

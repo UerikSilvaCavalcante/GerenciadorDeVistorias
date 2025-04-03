@@ -27,9 +27,9 @@ type responseProps = {
   erro?: string;
 }
 
-export default async function putVistoria(form: FormPorps, id:number):Promise<responseProps> {
+export default async function putVistoria(userId:number ,form: FormPorps, id:number, token:string):Promise<responseProps> {
   const putVistoria: EngenheiroProps = {
-    idEngenheiro: 1,
+    idEngenheiro: userId,
     idVistoriador: parseInt(form.idVistoriador),
     urlImagens: "",
     urlMatricula: "",
@@ -57,6 +57,7 @@ export default async function putVistoria(form: FormPorps, id:number):Promise<re
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify(putVistoria),
 

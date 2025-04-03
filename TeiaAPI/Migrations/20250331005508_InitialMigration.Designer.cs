@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using TeiaAPI.Data;
@@ -11,9 +12,11 @@ using TeiaAPI.Data;
 namespace TeiaAPI.Migrations
 {
     [DbContext(typeof(TeiaApiDBContext))]
-    partial class TeiaApiDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250331005508_InitialMigration")]
+    partial class InitialMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -892,7 +895,7 @@ namespace TeiaAPI.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2025, 3, 31, 1, 7, 51, 96, DateTimeKind.Utc).AddTicks(1181),
+                            CreatedAt = new DateTime(2025, 3, 31, 0, 55, 5, 741, DateTimeKind.Utc).AddTicks(2598),
                             Email = "turistajose1@gmail.com",
                             Name = "Engenheiro",
                             Password = "40BD001563085FC35165329EA1FF5C5ECBDBBEEF",
@@ -904,7 +907,7 @@ namespace TeiaAPI.Migrations
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2025, 3, 31, 1, 7, 51, 101, DateTimeKind.Utc).AddTicks(2743),
+                            CreatedAt = new DateTime(2025, 3, 31, 0, 55, 5, 746, DateTimeKind.Utc).AddTicks(4360),
                             Email = "turistajose1@gmail.com",
                             Name = "Vistoriador",
                             Password = "5F6955D227A320C7F1F6C7DA2A6D96A851A8118F",
@@ -916,7 +919,7 @@ namespace TeiaAPI.Migrations
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2025, 3, 31, 1, 7, 51, 101, DateTimeKind.Utc).AddTicks(3706),
+                            CreatedAt = new DateTime(2025, 3, 31, 0, 55, 5, 746, DateTimeKind.Utc).AddTicks(5282),
                             Email = "uerisalcaval003@gmail.com",
                             Name = "Admin",
                             Password = "F865B53623B121FD34EE5426C792E5C33AF8C227",

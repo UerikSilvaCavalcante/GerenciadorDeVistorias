@@ -2,8 +2,10 @@ import { jwtDecode } from "jwt-decode";
 import MainLayout from "../../components/mainLayout";
 import { cookies } from "next/headers";
 import getVistoriaById from "../../data/getVistoriaById";
-import { Type } from "@/app/enums/user";
+import { status, Type } from "@/app/enums/user";
 import FormsComplete from "@/app/components/formsComplete";
+import { Status } from "@/app/enums/vistoria";
+import getImovel from "@/app/data/getImovel";
 
 interface getVistoriaProps {
   id: number;
@@ -35,13 +37,21 @@ export default async function DemandaId({
     token: token as string,
   };
   const vistoria = await getVistoriaById(getVistoria);
+  let imovel = null;
+  if (vistoria.status == Status.Concluida) {
+    imovel = await getImovel(
+      vistoria.idTipoImovel as number,
+      vistoria.endereco.tipoImovel,
+      token as string
+    );
+  }
 
   return (
     <MainLayout id="completeDemanda">
       <div className="flex justify-center items-center h-20 text-blue-900 font-bold text-2xl">
         <h1>Completar Demanda</h1>
       </div>
-      <FormsComplete vistoria={vistoria} />
+      <FormsComplete vistoria={vistoria} imovel={imovel} />
     </MainLayout>
   );
 }

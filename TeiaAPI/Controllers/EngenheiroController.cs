@@ -29,7 +29,7 @@ namespace TeiaAPI.Controllers
             _apartamentoRepositorio = apartamentoRepositorio;
             _loteRepositorio = loteRepositorio;
         }
-        
+
         [Authorize]
         [HttpGet("{id}")]
         public async Task<ActionResult<List<VistoriaModel>>> GetAllVistorias(int id, [FromQuery] StatusVistoriaEnum? status = null, [FromQuery] TypeEnum? TipoServico = null, [FromQuery] tipoImovelEnum? TipoImovel = null, [FromQuery] DateTime? dataInicio = null, [FromQuery] DateTime? dataFim = null)
@@ -144,7 +144,15 @@ namespace TeiaAPI.Controllers
                         erro = Erros.ErroDeTipoImovel()[102]
                     });
                 }
-                if (engenheiroProps.Tipo == TypeEnum.B438 || engenheiroProps.Tipo == TypeEnum.B437 && engenheiroProps.Endereco.TipoImovel != tipoImovelEnum.Lote)
+                if (engenheiroProps.Tipo == TypeEnum.B438 && engenheiroProps.Endereco.TipoImovel != tipoImovelEnum.Lote)
+                {
+                    return BadRequest(new
+                    {
+                        message = false,
+                        erro = Erros.ErroDeTipoImovel()[102]
+                    });
+                }
+                else if (engenheiroProps.Tipo == TypeEnum.B437 && engenheiroProps.Endereco.TipoImovel != tipoImovelEnum.Lote)
                 {
                     return BadRequest(new
                     {
@@ -160,7 +168,7 @@ namespace TeiaAPI.Controllers
                         erro = Erros.ErroDeTipoImovel()[102]
                     });
                 }
-                if (engenheiroProps.Endereco.TipoImovel == tipoImovelEnum.Casa && engenheiroProps.Tipo != TypeEnum.A413)
+                else if (engenheiroProps.Endereco.TipoImovel == tipoImovelEnum.Casa && engenheiroProps.Tipo != TypeEnum.A413)
                 {
                     return BadRequest(new
                     {
@@ -170,7 +178,10 @@ namespace TeiaAPI.Controllers
                 }
 
                 VistoriaModel vistoriaModel = await _engenheiroRepositorio.AddVistoria(engenheiroProps);
-                return Ok(true);
+                return Ok(new
+                {
+                    message = true
+                });
             }
             catch (Exception e)
             {

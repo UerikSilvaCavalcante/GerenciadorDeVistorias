@@ -1,11 +1,14 @@
-"use client"
+"use client";
 
 import { VistoriaProps } from "../@types/vistoriaTypes";
 import { Input, Select } from "../components/UI/input";
 import Label from "../components/UI/label";
 import {
+  TipoBancada,
   TipoEstadoConservacao,
   TipoJanela,
+  TipoLoc,
+  TipoLocal,
   TipoMaterial,
   TipoMuro,
   TipoPadrao,
@@ -13,8 +16,8 @@ import {
   TipoRevestimento,
   TipoTeto,
 } from "../enums/acabamento";
-import { Telhado } from "../enums/imovel";
-import { Tipo } from "../enums/vistoria";
+import { CotaGreide, Telhado, TipoArea } from "../enums/imovel";
+import { Tipo, TipoImovel } from "../enums/vistoria";
 import Field from "../components/UI/field";
 import {
   EspecialButton,
@@ -25,13 +28,67 @@ import { useForm, Controller } from "react-hook-form";
 import { number, z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { teal } from "@mui/material/colors";
+import { TipoAreaServico, TipoBanheiro, TipoGaragem } from "../enums/divisao";
+import { PatternFormat } from "react-number-format";
+import { ImovelProps } from "../@types/imovelTypes";
+import { ApartamentoProps } from "../@types/apartamentoTypes";
+import { ObraProps } from "../@types/obraTypes";
+import { LoteProps } from "../@types/loteTypes";
+import { TipoPosicao, TipoVista } from "../enums/apartamento";
+import {
+  TipoAcabamento,
+  TipoFormato,
+  TipoSituacao,
+  TipoSolucao,
+  TipoTopografia,
+  TipoUsoPredominante,
+  TipoLote,
+} from "../enums/lote";
+
+import {
+  AcabamentoField,
+  DivisaoField,
+  InfraestruturaField,
+  ApartamentoField,
+  ObraField,
+  LoteField,
+} from "./formsField";
+import completeVistoria from "../data/completeVistoria";
+import { toast } from "sonner";
+import { AuthContext } from "../actions/valid";
+import { parseCookies } from "nookies";
+import { useContext, useEffect, useState } from "react";
+import { userAgent } from "next/server";
+import { useRouter } from "next/navigation";
+import { queryClient } from "../helper/useQuery";
+import getImovel from "../data/getImovel";
+import { useQuery } from "@tanstack/react-query";
+import { TipoImovelProps } from "../@types/tipoImove";
+
+interface completeProps {
+  idVistoria: number;
+  dataVistoria: Date;
+  URLImagens: string;
+  latitude: string;
+  longitude: string;
+  obs: string;
+  imovel: ImovelProps;
+  apartamento?: ApartamentoProps;
+  obra?: ObraProps;
+  lote?: LoteProps;
+}
 
 const getDemandaForm = z.object({
   area: z.number().min(1, "Selecione uma opção"),
   areaExterna: z.number(),
   terreno: z.number(),
   frente: z.number(),
+  latitude: z.string().nonempty(),
+  longitude: z.string().nonempty(),
   telhado: z.number(),
+  situacao: z.nativeEnum(TipoSituacao),
+  cotaGreide: z.nativeEnum(CotaGreide),
+  posicaoUnidade: z.string(),
   padrao: z.nativeEnum(TipoPadrao),
   quadroEletrico: z.number(),
   revestimentoCozinha: z.nativeEnum(TipoRevestimento),
@@ -64,714 +121,350 @@ const getDemandaForm = z.object({
   pavimentacao: z.boolean(),
   fossa: z.boolean(),
   sumidouro: z.boolean(),
+  esgoto: z.boolean(),
   obs: z.string(),
+  apartamento: z
+    .object({
+      andar: z.number().optional(),
+      condominioVal: z.number().optional(),
+      adminstradora: z.string().optional(),
+      tel_Administradora: z.string().optional(),
+      vista: z.nativeEnum(TipoVista).optional(),
+      posicao_: z.nativeEnum(TipoPosicao).optional(),
+      blocoPredio: z
+        .object({
+          pavimentos: z.number().optional(),
+          elevadores: z.number().optional(),
+          idade: z.number().optional(),
+          aptosPorAndar: z.number().optional(),
+          unidadesPredio: z.number().optional(),
+          subsolos: z.number().optional(),
+          blocos: z.number().optional(),
+          outros: z.string().optional(),
+        })
+        .optional(),
+    })
+    .optional(),
+  obra: z
+    .object({
+      servico: z.number(),
+      infraestrutura: z.number(),
+      supraEstruturas: z.number(),
+      paredes: z.number(),
+      esquadarias: z.number(),
+      vidrosPlasticos: z.number(),
+      cobertura: z.number(),
+      impermeabilizacao: z.number(),
+      revestimentosInternos: z.number(),
+      revestimentosExternos: z.number(),
+      forros: z.number(),
+      pisos: z.number(),
+      pinturas: z.number(),
+      acabamentos: z.number(),
+      instalacoesEletricas: z.number(),
+      instalacoesHidraulicas: z.number(),
+      instalacoesEsgoto: z.number(),
+      loucasMetais: z.number(),
+      complementos: z.number(),
+      outros: z.string(),
+    })
+    .optional(),
+  lote: z
+    .object({
+      solucoes: z.object({
+        agua: z.nativeEnum(TipoSolucao),
+        esgoto: z.nativeEnum(TipoSolucao),
+        energia: z.nativeEnum(TipoSolucao),
+        pavimentacao: z.nativeEnum(TipoSolucao),
+        iluminacao: z.nativeEnum(TipoSolucao),
+        coletaLixo: z.nativeEnum(TipoSolucao),
+        creche: z.nativeEnum(TipoSolucao),
+        escola: z.nativeEnum(TipoSolucao),
+        saude: z.nativeEnum(TipoSolucao),
+        lazer: z.nativeEnum(TipoSolucao),
+        comercio: z.nativeEnum(TipoSolucao),
+        absGas: z.nativeEnum(TipoSolucao),
+      }),
+      tipo: z.nativeEnum(TipoLote),
+      formato: z.nativeEnum(TipoFormato),
+      situacao: z.nativeEnum(TipoSituacao),
+      topografia: z.nativeEnum(TipoTopografia),
+      usoPredio: z.nativeEnum(TipoUsoPredominante),
+      acabamento: z.nativeEnum(TipoAcabamento),
+      densidade: z.string(),
+      transportePublico: z.number(),
+    })
+    .optional(),
 });
 
 type DemandaForm = z.infer<typeof getDemandaForm>;
 
-function AcabamentoField({
-  register,
-  formState,
-}: {
-  register: ReturnType<typeof useForm>["register"];
-  formState: ReturnType<typeof useForm>["formState"];
-}) {
-  return (
-    <Field legend="Acabamento">
-      <div className="flex w-full gap-5 justify-start items-start">
-        <div className="flex w-full flex-col gap-3 justify-start items-start">
-          <Label htmlFor="padrao">
-            {formState.errors.padrao && (
-              <span className="text-red-600">
-                {" "}
-                Campo obrigatorio <br />
-              </span>
-            )}
-            Padrão de Acabamento{" "}
-          </Label>
-          <Select
-            id="padrao"
-            style={{ width: "100%" }}
-            {...register("padrao", { valueAsNumber: true })}
-          >
-            <option value="0">Selecione</option>
-            <option value={TipoPadrao.Alto}>Alvenaria</option>
-            <option value={TipoPadrao.NormalAlto}>Normal/Alto</option>
-            <option value={TipoPadrao.Normal}>Normal</option>
-            <option value={TipoPadrao.NormalBaixo}>Normal/Baixo</option>
-            <option value={TipoPadrao.Baixo}>Baixo</option>
-          </Select>
-        </div>
-        <div className="flex w-full flex-col gap-3 justify-start items-start">
-          <div className="flex w-full flex-col gap-3 justify-start items-start">
-            <Label htmlFor="quadroEletrico">
-              {formState.errors.quadroEletrico && (
-                <span className="text-red-600">
-                  {" "}
-                  Campo obrigatorio <br />
-                </span>
-              )}{" "}
-              Quadro Eletrico{" "}
-            </Label>
-            <Input
-              id="quadtoEletrico"
-              type="number"
-              style={{ width: "100%" }}
-              {...register("quadroEletrico", { valueAsNumber: true })}
-            />
-          </div>
-        </div>
-        <div className="flex w-full flex-col gap-3 justify-start items-start">
-          <Label htmlFor="revestimentoCozinha">
-            {formState.errors.revestimentoCozinha && (
-              <span className="text-red-600">
-                {" "}
-                Campo obrigatorio <br />
-              </span>
-            )}
-            Revestimento Cozinha{" "}
-          </Label>
-          <Select
-            id="revestimentoCozinha"
-            style={{ width: "100%" }}
-            {...register("revestimentoCozinha", { valueAsNumber: true })}
-          >
-            <option value="0">Selecione</option>
-            <option value={TipoRevestimento.Ceramica}>Ceramica</option>
-            <option value={TipoRevestimento.Cimento}>Cimento</option>
-            <option value={TipoRevestimento.Laminado}>Laminado</option>
-            <option value={TipoRevestimento.Madeira}>Madeira</option>
-            <option value={TipoRevestimento.Porcelanato}>Porcelanato</option>
-            <option value={TipoRevestimento.Sem}>Sem</option>
-          </Select>
-        </div>
-        <div className="flex w-full flex-col gap-3 justify-start items-start">
-          <Label htmlFor="revestimentoBanheiro">
-            {formState.errors.revestimentoBanheiro && (
-              <span className="text-red-600">
-                {" "}
-                Campo obrigatorio <br />
-              </span>
-            )}{" "}
-            Revestimento Banheiro{" "}
-          </Label>
-          <Select
-            id="revestimentoBanheiro"
-            style={{ width: "100%" }}
-            {...register("revestimentoBanheiro", { valueAsNumber: true })}
-          >
-            <option value="0">Selecione</option>
-            <option value={TipoRevestimento.Ceramica}>Ceramica</option>
-            <option value={TipoRevestimento.Cimento}>Cimento</option>
-            <option value={TipoRevestimento.Laminado}>Laminado</option>
-            <option value={TipoRevestimento.Madeira}>Madeira</option>
-            <option value={TipoRevestimento.Porcelanato}>Porcelanato</option>
-            <option value={TipoRevestimento.Sem}>Sem</option>
-          </Select>
-        </div>
-        <div className="flex  w-full flex-col gap-3 justify-start items-start">
-          <Label htmlFor="revestimentoTanque">
-            {formState.errors.revestimentoTanque && (
-              <span className="text-red-600">
-                {" "}
-                Campo obrigatorio <br />
-              </span>
-            )}
-            Revestimento Tanque{" "}
-          </Label>
-          <Select
-            id="revestimentoTanque"
-            style={{ width: "100%" }}
-            {...register("revestimentoTanque", { valueAsNumber: true })}
-          >
-            <option value="0">Selecione</option>
-            <option value={TipoRevestimento.Ceramica}>Ceramica</option>
-            <option value={TipoRevestimento.Cimento}>Cimento</option>
-            <option value={TipoRevestimento.Laminado}>Laminado</option>
-            <option value={TipoRevestimento.Madeira}>Madeira</option>
-            <option value={TipoRevestimento.Porcelanato}>Porcelanato</option>
-            <option value={TipoRevestimento.Sem}>Sem</option>
-          </Select>
-        </div>
-        <div className="flex w-full flex-col gap-3 justify-start items-start">
-          <Label htmlFor="estadoConservacao">
-            {formState.errors.estadoConservacao && (
-              <span className="text-red-600">
-                {" "}
-                Campo obrigatorio <br />
-              </span>
-            )}
-            Estado de Conservação{" "}
-          </Label>
-          <Select
-            id="estadoConservacao"
-            style={{ width: "100%" }}
-            {...register("estadoConservacao", { valueAsNumber: true })}
-          >
-            <option value="0">Selecione</option>
-            <option value={TipoEstadoConservacao.Construcao}>Contrusao</option>
-            <option value={TipoEstadoConservacao.Novo}>Novo</option>
-            <option value={TipoEstadoConservacao.Bom}>Bom</option>
-            <option value={TipoEstadoConservacao.Regular}>Regulas</option>
-            <option value={TipoEstadoConservacao.Ruim}>Ruim</option>
-          </Select>
-        </div>
-      </div>
-      <div className="flex w-full gap-5 justify-start items-start">
-        <div className="flex w-full flex-col gap-3 justify-start items-start">
-          <Label htmlFor="muro">
-            {formState.errors.muro && (
-              <span className="text-red-600">
-                {" "}
-                Campo obrigatorio <br />
-              </span>
-            )}
-            Muro{" "}
-          </Label>
-          <Select
-            id="muro"
-            style={{ width: "100%" }}
-            {...register("muro", { valueAsNumber: true })}
-          >
-            <option value="0">Selecione</option>
-            <option value={TipoMuro.Alvenaria}>Alvenaria</option>
-            <option value={TipoMuro.Cerca}>Cerca</option>
-            <option value={TipoMuro.Grade}>Grade</option>
-            <option value={TipoMuro.Muro}>Muro</option>
-            <option value={TipoMuro.Sem}>Sem</option>
-          </Select>
-        </div>
-        <div className="flex w-full flex-col gap-3 justify-start items-start">
-          <Label htmlFor="portasExternas">
-            {formState.errors.portasExternas && (
-              <span className="text-red-600">
-                {" "}
-                Campo obrigatorio <br />
-              </span>
-            )}
-            Portas Externas{" "}
-          </Label>
-          <Select
-            id="portasExternas"
-            style={{ width: "100%" }}
-            {...register("portasExternas", { valueAsNumber: true })}
-          >
-            <option value="0">Selecione</option>
-            <option value={TipoMaterial.Aluminio}>Aluminio</option>
-            <option value={TipoMaterial.Ferro}>Ferro</option>
-            <option value={TipoMaterial.Madeira}>Madeira</option>
-            <option value={TipoMaterial.Vidro}>Vidro</option>
-          </Select>
-        </div>
-        <div className="flex w-full flex-col gap-3 justify-start items-start">
-          <Label htmlFor="portasInternas">
-            {formState.errors.portasInternas && (
-              <span className="text-red-600">
-                {" "}
-                Campo obrigatorio <br />
-              </span>
-            )}
-            Portas Internas{" "}
-          </Label>
-          <Select
-            id="portasInternas"
-            style={{ width: "100%" }}
-            {...register("portasInternas", { valueAsNumber: true })}
-          >
-            <option value="0">Selecione</option>
-            <option value={TipoMaterial.Aluminio}>Aluminio</option>
-            <option value={TipoMaterial.Ferro}>Ferro</option>
-            <option value={TipoMaterial.Madeira}>Madeira</option>
-            <option value={TipoMaterial.Vidro}>Vidro</option>
-          </Select>
-        </div>
-        <div className="flex w-full flex-col gap-3 justify-start items-start">
-          <Label htmlFor="piso">
-            {formState.errors.piso && (
-              <span className="text-red-600">
-                {" "}
-                Campo obrigatorio <br />
-              </span>
-            )}
-            Piso{" "}
-          </Label>
-          <Select
-            id="piso"
-            style={{ width: "100%" }}
-            {...register("piso", { valueAsNumber: true })}
-          >
-            <option value="0">Selecione</option>
-            <option value={TipoPiso.Ceramica}>Ceramica</option>
-            <option value={TipoPiso.Cimento}>Cimento</option>
-            <option value={TipoPiso.Laminado}>Laminado</option>
-            <option value={TipoPiso.Madeira}>Madeira</option>
-            <option value={TipoPiso.Porcelanato}>Porcelanato</option>
-            <option value={TipoPiso.Sem}>Sem</option>
-          </Select>
-        </div>
-        <div className="flex  w-full flex-col gap-3 justify-start items-start">
-          <Label htmlFor="janelas">
-            {formState.errors.janelas && (
-              <span className="text-red-600">
-                {" "}
-                Campo obrigatorio <br />
-              </span>
-            )}
-            Janelas{" "}
-          </Label>
-          <Select
-            id="janelas"
-            style={{ width: "100%" }}
-            {...register("janelas", { valueAsNumber: true })}
-          >
-            <option value="0">Selecione</option>
-            <option value={TipoJanela.Aluminio}>Aluminio</option>
-            <option value={TipoJanela.Ferro}>Ferro</option>
-            <option value={TipoJanela.Madeira}>Madeira</option>
-            <option value={TipoJanela.Vidro}>Vidro</option>
-          </Select>
-        </div>
-        <div className="flex w-full flex-col gap-3 justify-start items-start">
-          <Label htmlFor="teto">
-            {formState.errors.teto && (
-              <span className="text-red-600">
-                {" "}
-                Campo obrigatorio <br />
-              </span>
-            )}
-            Teto{" "}
-          </Label>
-          <Select
-            id="teto"
-            style={{ width: "100%" }}
-            {...register("teto", { valueAsNumber: true })}
-          >
-            <option value="0">Selecione</option>
-            <option value={TipoTeto.Aglomerado}>Aglomerado</option>
-            <option value={TipoTeto.Gesso}>Gesso</option>
-            <option value={TipoTeto.Laje}>Laje</option>
-            <option value={TipoTeto.Madeira}>Madeira</option>
-            <option value={TipoTeto.Metalico}>Metalico</option>
-
-            <option value={TipoTeto.PVC}>PVC</option>
-            <option value={TipoTeto.TelhadoAperecendo}>
-              Telhado Aparecendo
-            </option>
-            <option value={TipoTeto.Outros}>Outro</option>
-          </Select>
-        </div>
-      </div>
-    </Field>
-  );
-}
-
-function DivisaoField({
-  register,
-  formState,
-}: {
-  register: ReturnType<typeof useForm>["register"];
-  formState: ReturnType<typeof useForm>["formState"];
-}) {
-  return (
-    <Field legend="Divisão">
-      <div className="flex w-full gap-5 justify-start items-start">
-        <div className="flex w-full flex-col gap-3 justify-start items-start">
-          <Label htmlFor="areaServicoInterna">
-            {formState.errors.areaServicoInterna && (
-              <span className="text-red-600">
-                {" "}
-                Campo obrigatorio <br />
-              </span>
-            )}{" "}
-            Área de Serviço Interna{" "}
-          </Label>
-          <Input
-            id="areaServicoInterna"
-            type="number"
-            defaultValue={0}
-            min={0}
-            style={{ width: "100%" }}
-            {...register("areaServicoInterna", { valueAsNumber: true })}
-          />
-        </div>
-
-        <div className="flex w-full flex-col gap-3 justify-start items-start">
-          <Label htmlFor="quarto">
-            {formState.errors.quarto && (
-              <span className="text-red-600">
-                {" "}
-                Campo obrigatorio <br />
-              </span>
-            )}
-            Quarto{" "}
-          </Label>
-          <Input
-            id="quarto"
-            type="number"
-            defaultValue={0}
-            min={0}
-            style={{ width: "100%" }}
-            {...register("quarto", { valueAsNumber: true })}
-          />
-        </div>
-        <div className="flex w-full flex-col gap-3 justify-start items-start">
-          <Label htmlFor="sala">
-            {formState.errors.sala && (
-              <span className="text-red-600">
-                {" "}
-                Campo obrigatorio <br />
-              </span>
-            )}
-            Salas{" "}
-          </Label>
-          <Input
-            id="sala"
-            type="number"
-            defaultValue={0}
-            min={0}
-            style={{ width: "100%" }}
-            {...register("sala", { valueAsNumber: true })}
-          />
-        </div>
-        <div className="flex  w-full flex-col gap-3 justify-start items-start">
-          <Label htmlFor="conzinha">
-            {formState.errors.cozinha && (
-              <span className="text-red-600">
-                {" "}
-                Campo obrigatorio <br />
-              </span>
-            )}
-            Cozinha{" "}
-          </Label>
-          <Input
-            id="cozinha"
-            type="number"
-            defaultValue={0}
-            min={0}
-            style={{ width: "100%" }}
-            {...register("cozinha", { valueAsNumber: true })}
-          />
-        </div>
-        <div className="flex w-full flex-col gap-3 justify-start items-start">
-          <Label htmlFor="sacada">
-            {formState.errors.sacada && (
-              <span className="text-red-600">
-                {" "}
-                Campo obrigatorio <br />
-              </span>
-            )}
-            Sacada / Varanda{" "}
-          </Label>
-          <Input
-            id="sacada"
-            type="number"
-            defaultValue={0}
-            min={0}
-            style={{ width: "100%" }}
-            {...register("sacada", { valueAsNumber: true })}
-          />
-        </div>
-        <div className="flex w-full flex-col gap-3 justify-start items-start">
-          <Label htmlFor="arCondicionado">
-            {formState.errors.arCondicionado && (
-              <span className="text-red-600">
-                {" "}
-                Campo obrigatorio <br />
-              </span>
-            )}
-            Ar Condicionado{" "}
-          </Label>
-          <Input
-            id="arCondicionado"
-            type="number"
-            defaultValue={0}
-            min={0}
-            style={{ width: "100%" }}
-            {...register("arCondicionado", { valueAsNumber: true })}
-          />
-        </div>
-        <div className="flex w-full flex-col gap-3 justify-start items-start">
-          <Label htmlFor="piscina">
-            {formState.errors.piscina && (
-              <span className="text-red-600">
-                {" "}
-                Campo obrigatorio <br />
-              </span>
-            )}
-            Piscina{" "}
-          </Label>
-          <Input
-            id="piscina"
-            type="number"
-            defaultValue={0}
-            min={0}
-            style={{ width: "100%" }}
-            {...register("piscina", { valueAsNumber: true })}
-          />
-        </div>
-      </div>
-      <div className="flex w-full gap-4 justify-start items-start">
-        <div className="flex w-full flex-col gap-3 justify-start items-start">
-          <Label htmlFor="areaServicoExterna">
-            {formState.errors.areaServicoExterna && (
-              <span className="text-red-600">
-                {" "}
-                Campo obrigatorio <br />
-              </span>
-            )}
-            Área de Serviço Externa{" "}
-          </Label>
-          <Input
-            id="areaServicoExterna"
-            type="number"
-            defaultValue={0}
-            min={0}
-            style={{ width: "100%" }}
-            {...register("areaServicoExterna", { valueAsNumber: true })}
-          />
-        </div>
-        <div className="flex w-full flex-col gap-3 justify-start items-start">
-          <Label htmlFor="banheiroSocial">
-            {formState.errors.banheiroSocial && (
-              <span className="text-red-600">
-                {" "}
-                Campo obrigatorio <br />
-              </span>
-            )}
-            Banheiro Social{" "}
-          </Label>
-          <Input
-            id="banheiroSocial"
-            type="number"
-            defaultValue={0}
-            min={0}
-            style={{ width: "100%" }}
-            {...register("banheiroSocial", { valueAsNumber: true })}
-          />
-        </div>
-        <div className="flex w-full flex-col gap-3 justify-start items-start">
-          <Label htmlFor="banheiroPrivado">
-            {formState.errors.banheiroPrivado && (
-              <span className="text-red-600">
-                {" "}
-                Campo obrigatorio <br />
-              </span>
-            )}
-            Banheiro Privado{" "}
-          </Label>
-          <Input
-            id="banheiroPrivado"
-            type="number"
-            defaultValue={0}
-            min={0}
-            style={{ width: "100%" }}
-            {...register("banheiroPrivado", { valueAsNumber: true })}
-          />
-        </div>
-        <div className="flex w-full flex-col gap-3 justify-start items-start">
-          <Label htmlFor="banheiroEmpregada">
-            {formState.errors.banheiroEmpregada && (
-              <span className="text-red-600">
-                {" "}
-                Campo obrigatorio <br />
-              </span>
-            )}
-            Banheiro Empregada{" "}
-          </Label>
-          <Input
-            id="banheiroEmpregada"
-            type="number"
-            defaultValue={0}
-            min={0}
-            style={{ width: "100%" }}
-            {...register("banheiroEmpregada", { valueAsNumber: true })}
-          />
-        </div>
-        <div className="flex w-full flex-col gap-3 justify-start items-start">
-          <Label htmlFor="garagemDescoberta">
-            {formState.errors.garagemDescoberta && (
-              <span className="text-red-600">
-                {" "}
-                Campo obrigatorio <br />
-              </span>
-            )}
-            Garagem Descoberta{" "}
-          </Label>
-          <Input
-            id="garagemDescoberta"
-            type="number"
-            defaultValue={0}
-            min={0}
-            style={{ width: "100%" }}
-            {...register("garagemDescoberta", { valueAsNumber: true })}
-          />
-        </div>
-        <div className="flex w-full flex-col gap-3 justify-start items-start">
-          <Label htmlFor="garagemCoberta">
-            {formState.errors.garagemCoberta && (
-              <span className="text-red-600">
-                {" "}
-                Campo obrigatorio <br />
-              </span>
-            )}
-            Garagem Coberta{" "}
-          </Label>
-          <Input
-            id="garagemCoberta"
-            type="number"
-            defaultValue={0}
-            min={0}
-            style={{ width: "100%" }}
-            {...register("garagemCoberta", { valueAsNumber: true })}
-          />
-        </div>
-        <div className="flex w-full flex-col gap-3 justify-start items-start">
-          <Label htmlFor="lavabo">
-            {formState.errors.lavabo && (
-              <span className="text-red-600">
-                {" "}
-                Campo obrigatorio <br />
-              </span>
-            )}
-            Lavabo{" "}
-          </Label>
-          <Input
-            id="lavabo"
-            type="number"
-            defaultValue={0}
-            min={0}
-            style={{ width: "100%" }}
-            {...register("lavabo", { valueAsNumber: true })}
-          />
-        </div>
-      </div>
-      <div className="">
-        <div className="flex w-full flex-col gap-3 justify-start items-start">
-          <Label htmlFor="outros">Outros </Label>
-          <textarea
-            id="outros"
-            style={{ width: "100%", resize: "both" }}
-            className="px-3  bg-zinc-950 rounded-md border-2 focus:shadow-inner border-indigo-600 shadow-indigo-600"
-            {...register("outros")}
-          />
-        </div>
-      </div>
-    </Field>
-  );
-}
-
-function InfraestruturaField({
-  register,
-  formState,
-}: {
-  register: ReturnType<typeof useForm>["register"];
-  formState: ReturnType<typeof useForm>["formState"];
-}) {
-  return (
-    <Field legend="Infraestrutura">
-      <div className="flex w-full gap-5 justify-start items-start">
-        <div className="flex w-full flex-col gap-3 justify-start items-start">
-          <Label htmlFor="redeAgua">
-            {formState.errors.redeAgua && (
-              <span className="text-red-600">
-                {" "}
-                Campo obrigatorio <br />
-              </span>
-            )}
-            Rede Agua{" "}
-          </Label>
-          <input
-            type="checkbox"
-            id="redeAgua"
-            className="w-8 h-8 rounded-md"
-            {...register("redeAgua")}
-          />
-        </div>
-        <div className="flex w-full flex-col gap-3 justify-start items-start">
-          <Label htmlFor="iluminacao">
-            {formState.errors.iluminacao && (
-              <span className="text-red-600">
-                {" "}
-                Campo obrigatorio <br />
-              </span>
-            )}
-            Iluminação Publica{" "}
-          </Label>
-          <input
-            type="checkbox"
-            id="iluminacao"
-            className="w-8 h-8 rounded-md"
-            {...register("iluminacao")}
-          />
-        </div>
-        <div className="flex w-full flex-col gap-3 justify-start items-start">
-          <Label htmlFor="pavimentacao">
-            {formState.errors.pavimentacao && (
-              <span className="text-red-600">
-                {" "}
-                Campo obrigatorio <br />
-              </span>
-            )}
-            Pavimentação{" "}
-          </Label>
-          <input
-            type="checkbox"
-            id="pavimentacao"
-            className="w-8 h-8 rounded-md"
-            {...register("pavimentacao")}
-          />
-        </div>
-        <div className="flex w-full flex-col gap-3 justify-start items-start">
-          <Label htmlFor="fossa">
-            {formState.errors.fossa && (
-              <span className="text-red-600">
-                {" "}
-                Campo obrigatorio <br />
-              </span>
-            )}
-            Fossa{" "}
-          </Label>
-          <input
-            type="checkbox"
-            id="fossa"
-            className="w-8 h-8 rounded-md"
-            {...register("fossa")}
-          />
-        </div>
-        <div className="flex w-full flex-col gap-3 justify-start items-start">
-          <Label htmlFor="sumidouro">
-            {formState.errors.sumidouro && (
-              <span className="text-red-600">
-                {" "}
-                Campo obrigatorio <br />
-              </span>
-            )}
-            Sumidouro{" "}
-          </Label>
-          <input
-            type="checkbox"
-            id="sumidouro"
-            className="w-8 h-8 rounded-md"
-            {...register("sumidouro")}
-          />
-        </div>
-      </div>
-    </Field>
-  );
-}
-
 export default function FormsComplete({
   vistoria,
+  imovel,
 }: {
   vistoria: VistoriaProps;
+  imovel: TipoImovelProps | null;
 }) {
-  console.log(vistoria);
-  const { register, handleSubmit, formState } = useForm<DemandaForm>({
-    resolver: zodResolver(getDemandaForm),
-  });
+  // console.log(vistoria);
+  const { user } = useContext(AuthContext);
+  const { token } = parseCookies();
+  // console.log(user, token)
+  const router = useRouter();
+  let formObj = undefined;
+  if (vistoria.imovel) {
+    // console.log(vistoria);
+    formObj = {
+      area:
+        (vistoria.imovel?.areaImovel
+          .filter((area) => area.tipoArea == TipoArea.Coberta)
+          .map((area) => area.valor)[0] as number) || 0,
+      areaExterna:
+        (vistoria.imovel?.areaImovel
+          .filter((area) => area.tipoArea == TipoArea.Externa)
+          .map((area) => area.valor)[0] as number) || 0,
+      terreno:
+        (vistoria.imovel?.areaImovel
+          .filter((area) => area.tipoArea == TipoArea.Terreno)
+          .map((area) => area.valor)[0] as number) || 0,
+      frente: (vistoria.imovel?.frente as number) || 0,
+      latitude: vistoria.latitude,
+      longitude: vistoria.longitude,
+      telhado: (vistoria.imovel?.telhado as number) || 0,
+      situacao: (vistoria.imovel?.situacao as TipoSituacao) || 0,
+      cotaGreide: (vistoria.imovel?.cotaGreide as CotaGreide) || 0,
+      posicaoUnidade: (vistoria.imovel?.posicaoUnidade as string) || "",
+      padrao: TipoPadrao.Normal,
+      quadroEletrico:
+        (vistoria.imovel?.acabamento?.quadroEletrico as number) || 0,
+      revestimentoCozinha: TipoRevestimento.Ceramica,
+      revestimentoBanheiro: vistoria.imovel?.acabamento?.revestimentos.filter(
+        (revestimento) => revestimento.local == TipoLocal.Banheiro
+      )[0].tipoRevestimento as TipoRevestimento,
+      revestimentoTanque: TipoRevestimento.Ceramica,
+      estadoConservacao: vistoria.imovel?.acabamento
+        ?.estadoConservacao as TipoEstadoConservacao,
+      muro: vistoria.imovel?.acabamento?.muro as TipoMuro,
+      portasExternas: vistoria.imovel?.acabamento?.portas.filter(
+        (porta) => porta.loc == TipoLoc.Externa
+      )[0].material as TipoMaterial,
+      portasInternas: vistoria.imovel?.acabamento?.portas.filter(
+        (porta) => porta.loc == TipoLoc.Interna
+      )[0].material as TipoMaterial,
+      piso: vistoria.imovel?.acabamento?.piso as TipoPiso,
+      janelas: vistoria.imovel?.acabamento?.janelas as TipoJanela,
+      teto: vistoria.imovel?.acabamento?.teto as TipoTeto,
+      areaServicoInterna: vistoria.imovel?.divisao?.areaServico
+        .filter((area) => area.tipo == TipoAreaServico.Interna)
+        .map((area) => area.qtde)[0] as number,
+      quarto: vistoria.imovel?.divisao?.quartos as number,
+      sala: vistoria.imovel?.divisao?.salas as number,
+      cozinha: vistoria.imovel?.divisao?.cozinhas as number,
+      sacada: vistoria.imovel?.divisao?.sacadaVaranda as number,
+      arCondicionado: 0,
+      piscina: vistoria.imovel?.divisao?.piscina as number,
+      areaServicoExterna:
+        (vistoria.imovel?.divisao?.areaServico
+          .filter((area) => area.tipo == TipoAreaServico.Externa)
+          .map((area) => area.qtde)[0] as number) || 0,
+      banheiroSocial:
+        (vistoria.imovel?.divisao?.banheiros
+          .filter((banheiro) => banheiro.tipoBanheiro == TipoBanheiro.Social)
+          .map((banheiro) => banheiro.qtde)[0] as number) || 0,
+      banheiroPrivado:
+        (vistoria.imovel?.divisao?.banheiros
+          .filter((banheiro) => banheiro.tipoBanheiro == TipoBanheiro.Privado)
+          .map((banheiro) => banheiro.qtde)[0] as number) || 0,
+      banheiroEmpregada:
+        (vistoria.imovel?.divisao?.banheiros
+          .filter((banheiro) => banheiro.tipoBanheiro == TipoBanheiro.Empregada)
+          .map((banheiro) => banheiro.qtde)[0] as number) || 0,
+      garagemCoberta:
+        (vistoria.imovel?.divisao?.garagems
+          .filter((garagem) => garagem.tipoGaragem == TipoGaragem.Coberta)
+          .map((garagem) => garagem.qtde)[0] as number) || 0,
+      garagemDescoberta:
+        (vistoria.imovel?.divisao?.garagems
+          .filter((garagem) => garagem.tipoGaragem == TipoGaragem.Descoberta)
+          .map((garagem) => garagem.qtde)[0] as number) || 0,
+      lavabo: vistoria.imovel?.divisao?.lavabos as number,
+      outros: "",
+      redeAgua: vistoria.imovel?.infraestrutura?.redeAguaP as boolean,
+      iluminacao: vistoria.imovel?.infraestrutura?.iluminacao as boolean,
+      pavimentacao: vistoria.imovel?.infraestrutura?.pavimentacao as boolean,
+      esgoto: vistoria.imovel?.infraestrutura?.redeEsgoto as boolean,
+      fossa: vistoria.imovel?.infraestrutura?.fossa as boolean,
+      sumidouro: vistoria.imovel?.infraestrutura?.sumidouro as boolean,
+      obs: "",
+      apartamento:
+        vistoria.endereco.tipoImovel == TipoImovel.Apartamento
+          ? (imovel as ApartamentoProps)
+          : undefined,
+      lote:
+        vistoria.endereco.tipoImovel == TipoImovel.Lote
+          ? (imovel as LoteProps)
+          : undefined,
+      obra:
+        vistoria.endereco.tipoImovel == TipoImovel.Obra
+          ? (imovel as ObraProps)
+          : undefined,
+    };
 
+    // console.log(tipoImovel)
+
+    // console.log(formObj);
+  }
+  // console.log(formObj);
+  const { register, control, handleSubmit, formState, reset } =
+    useForm<DemandaForm>({
+      resolver: zodResolver(getDemandaForm),
+      defaultValues: formObj,
+    });
+
+  // console.log(formState);
   function handleComplete(data: DemandaForm) {
-    console.log(data);
+    // console.log(data);
+    const complete: completeProps = {
+      idVistoria: vistoria.id,
+      dataVistoria: new Date(),
+      latitude: data.latitude,
+      longitude: data.longitude,
+      obs: data.obs,
+      imovel: {
+        id: 0,
+        areaImovel: [
+          { id: 0, tipoArea: TipoArea.Coberta, valor: data.area },
+          { id: 0, tipoArea: TipoArea.Externa, valor: data.areaExterna },
+          { id: 0, tipoArea: TipoArea.Terreno, valor: data.terreno },
+        ],
+        frente: data.frente,
+        acabamento: {
+          id: 0,
+          muro: data.muro,
+          pinturas: [],
+          portas: [
+            { id: 0, loc: TipoLoc.Externa, material: data.portasExternas },
+            { id: 0, loc: TipoLoc.Interna, material: data.portasInternas },
+          ],
+          piso: data.piso,
+          janelas: data.janelas,
+          bancada: TipoBancada.Grafiato,
+          quadroEletrico: data.quadroEletrico,
+          revestimentos: [
+            {
+              id: 0,
+              local: TipoLocal.Banheiro,
+              tipoRevestimento: data.revestimentoBanheiro,
+            },
+            {
+              id: 0,
+              local: TipoLocal.Cozinha,
+              tipoRevestimento: data.revestimentoCozinha,
+            },
+            {
+              id: 0,
+              local: TipoLocal.Tanque,
+              tipoRevestimento: data.revestimentoTanque,
+            },
+          ],
+          padrao: data.padrao,
+          estadoConservacao: data.estadoConservacao,
+          teto: data.teto,
+        },
+        divisao: {
+          id: 0,
+          areaServico: [
+            {
+              id: 0,
+              tipo: TipoAreaServico.Interna,
+              qtde: data.areaServicoInterna,
+            },
+            {
+              id: 0,
+              tipo: TipoAreaServico.Externa,
+              qtde: data.areaServicoExterna,
+            },
+          ],
+          quartos: data.quarto,
+          salas: data.sala,
+          cozinhas: data.cozinha,
+          banheiros: [
+            {
+              id: 0,
+              tipoBanheiro: TipoBanheiro.Social,
+              qtde: data.banheiroSocial,
+            },
+            {
+              id: 0,
+              tipoBanheiro: TipoBanheiro.Privado,
+              qtde: data.banheiroPrivado,
+            },
+            {
+              id: 0,
+              tipoBanheiro: TipoBanheiro.Empregada,
+              qtde: data.banheiroEmpregada,
+            },
+          ],
+          sacadaVaranda: data.sacada,
+          garagems: [
+            {
+              id: 0,
+              tipoGaragem: TipoGaragem.Coberta,
+              qtde: data.garagemCoberta,
+            },
+            {
+              id: 0,
+              tipoGaragem: TipoGaragem.Descoberta,
+              qtde: data.garagemDescoberta,
+            },
+          ],
+          lavabos: data.lavabo,
+          piscina: data.piscina,
+          outros: data.outros,
+        },
+        infraestrutura: {
+          id: 0,
+          redeAguaP: data.redeAgua,
+          iluminacao: data.iluminacao,
+          pavimentacao: data.pavimentacao,
+          fossa: data.fossa,
+          sumidouro: data.sumidouro,
+          redeEsgoto: data.esgoto,
+        },
+        telhado: data.telhado,
+        situacao: data.situacao,
+        cotaGreide: data.cotaGreide,
+        posicaoUnidade: data.posicaoUnidade,
+      },
+      URLImagens: "",
+    };
+    switch (vistoria.endereco.tipoImovel) {
+      case TipoImovel.Apartamento:
+        complete.apartamento = data.apartamento;
+
+        break;
+      case TipoImovel.Obra:
+        complete.obra = data.obra;
+        break;
+      case TipoImovel.Lote:
+        complete.lote = data.lote;
+        break;
+      default:
+        break;
+    }
+
+    console.log(complete);
+    toast.promise(
+      completeVistoria(user?.id as number, complete, token).then(() => {
+        queryClient.invalidateQueries({ queryKey: ["vistorias"] });
+        router.push("/demandas");
+      }),
+      {
+        loading: "Salvando...",
+        success: "Vistoria concluida com sucesso",
+        error: "Erro ao salvar vistoria",
+      }
+    );
   }
 
   return (
@@ -795,6 +488,8 @@ export default function FormsComplete({
             id="area"
             type="number"
             placeholder="0,00"
+            step="0.100"
+            style={{ width: "100%" }}
             {...register("area", { valueAsNumber: true })}
           />
         </div>
@@ -811,7 +506,8 @@ export default function FormsComplete({
           <Input
             id="areaexterna"
             type="number"
-            step="0.50"
+            step="0.10"
+            style={{ width: "100%" }}
             placeholder="0,00"
             {...register("areaExterna", { valueAsNumber: true })}
           />
@@ -829,7 +525,8 @@ export default function FormsComplete({
           <Input
             id="terreno"
             type="number"
-            step="0.50"
+            step="0.10"
+            style={{ width: "100%" }}
             placeholder="0,00"
             {...register("terreno", { valueAsNumber: true })}
           />
@@ -847,11 +544,66 @@ export default function FormsComplete({
           <Input
             id="frente"
             type="number"
-            step="0.50"
+            step="0.10"
+            style={{ width: "100%" }}
             placeholder="0,00"
             {...register("frente", { valueAsNumber: true })}
           />
         </div>
+        <div className="flex w-full flex-col gap-3 justify-start items-start">
+          <Label htmlFor="latitude">
+            {formState.errors.latitude && (
+              <span className="text-red-600">
+                {" "}
+                Campo obrigatorio <br />
+              </span>
+            )}
+            Latitude
+          </Label>
+          <Controller
+            name="latitude"
+            control={control}
+            render={({ field }) => (
+              <PatternFormat
+                format="##° ##' ##.###"
+                autoComplete="lat-national"
+                customInput={Input}
+                style={{ width: "100%" }}
+                placeholder="00° 00 00.000"
+                id="latitude"
+                {...field}
+              />
+            )}
+          />
+        </div>
+        <div className="flex w-full flex-col gap-3 justify-start items-start">
+          <Label htmlFor="latitude">
+            {formState.errors.longitude && (
+              <span className="text-red-600">
+                {" "}
+                Campo obrigatorio <br />
+              </span>
+            )}
+            Longitude
+          </Label>
+          <Controller
+            name="longitude"
+            control={control}
+            render={({ field }) => (
+              <PatternFormat
+                format="##° ##' ##.###"
+                autoComplete="lat-national"
+                customInput={Input}
+                style={{ width: "100%" }}
+                placeholder="00° 00 00.000"
+                id="longitude"
+                {...field}
+              />
+            )}
+          />
+        </div>
+      </div>
+      <div className="flex w-full gap-5 justify-start items-start">
         <div className="flex w-full flex-col gap-3 justify-start items-start">
           <Label htmlFor="telhado">
             {formState.errors.telhado && (
@@ -875,10 +627,68 @@ export default function FormsComplete({
             <option value={Telhado.outro}>Outro</option>
           </Select>
         </div>
+        <div className="flex w-full flex-col gap-3 justify-start items-start">
+          <Label htmlFor="situacao">
+            {formState.errors.situacao && (
+              <span className="text-red-600">
+                {" "}
+                Campo obrigatorio <br />
+              </span>
+            )}
+            Situação{" "}
+          </Label>
+          <Select
+            id="situacao"
+            style={{ width: "100%" }}
+            {...register("situacao", { valueAsNumber: true })}
+          >
+            <option value={0}>Selecione</option>
+            <option value={TipoSituacao.Esquina}>Esquina</option>
+            <option value={TipoSituacao.MeioDeQuadra}>Meio de Quadra</option>
+          </Select>
+        </div>
+        <div className="flex w-full flex-col gap-3 justify-start items-start">
+          <Label htmlFor="cotaGreide">
+            {formState.errors.cotaGreide && (
+              <span className="text-red-600">
+                {" "}
+                Campo obrigatorio <br />
+              </span>
+            )}
+            Cota do Greide{" "}
+          </Label>
+          <Select
+            id="cotaGreide"
+            style={{ width: "100%" }}
+            {...register("cotaGreide", { valueAsNumber: true })}
+          >
+            <option value={0}>Selecione</option>
+            <option value={CotaGreide.acima}>Acima</option>
+            <option value={CotaGreide.nivelado}>Nivelado</option>
+            <option value={CotaGreide.abaixo}>Abaixo</option>
+          </Select>
+        </div>
+        <div className="flex w-full flex-col gap-3 justify-start items-start">
+          <Label htmlFor="posicaoUnidade">
+            {formState.errors.posicaoUnidade && (
+              <span className="text-red-600">
+                {" "}
+                Campo obrigatorio <br />
+              </span>
+            )}
+            Posição da Unidade
+          </Label>
+          <Input
+            id="posicaoUnidade"
+            style={{ width: "100%" }}
+            {...register("posicaoUnidade")}
+          />
+        </div>
       </div>
       <AcabamentoField register={register} formState={formState} />
       <DivisaoField register={register} formState={formState} />
       <InfraestruturaField register={register} formState={formState} />
+
       <div className="flex w-full gap-5 justify-start items-start">
         <div className="flex w-full flex-col gap-3 justify-start items-start">
           <Label htmlFor="obs">Obs</Label>
@@ -890,6 +700,15 @@ export default function FormsComplete({
           />
         </div>
       </div>
+      {vistoria.endereco.tipoImovel == TipoImovel.Apartamento && (
+        <ApartamentoField register={register} formsState={formState} />
+      )}
+      {vistoria.endereco.tipoImovel == TipoImovel.Obra && (
+        <ObraField register={register} formState={formState} />
+      )}
+      {vistoria.endereco.tipoImovel == TipoImovel.Lote && (
+        <LoteField register={register} formState={formState} />
+      )}
       <div className="flex gap-8 w-full justify-start items-center">
         <EspecialButton style={{ width: "100%" }} type="submit">
           Salvar

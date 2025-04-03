@@ -47,6 +47,7 @@ export default async function A413Content({
     );
     Imovel = Imovel as ApartamentoProps;
   }
+  console.log(Imovel);
 
   return (
     <div className="flex flex-col px-4 h-full w-full">
@@ -382,37 +383,37 @@ export default async function A413Content({
               <h1 className="text-2xl font-bold">Bloco/Predio</h1>
               <div className="flex w-full items-center justify-between">
                 <p className="text-sm font-bold">Número de Pavimentos:</p>
-                <p>{Imovel.blocoPredio.pavimentos}</p>
+                <p>{Imovel.blocoPredio?.pavimentos}</p>
               </div>
               <div className="flex w-full items-center justify-between">
                 <p className="text-sm font-bold">Quantidade de elevadores:</p>
-                <p>{Imovel.blocoPredio.elevadores}</p>
+                <p>{Imovel.blocoPredio?.elevadores}</p>
               </div>
               <div className="flex w-full items-center justify-between">
                 <p className="text-sm font-bold">Idade estimada:</p>
-                <p>{Imovel.blocoPredio.idade}</p>
+                <p>{Imovel.blocoPredio?.idade}</p>
               </div>
               <div className="flex w-full items-center justify-between">
                 <p className="text-sm font-bold">
                   N° de apartamentos por andar:
                 </p>
-                <p>{Imovel.blocoPredio.aptosPorAndar}</p>
+                <p>{Imovel.blocoPredio?.aptosPorAndar}</p>
               </div>
               <div className="flex w-full items-center justify-between">
                 <p className="text-sm font-bold">N° de unidades no predio:</p>
-                <p>{Imovel.blocoPredio.unidadesPredio}</p>
+                <p>{Imovel.blocoPredio?.unidadesPredio}</p>
               </div>
               <div className="flex w-full items-center justify-between">
                 <p className="text-sm font-bold">N° de subsolos:</p>
-                <p>{Imovel.blocoPredio.subsolos}</p>
+                <p>{Imovel.blocoPredio?.subsolos}</p>
               </div>
               <div className="flex w-full items-center justify-between">
                 <p className="text-sm font-bold">N° de blocos:</p>
-                <p>{Imovel.blocoPredio.blocos}</p>
+                <p>{Imovel.blocoPredio?.blocos}</p>
               </div>
               <div className="flex w-full items-center justify-between">
                 <p className="text-sm font-bold">Outros:</p>
-                <p>{Imovel.blocoPredio.outros}</p>
+                <p>{Imovel.blocoPredio?.outros}</p>
               </div>
             </ColumnContent>
           </>

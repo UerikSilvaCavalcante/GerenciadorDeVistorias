@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using TeiaAPI.Data.Map;
+using TeiaAPI.enums.User;
 using TeiaAPI.Models;
 using TeiaAPI.Models.Props;
 
@@ -41,6 +42,45 @@ namespace TeiaAPI.Data
         {
             //!Mapeamento
             //?User
+            // UserModel defaultEngenheiro = new UserModel();
+            // defaultEngenheiro.Id = 1;
+            // defaultEngenheiro.Name  = "Engenheiro";
+            // defaultEngenheiro.UserName = "Engenheiro";
+            // defaultEngenheiro.Email = "turistajose1@gmail.com";
+            // defaultEngenheiro.Password = "123";
+            // defaultEngenheiro.SetPassword();
+            // defaultEngenheiro.Phone = "(62) 9 9999-9999";
+            // defaultEngenheiro.Type = TypeUserEnum.Engenheiro;
+            // defaultEngenheiro.Status = StatusEnum.Ativado;
+            // defaultEngenheiro.SetCreated();
+            // modelBuilder.Entity<UserModel>().HasData(defaultEngenheiro);
+
+            // UserModel defaultVistoriador = new UserModel();
+            // defaultVistoriador.Id = 2;
+            // defaultVistoriador.Name  = "Vistoriador";
+            // defaultVistoriador.UserName = "Vistoriador";
+            // defaultVistoriador.Email = "turistajose1@gmail.com";
+            // defaultVistoriador.Password = "321";
+            // defaultVistoriador.SetPassword();
+            // defaultVistoriador.Phone = "(62) 9 9999-9999";
+            // defaultVistoriador.Type = TypeUserEnum.Vistoriador;
+            // defaultVistoriador.Status = StatusEnum.Ativado;
+            // defaultVistoriador.SetCreated();
+            // modelBuilder.Entity<UserModel>().HasData(defaultVistoriador);
+
+            // UserModel defaultAdmin = new UserModel();
+            // defaultAdmin.Id = 3;
+            // defaultAdmin.Name  = "Admin";
+            // defaultAdmin.UserName = "Admin";
+            // defaultAdmin.Email = "uerisalcaval003@gmail.com";
+            // defaultAdmin.Password = "admin123";
+            // defaultAdmin.SetPassword();
+            // defaultAdmin.Phone = "(62) 9 9999-9999";
+            // defaultAdmin.Type = TypeUserEnum.Admin;
+            // defaultAdmin.Status = StatusEnum.Ativado;
+            // defaultAdmin.SetCreated();
+            // modelBuilder.Entity<UserModel>().HasData(defaultAdmin);
+                
             modelBuilder.ApplyConfiguration(new UserMap());
 
             //?Vistoria
