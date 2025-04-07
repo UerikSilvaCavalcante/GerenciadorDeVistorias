@@ -860,7 +860,7 @@ export function ApartamentoField({
             <Select
               id="posicao"
               style={{ width: "100%" }}
-              {...register("apartamento.posicao", { valueAsNumber: true })}
+              {...register("apartamento.posicao_", { valueAsNumber: true })}
             >
               <option value="0">Selecione</option>
               <option value={TipoPosicao.Frente}>Frente</option>

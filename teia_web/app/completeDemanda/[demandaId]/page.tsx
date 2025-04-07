@@ -47,7 +47,7 @@ export default async function DemandaId({
   }
 
   return (
-    <MainLayout id="completeDemanda">
+    <MainLayout id="demanda">
       <div className="flex justify-center items-center h-20 text-blue-900 font-bold text-2xl">
         <h1>Completar Demanda</h1>
       </div>

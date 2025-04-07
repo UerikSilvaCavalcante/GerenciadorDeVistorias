@@ -30,19 +30,19 @@ import { TipoPosicao, TipoVista } from "../enums/apartamento";
 import { RowContent } from "./UI/rowContent";
 import { ColumnContent } from "./UI/columnContent";
 
-export default async function A438Content({
+export default async function B438Content({
   vistoria,
 }: {
   vistoria: VistoriaProps;
 }) {
   let Imovel = null;
-  if (vistoria.endereco.tipoImovel == TipoImovel.Apartamento) {
-    Imovel = await getImovel(
-      vistoria.idTipoImovel as number,
-      vistoria.endereco.tipoImovel
-    );
-    Imovel = Imovel as ApartamentoProps;
-  }
+  // if (vistoria.endereco.tipoImovel == TipoImovel.Apartamento) {
+  //   Imovel = await getImovel(
+  //     vistoria.idTipoImovel as number,
+  //     vistoria.endereco.tipoImovel
+  //   );
+  //   Imovel = Imovel as ApartamentoProps;
+  // }
 
   return (
     <div className="flex flex-col px-4 h-full w-full">

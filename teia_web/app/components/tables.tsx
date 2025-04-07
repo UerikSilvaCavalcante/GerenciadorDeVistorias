@@ -105,9 +105,14 @@ export function BasicTable({
   });
 
   const dateVistorias = searchVistorias.filter((vistoria) => {
-    return de && ate
-      ? vistoria.dataAbertura >= de && vistoria.dataAbertura <= ate
-      : true;
+    if(de && ate){
+      const dateAbertura = new Date(vistoria.dataAbertura);
+      const startDate = new Date(de);
+      const endDate = new Date(ate);
+      return dateAbertura >= startDate && dateAbertura <= endDate;
+    }else {
+      return vistoria;
+    }
   });
 
   const [rotate, setRotate] = useState(false);

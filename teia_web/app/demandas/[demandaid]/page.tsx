@@ -1,5 +1,4 @@
-"use server";
-
+"use server"
 import getVistoriaById from "@/app/data/getVistoriaById";
 import goBack from "../../assets/goBack.svg";
 import Image from "next/image";
@@ -16,6 +15,8 @@ import { parseCookies } from "nookies";
 import { cookies } from "next/headers";
 import { AuthContext } from "@/app/actions/valid";
 import { Type } from "@/app/enums/user";
+import { fromJSON } from "postcss";
+import ButtonDownload from "@/app/components/buttoDownload";
 
 // export const  dynamicParams = false;
 
@@ -48,7 +49,8 @@ export default async function DemandaId({
     token: token as string,
   };
   const vistoria = await getVistoriaById(requestProps);
-  console.log(vistoria);
+  // console.log(vistoria);
+
   if (vistoria) {
     return (
       <div className="flex flex-col pb-3 h-full w-full ">
@@ -63,6 +65,9 @@ export default async function DemandaId({
               Vistoria de {TipoImovel[vistoria.endereco.tipoImovel]}
             </h1>
           </div>
+        </div>
+        <div className="flex items-center justify-center w-[35px] h-[35px] bg-gradient-to-r from-indigo-800 to-blue-950 rounded-full absolute top-14 right-8 p-2">
+          <ButtonDownload folderName={vistoria.numOs.toString()} />
         </div>
         <div className="flex flex-col px-4 h-full w-full">
           <RowContent>

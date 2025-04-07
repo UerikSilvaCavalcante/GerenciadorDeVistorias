@@ -28,11 +28,12 @@ type responseProps = {
 }
 
 export default async function postNewVistoria(id:number ,form: FormPorps, token:string):Promise<responseProps> {
+
   const engenheiro: EngenheiroProps = {
     idEngenheiro: id,
     idVistoriador: parseInt(form.idVistoriador),
     urlImagens: "",
-    urlMatricula: "",
+    urlMatricula: `folder_${form.numOs}/doc_${form.numOs}`,
     numOS: parseInt(form.numOs),
     dataAbertura: new Date(form.dataAbertura),
     tipo: parseInt(form.tipo) as Tipo,

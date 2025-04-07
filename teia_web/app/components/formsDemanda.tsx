@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useContext, useEffect, useState } from "react";
+import React, { ChangeEvent, useContext, useEffect, useState } from "react";
 import { Input, Select } from "../components/UI/input";
 import {
   EspecialButton,
@@ -73,37 +73,69 @@ export default function FormsDemanda({
   token: string;
 }) {
   const [errorMenssage, setErrorMenssage] = useState<string>("");
+  const [documentFile, setDocument] = useState<File | null>(null);
   const router = useRouter();
   const { isOpen, open, close } = handleNotification();
   const { user } = useContext(AuthContext);
-  console.log(user);
+
   const { register, control, handleSubmit, formState } = useForm<VistoriaForm>({
     resolver: zodResolver(getVistoriaForm),
   });
+  const handlePDFUpload = async (folderName: string) => {
+    const formData = new FormData();
+    formData.append("file", documentFile as File);
+    formData.append("folderName", folderName);
+    const res = await fetch("/api/upload_pdf", {
+      method: "POST",
+      body: formData,
+    });
+
+    const result = await res.json();
+    console.log(result);
+  };
   async function handleSubmitForm(dataForm: VistoriaForm) {
     try {
       console.log(dataForm);
       let res;
-      if (vistoria) {
-        res = putVistoria(user?.id as number, dataForm, vistoria.id, token);
-      } else {
-        res = postNewVistoria(user?.id as number, dataForm, token);
-      }
-      toast.promise(
-        res.then(() => true),
-        {
-          loading: "Salvando...",
-          success: `Vistoria ${dataForm.numOs} salva com sucesso`,
-          error: "Erro ao salvar Vistoria",
-        }
-      );
 
-      const valid = await res;
-      if (valid) {
-        queryClient.invalidateQueries({ queryKey: ["vistorias"] });
-        router.push("/demandas");
+      if (vistoria) {
+        toast.promise(
+          putVistoria(user?.id as number, dataForm, vistoria.id, token).then(
+            (res) => {
+              handlePDFUpload(dataForm.numOs);
+              const valid = res;
+              if (valid) {
+                queryClient.invalidateQueries({ queryKey: ["vistorias"] });
+                router.push("/demandas");
+              } else {
+                setErrorMenssage(`Erro ao salvar ${res} `);
+              }
+            }
+          ),
+          {
+            loading: "Salvando...",
+            success: `Vistoria ${dataForm.numOs} salva com sucesso`,
+            error: "Erro ao salvar Vistoria",
+          }
+        );
       } else {
-        setErrorMenssage(`Erro ao salvar ${res} `);
+        toast.promise(
+          postNewVistoria(user?.id as number, dataForm, token).then((res) => {
+            handlePDFUpload(dataForm.numOs);
+            const valid = res;
+            if (valid) {
+              queryClient.invalidateQueries({ queryKey: ["vistorias"] });
+              router.push("/demandas");
+            } else {
+              setErrorMenssage(`Erro ao salvar ${res} `);
+            }
+          }),
+          {
+            loading: "Salvando...",
+            success: `Vistoria ${dataForm.numOs} salva com sucesso`,
+            error: "Erro ao salvar Vistoria",
+          }
+        );
       }
     } catch (err) {
       setErrorMenssage(`Erro ao salvar ${err} `);
@@ -125,6 +157,9 @@ export default function FormsDemanda({
     };
     fetchData();
   }, []);
+  useEffect(() => {
+    console.log(documentFile);
+  }, [documentFile]);
 
   const [search, setSearch] = useState<string>("");
   const handleSetSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -145,7 +180,6 @@ export default function FormsDemanda({
   return (
     <form
       className="flex flex-col gap-7 w-full justify-start items-start"
-      onSubmit={handleSubmit(handleSubmitForm)}
       action=""
     >
       <div className="flex gap-8 w-full justify-start items-center">
@@ -499,6 +533,7 @@ export default function FormsDemanda({
       <div className="flex gap-8 w-full justify-start items-center">
         <button
           className="flex gap-1 items-center justify-center bg-blue-600 text-nowrap text-white px-4 py-2 rounded-md"
+          type="button"
           onClick={() => {
             const file = document.getElementById("fileInput");
             if (file) file.click();
@@ -510,9 +545,13 @@ export default function FormsDemanda({
         <input
           type="file"
           id="fileInput"
-          onChange={() => {
-            const file = document.getElementById("fileInput");
+          onChange={(e: ChangeEvent<HTMLInputElement>) => {
+            if (!e.target.files) return;
+            const file = document.getElementById(
+              "fileInput"
+            ) as HTMLInputElement;
             const fileInputValue = document.getElementById("fileInputValue");
+            setDocument(e.target.files[0]);
             if (file && fileInputValue) {
               let fileText = (file as HTMLInputElement).value.split("\\");
               (fileInputValue as HTMLInputElement).value =
@@ -536,7 +575,11 @@ export default function FormsDemanda({
         )}
       </div>
       <div className="flex gap-8 w-full justify-start items-center">
-        <EspecialButton style={{ width: "100%" }} type="submit">
+        <EspecialButton
+          style={{ width: "100%" }}
+          type="submit"
+          onClick={handleSubmit(handleSubmitForm)}
+        >
           Salvar
         </EspecialButton>
         <Link href="/demandas" className="w-full">
