@@ -1,5 +1,5 @@
 "use client";
-import fileIcon from "../assets/file-zip.svg";
+import fileIcon from "../assets/file-download.svg";
 import Image from "next/image";
 
 export default function ButtonDownload({ folderName }: { folderName: string }) {
@@ -19,14 +19,14 @@ export default function ButtonDownload({ folderName }: { folderName: string }) {
   };
 
   return (
-    <div className="group relative  ">
+    <div className="group relative flex justify-center items-center  ">
       <button onClick={handleDownloadZip}>
         <Image src={fileIcon} alt="Voltar" width={25} height={25} />
       </button>
       <span
         className="absolute -top-14 left-[50%] -translate-x-[50%] 
-                z-20 origin-left scale-0 px-3 rounded-lg border 
-              bg-blue-900 py-2 text-sm font-bold
+                z-20 origin-left scale-0 px-3 rounded-lg text-nowrap 
+              bg-blue-900 py-2 text-sm font-bold text-center
                 shadow-md transition-all duration-300 ease-in-out 
                 group-hover:scale-100"
       >

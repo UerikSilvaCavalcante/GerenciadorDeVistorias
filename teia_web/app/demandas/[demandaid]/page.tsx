@@ -66,7 +66,7 @@ export default async function DemandaId({
             </h1>
           </div>
         </div>
-        <div className="flex items-center justify-center w-[35px] h-[35px] bg-gradient-to-r from-indigo-800 to-blue-950 rounded-full absolute top-14 right-8 p-2">
+        <div className="flex items-center justify-center w-[35px] h-[35px] bg-gradient-to-r from-indigo-800 to-blue-950 rounded-full absolute top-14 right-14 p-2">
           <ButtonDownload folderName={vistoria.numOs.toString()} />
         </div>
         <div className="flex flex-col px-4 h-full w-full">

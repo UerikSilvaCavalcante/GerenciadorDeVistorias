@@ -356,7 +356,7 @@ export function BasicTable({
                         >
                           <Image
                             src={trash}
-                            alt="Visualizar"
+                            alt="Deletar"
                             width={10}
                             height={10}
                           />

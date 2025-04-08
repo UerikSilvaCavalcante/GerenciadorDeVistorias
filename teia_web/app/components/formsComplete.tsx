@@ -45,6 +45,9 @@ import {
   TipoLote,
 } from "../enums/lote";
 
+import plus from "../assets/plus.svg";
+import trash from "../assets/trash.svg";
+
 import {
   AcabamentoField,
   DivisaoField,
@@ -57,13 +60,15 @@ import completeVistoria from "../data/completeVistoria";
 import { toast } from "sonner";
 import { AuthContext } from "../actions/valid";
 import { parseCookies } from "nookies";
-import { useContext, useEffect, useState } from "react";
+import { ChangeEvent, useContext, useEffect, useState } from "react";
 import { userAgent } from "next/server";
 import { useRouter } from "next/navigation";
 import { queryClient } from "../helper/useQuery";
 import getImovel from "../data/getImovel";
 import { useQuery } from "@tanstack/react-query";
 import { TipoImovelProps } from "../@types/tipoImove";
+import Image from "next/image";
+import { uploadToCloudinary } from "../data/upload";
 
 interface completeProps {
   idVistoria: number;
@@ -197,6 +202,11 @@ const getDemandaForm = z.object({
     .optional(),
 });
 
+type UploadFile = {
+  file: File;
+  preview: string;
+};
+
 type DemandaForm = z.infer<typeof getDemandaForm>;
 
 export default function FormsComplete({
@@ -206,6 +216,51 @@ export default function FormsComplete({
   vistoria: VistoriaProps;
   imovel: TipoImovelProps | null;
 }) {
+  const [files, setFiles] = useState<UploadFile[]>([]);
+  const [revokedPreviews, setRevokedPreviews] = useState<string[]>([]);
+
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files) return;
+
+    const newFiles: UploadFile[] = Array.from(e.target.files).map((file) => ({
+      file,
+      preview: URL.createObjectURL(file),
+    }));
+
+    setFiles((prev) => [...prev, ...newFiles]);
+
+    // limpa o input pra poder selecionar o mesmo arquivo de novo
+    e.target.value = "";
+  };
+
+  const handleRemove = (index: number) => {
+    const removed = files[index];
+    setRevokedPreviews((prev) => [...prev, removed.preview]);
+
+    setFiles((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  useEffect(() => {
+    if (revokedPreviews.length > 0) {
+      revokedPreviews.forEach((url) => {
+        URL.revokeObjectURL(url);
+      });
+      setRevokedPreviews([]); // Limpa após revogar
+    }
+  }, [revokedPreviews]);
+
+  const handleUploadAll = async () => {
+    try {
+      const results = await Promise.all(
+        files.map((file, index) => {
+          return uploadToCloudinary(file.file, index);
+        })
+      );
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   // console.log(vistoria);
   const { user } = useContext(AuthContext);
   const { token } = parseCookies();
@@ -436,7 +491,7 @@ export default function FormsComplete({
         cotaGreide: data.cotaGreide,
         posicaoUnidade: data.posicaoUnidade,
       },
-      URLImagens: "",
+      URLImagens: `folder_${vistoria.numOs}/fotos`,
     };
     switch (vistoria.endereco.tipoImovel) {
       case TipoImovel.Apartamento:
@@ -456,6 +511,7 @@ export default function FormsComplete({
     console.log(complete);
     toast.promise(
       completeVistoria(user?.id as number, complete, token).then(() => {
+        handleUploadAll();
         queryClient.invalidateQueries({ queryKey: ["vistorias"] });
         router.push("/demandas");
       }),
@@ -471,7 +527,6 @@ export default function FormsComplete({
     <form
       className="flex flex-col gap-3 w-full justify-center items-center "
       action=""
-      onSubmit={handleSubmit(handleComplete)}
     >
       <div className="flex w-full gap-5 justify-start items-start">
         <div className="flex w-full flex-col gap-3 justify-start items-start">
@@ -709,8 +764,63 @@ export default function FormsComplete({
       {vistoria.endereco.tipoImovel == TipoImovel.Lote && (
         <LoteField register={register} formState={formState} />
       )}
+      <Field legend="Imagens">
+        <div className="flex w-full gap-5 justify-center items-center text-blue-700 font-bold">
+          Imagens Adicionadas
+        </div>
+        <div className="flex w-full flex-wrap p-4 gap-5 items-center justify-center ">
+          {files.map((item, index) => (
+            <div
+              key={index}
+              className="flex flex-col rounded-sm justify-center items-center gap-2 bg-zinc-950 p-2"
+            >
+              <span>{index + 1}</span>
+              <img
+                src={item.preview}
+                alt={`Preview ${index}`}
+                width={150}
+                height={150}
+                style={{ objectFit: "cover", borderRadius: "8px" }}
+              />
+
+              <button
+                className="cursor-pointer flex justify-center items-center bg-blue-600 w-6 h-6 rounded-md hover:bg-red-600 transition-colors duration-300"
+                type="button"
+                onClick={() => handleRemove(index)}
+              >
+                <Image src={trash} alt="Deletar" width={10} height={10} />
+              </button>
+            </div>
+          ))}
+        </div>
+        <div className="flex w-full gap-5 justify-end items-end">
+          <button
+            className="flex gap-1 items-center justify-center bg-blue-600 text-nowrap text-white px-4 py-2 rounded-md"
+            type="button"
+            onClick={() => {
+              const file = document.getElementById("fileInput");
+              if (file) file.click();
+            }}
+          >
+            <Image src={plus} alt="Adicionar" />
+            Adicionar imagens
+          </button>
+          <input
+            type="file"
+            id="fileInput"
+            multiple
+            className="hidden"
+            accept="image/*"
+            onChange={handleFileChange}
+          />
+        </div>
+      </Field>
       <div className="flex gap-8 w-full justify-start items-center">
-        <EspecialButton style={{ width: "100%" }} type="submit">
+        <EspecialButton
+          style={{ width: "100%" }}
+          type="submit"
+          onClick={handleSubmit(handleComplete)}
+        >
           Salvar
         </EspecialButton>
         <Link href="/demandas" className="w-full">
