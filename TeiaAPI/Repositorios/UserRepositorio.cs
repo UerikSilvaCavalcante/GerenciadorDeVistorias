@@ -34,6 +34,7 @@ namespace TeiaAPI.Repositorios
             UserModel newUser = user;
             newUser.SetCreated();
             newUser.SetPassword();
+            newUser.Status = StatusEnum.Ativado;
             await _context.Users.AddAsync(newUser);
             await _context.SaveChangesAsync();
             return newUser;

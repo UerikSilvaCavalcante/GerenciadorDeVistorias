@@ -34,13 +34,11 @@ export default function Demandas() {
     const deInput = document.getElementById("de") as HTMLInputElement;
     const paraInput = document.getElementById("ate") as HTMLInputElement;
     if (deInput && paraInput) {
-      console.log(deInput.value);
-      console.log(paraInput.value);
+      
       setDe(deInput.value ? new Date(deInput.value) : "");
       setAte(paraInput.value ? new Date(paraInput.value) : "");
     }
     if (inputElement) {
-      console.log(inputElement.value);
       setSearch(inputElement.value ? parseInt(inputElement.value) : "");
     }
   };
@@ -67,7 +65,7 @@ export default function Demandas() {
   };
 
   return (
-    <MainLayout id="demandas">
+    <MainLayout id="demandas" title="Demandas">
       <div className="flex items-center justify-around w-full gap-3">
         <Input type="text" placeholder="N° OS" width="w-full" id="numOs" />
         <select

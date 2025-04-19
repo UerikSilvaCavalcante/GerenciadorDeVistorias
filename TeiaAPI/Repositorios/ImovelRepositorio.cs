@@ -88,12 +88,13 @@ namespace TeiaAPI.Repositorios
             imovelAtualizado.AreaImovel = imovel.AreaImovel;
             imovelAtualizado.Frente = imovel.Frente;
             imovelAtualizado.Telhado = imovel.Telhado;
+            imovelAtualizado.ValorImovel = imovel.ValorImovel;
+            imovelAtualizado.Patologia = imovel.Patologia;
+            imovelAtualizado.IdadeImovel = imovel.IdadeImovel;
+        
             AcabamentoModel acabamentoAtualizado = await _acabamentoRepositorio.Update((int)imovelAtualizado.IdAcabamento, imovel.Acabamento);//, vistoriador.acabamentoProps);
             DivisaoModel divisaoAtualizada = await _divisaoRepositorio.Update((int)imovelAtualizado.IdDivisao, imovel.Divisao);//, vistoriador.divisaoProps);
             InfraestruturaModel infraestruturaAtualizada = await _infraestruturaRepositorio.Update((int)imovelAtualizado.IdInfraestrura, imovel.Infraestrutura);
-            imovelAtualizado.IdAcabamento = acabamentoAtualizado.Id;
-            imovelAtualizado.IdDivisao = divisaoAtualizada.Id;
-            imovelAtualizado.IdInfraestrura = infraestruturaAtualizada.Id;
             _context.Imoveis.Update(imovelAtualizado);
             await _context.SaveChangesAsync();
             return imovelAtualizado;

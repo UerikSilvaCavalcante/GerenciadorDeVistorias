@@ -1,22 +1,8 @@
 "server client";
 
 import { CotaGreide, Telhado, TipoArea } from "@/app/enums/imovel";
-import { TipoSituacao } from "@/app/enums/lote";
-import {
-  Estilo,
-  TipoBancada,
-  TipoEstadoConservacao,
-  TipoJanela,
-  TipoLoc,
-  TipoLocal,
-  TipoMaterial,
-  TipoMuro,
-  TipoPadrao,
-  tipoPintura,
-  TipoPiso,
-  TipoRevestimento,
-  TipoTeto,
-} from "@/app/enums/acabamento";
+import * as TipoLote from "@/app/enums/lote";
+
 import {
   TipoAreaServico,
   TipoBanheiro,
@@ -29,390 +15,215 @@ import getImovel from "../data/getImovel";
 import { TipoPosicao, TipoVista } from "../enums/apartamento";
 import { RowContent } from "./UI/rowContent";
 import { ColumnContent } from "./UI/columnContent";
+import { LoteProps } from "../@types/loteTypes";
 
 export default async function B438Content({
   vistoria,
+  token,
 }: {
   vistoria: VistoriaProps;
+  token: string;
 }) {
   let Imovel = null;
-  // if (vistoria.endereco.tipoImovel == TipoImovel.Apartamento) {
-  //   Imovel = await getImovel(
-  //     vistoria.idTipoImovel as number,
-  //     vistoria.endereco.tipoImovel
-  //   );
-  //   Imovel = Imovel as ApartamentoProps;
-  // }
-
+  console.log(vistoria);
+  if (vistoria.endereco.tipoImovel == TipoImovel.Lote) {
+    Imovel = await getImovel(
+      vistoria.idTipoImovel as number,
+      vistoria.endereco.tipoImovel,
+      token
+    );
+    Imovel = Imovel as LoteProps;
+  }
+  console.log(Imovel);
   return (
     <div className="flex flex-col px-4 h-full w-full">
       <RowContent>
-        <ColumnContent>
-          <div className="flex gap-1 items-center justify-center">
-            <h1>Patologia</h1>
-          </div>
-        </ColumnContent>
-        <ColumnContent>
-          <div className="flex flex-col gap-1 items-center justify-center">
-            <h2 className="text-lg font-bold">Situacao:</h2>
+      <ColumnContent>
+          <div className="flex flex-col gap-1 items-start justify-start">
+            <h2 className="text-lg font-bold">Area do Terreno:</h2>
             <p className="text-sm">
-              {TipoSituacao[vistoria.imovel?.situacao as number]}
-            </p>
-          </div>
-        </ColumnContent>
-        <ColumnContent>
-          <div className="flex flex-col gap-1 items-center justify-center">
-            <h2 className="text-lg font-bold">Cota - Greide:</h2>
-            <p className="text-sm">
-              {CotaGreide[vistoria.imovel?.cotaGreide as number]}
-            </p>
-          </div>
-        </ColumnContent>
-        <ColumnContent>
-          <div className="flex flex-col gap-1 items-center justify-center">
-            <h2 className="text-lg font-bold">Posição de Unidade:</h2>
-            <p className="text-sm">{vistoria.imovel?.posicaoUnidade}</p>
-          </div>
-        </ColumnContent>
-        <ColumnContent>
-          <div className="flex flex-col gap-1 items-center justify-center">
-            <h2 className="text-lg font-bold">Telhado:</h2>
-            <p className="text-sm">
-              {Telhado[vistoria.imovel?.telhado as number]}
+              {Imovel?.areaTerreno} m²
             </p>
           </div>
         </ColumnContent>
         <ColumnContent>
           <div className="flex flex-col gap-1 items-start justify-start">
-            <h2 className="text-lg font-bold">Muro:</h2>
+            <h2 className="text-lg font-bold">Tipo de Terreno:</h2>
             <p className="text-sm">
-              {TipoMuro[vistoria.imovel?.acabamento?.muro as number]}
+              {TipoLote.TipoLote[Imovel?.tipo as number]}
             </p>
+          </div>
+        </ColumnContent>
+        <ColumnContent>
+          <div className="flex flex-col gap-1 items-start justify-start">
+            <h2 className="text-lg font-bold">Formato do Terreno:</h2>
+            <p className="text-sm">
+              {TipoLote.TipoFormato[Imovel?.formato as number]}
+            </p>
+          </div>
+        </ColumnContent>
+        <ColumnContent>
+          <div className="flex flex-col gap-1 items-start justify-start">
+            <h2 className="text-lg font-bold">Situação:</h2>
+            <p className="text-sm">
+              {TipoLote.TipoSituacao[Imovel?.situacao as number]}
+            </p>
+          </div>
+        </ColumnContent>
+        <ColumnContent>
+          <div className="flex flex-col gap-1 items-start justify-start">
+            <h2 className="text-lg font-bold">Topografia:</h2>
+            <p className="text-sm">
+              {TipoLote.TipoTopografia[Imovel?.topografia as number]}
+            </p>
+          </div>
+        </ColumnContent>
+        <ColumnContent>
+          <div className="flex flex-col gap-1 items-start justify-start">
+            <h2 className="text-lg font-bold">Fechamento do Terreno:</h2>
+            <p className="text-sm">{Imovel?.fechamentoTerreno}</p>
           </div>
         </ColumnContent>
 
         <ColumnContent>
           <div className="flex flex-col gap-1 items-start justify-start">
-            <h2 className="text-lg font-bold">Quadro Elétrico:</h2>
-            <p className="text-sm">
-              {vistoria.imovel?.acabamento?.quadroEletrico}+ Disjuntores
-            </p>
+            <h2 className="text-lg font-bold">Localização da Unidade:</h2>
+            <p className="text-sm">{Imovel?.localizacaoUnidade}</p>
           </div>
         </ColumnContent>
       </RowContent>
       <RowContent>
+     
         <ColumnContent>
           <div className="flex flex-col gap-1 items-start justify-start">
-            <h2 className="text-lg font-bold">Teto da Unidade:</h2>
+            <h2 className="text-lg font-bold">Frente :</h2>
             <p className="text-sm">
-              {TipoTeto[vistoria.imovel?.acabamento?.teto as number]}
+              {Imovel?.frente} m²
             </p>
           </div>
         </ColumnContent>
         <ColumnContent>
           <div className="flex flex-col gap-1 items-start justify-start">
-            <h2 className="text-lg font-bold">Piso:</h2>
+            <h2 className="text-lg font-bold">Uso Predominante:</h2>
             <p className="text-sm">
-              {TipoPiso[vistoria.imovel?.acabamento?.piso as number]}
+              {TipoLote.TipoUsoPredominante[Imovel?.usoPredio as number]}
             </p>
           </div>
         </ColumnContent>
         <ColumnContent>
           <div className="flex flex-col gap-1 items-start justify-start">
-            <h2 className="text-lg font-bold">Janelas:</h2>
+            <h2 className="text-lg font-bold">Padrão Usual de Acabamento:</h2>
             <p className="text-sm">
-              {TipoJanela[vistoria.imovel?.acabamento?.janelas as number]}
+              {TipoLote.TipoAcabamento[Imovel?.acabamento as number]}
             </p>
           </div>
         </ColumnContent>
         <ColumnContent>
           <div className="flex flex-col gap-1 items-start justify-start">
-            <h2 className="text-lg font-bold">Bancada:</h2>
-            <p className="text-sm">
-              {TipoBancada[vistoria.imovel?.acabamento?.bancada as number]}
-            </p>
+            <h2 className="text-lg font-bold">Avaliação da Localização:</h2>
+            <p className="text-sm">Boa</p>
           </div>
         </ColumnContent>
         <ColumnContent>
           <div className="flex flex-col gap-1 items-start justify-start">
-            <h2 className="text-lg font-bold">Padrão de Acabamento:</h2>
-            <p className="text-sm">
-              {TipoPadrao[vistoria.imovel?.acabamento?.padrao as number]}
-            </p>
+            <h2 className="text-lg font-bold">Densidade de Ocupação:</h2>
+            <p className="text-sm">{Imovel?.densidade}</p>
           </div>
         </ColumnContent>
         <ColumnContent>
           <div className="flex flex-col gap-1 items-start justify-start">
-            <h2 className="text-lg font-bold">Estado de Conservação:</h2>
+            <h2 className="text-lg font-bold">Transporte Coletivo:</h2>
             <p className="text-sm">
-              {
-                TipoEstadoConservacao[
-                  vistoria.imovel?.acabamento?.estadoConservacao as number
-                ]
-              }
+              {Imovel?.transportePublico ? "Satisfatorio" : "Não disponivel"}
             </p>
           </div>
         </ColumnContent>
       </RowContent>
-      <RowContent>
-        <ColumnContent>
-          <div className="flex flex-col w-full gap-1 items-start justify-start">
-            <h2 className="text-lg font-bold">Pinturas:</h2>
-            {vistoria.imovel?.acabamento?.pinturas.map((pintura, index) => (
-              <div
-                key={index}
-                className="flex gap-1 w-full items-start justify-between"
-              >
-                <p className="text-sm font-bold">
-                  {tipoPintura[pintura.tipoPintura]}:
-                </p>
-                <p>{Estilo[pintura.estilo]}</p>
-              </div>
-            ))}
-          </div>
-        </ColumnContent>
-        <ColumnContent>
-          <div className="flex flex-col w-full gap-1 items-start justify-start">
-            <h2 className="text-lg font-bold">Portas:</h2>
-            {vistoria.imovel?.acabamento?.portas.map((porta, index) => (
-              <div
-                key={index}
-                className="flex gap-1 w-full items-start justify-between"
-              >
-                <p className="text-sm font-bold">{TipoLoc[porta.loc]}:</p>
-                <p>{TipoMaterial[porta.material]}</p>
-              </div>
-            ))}
-          </div>
-        </ColumnContent>
-        <ColumnContent>
-          <div className="flex flex-col gap-1 items-start justify-start">
-            <h2 className="text-lg font-bold">Infraestrutura:</h2>
-            <p>
-              {vistoria.imovel?.infraestrutura?.redeAguaP
-                ? "Rede de Agua Potável"
-                : ""}
-            </p>
-            <p>
-              {vistoria.imovel?.infraestrutura?.redeEsgoto
-                ? "Rede de Esgoto"
-                : ""}
-            </p>
-            <p>
-              {vistoria.imovel?.infraestrutura?.iluminacao
-                ? "Iluminação Publica"
-                : ""}
-            </p>
-            <p>
-              {vistoria.imovel?.infraestrutura?.pavimentacao
-                ? "Pavimentação"
-                : ""}
-            </p>
-            <p>
-              {vistoria.imovel?.infraestrutura?.sumidouro ? "Sumidouro" : ""}
-            </p>
-            <p>{vistoria.imovel?.infraestrutura?.fossa ? "Fossa" : ""}</p>
-          </div>
-        </ColumnContent>
-        <ColumnContent>
-          <div className="flex flex-col w-full gap-1 items-start justify-start">
-            <h2 className="text-lg font-bold">Revestimentos:</h2>
-            {vistoria.imovel?.acabamento?.revestimentos.map(
-              (revestimento, index) => (
-                <div
-                  key={index}
-                  className="flex gap-1 w-full items-start justify-between"
-                >
-                  <p className="text-sm font-bold">
-                    {TipoLocal[revestimento.local]}:
-                  </p>
-                  <p>{TipoRevestimento[revestimento.tipoRevestimento]}</p>
-                </div>
-              )
-            )}
-          </div>
-        </ColumnContent>
-      </RowContent>
-      <RowContent>
-        <ColumnContent>
-          <div className="flex flex-col w-full gap-1 items-start justify-start">
-            <h2 className="text-lg font-bold">Divisão interna:</h2>
-            <div className="flex w-full items-center justify-between">
-              <p className="text-sm font-bold">Quartos:</p>
-              <p>{vistoria.imovel?.divisao?.quartos}</p>
-            </div>
-            <div className="flex w-full items-center justify-between">
-              <p className="text-sm font-bold">Banheiro Social:</p>
-              <p>
-                {vistoria.imovel?.divisao?.banheiros
-                  .filter(
-                    (banheiro) => banheiro.tipoBanheiro == TipoBanheiro.Social
-                  )
-                  .map((banheiro) => banheiro.qtde)}
-              </p>
-            </div>
-            <div className="flex w-full items-center justify-between">
-              <p className="text-sm font-bold">Banheiro privativo:</p>
-              <p>
-                {vistoria.imovel?.divisao?.banheiros
-                  .filter(
-                    (banheiro) => banheiro.tipoBanheiro == TipoBanheiro.Privado
-                  )
-                  .map((banheiro) => banheiro.qtde)}
-              </p>
-            </div>
-            <div className="flex w-full items-center justify-between">
-              <p className="text-sm font-bold">Lavabos:</p>
-              <p>{vistoria.imovel?.divisao?.lavabos}</p>
-            </div>
-            <div className="flex w-full items-center justify-between">
-              <p className="text-sm font-bold">Varanda - Sacada:</p>
-              <p>{vistoria.imovel?.divisao?.sacadaVaranda}</p>
-            </div>
-            <div className="flex w-full items-center justify-between">
-              <p className="text-sm font-bold">Cozinha:</p>
-              <p>{vistoria.imovel?.divisao?.cozinhas}</p>
-            </div>
-            <div className="flex w-full items-center justify-between">
-              <p className="text-sm font-bold">Sala:</p>
-              <p>{vistoria.imovel?.divisao?.salas}</p>
-            </div>
 
-            <div className="flex w-full items-center justify-between">
-              <p className="text-sm font-bold">Garagem Coberta:</p>
-              <p>
-                {vistoria.imovel?.divisao?.garagems &&
-                vistoria.imovel.divisao.garagems.filter(
-                  (garagem) => garagem.tipoGaragem == TipoGaragem.Coberta
-                ).length <= 0
-                  ? 0
-                  : vistoria.imovel?.divisao?.garagems
-                      .filter(
-                        (garagem) => garagem.tipoGaragem == TipoGaragem.Coberta
-                      )
-                      .map((garagem) => garagem.qtde)}
-              </p>
-            </div>
-            <div className="flex w-full items-center justify-between">
-              <p className="text-sm font-bold">Garagem Descoberta:</p>
-              <p>
-                {vistoria.imovel?.divisao?.garagems &&
-                vistoria.imovel.divisao.garagems.filter(
-                  (garagem) => garagem.tipoGaragem == TipoGaragem.Descoberta
-                ).length <= 0
-                  ? 0
-                  : vistoria.imovel?.divisao?.garagems
-                      .filter(
-                        (garagem) =>
-                          garagem.tipoGaragem == TipoGaragem.Descoberta
-                      )
-                      .map((garagem) => garagem.qtde)}
-              </p>
-            </div>
-            <div className="flex w-full items-center justify-between">
-              <p className="text-sm font-bold">Área de Serviço Descoberta:</p>
-              <p>
-                {vistoria.imovel?.divisao?.areaServico &&
-                vistoria.imovel.divisao.areaServico.filter(
-                  (area) => area.tipo == TipoAreaServico.Externa
-                ).length <= 0
-                  ? 0
-                  : vistoria.imovel?.divisao?.areaServico
-                      .filter((area) => area.tipo == TipoAreaServico.Externa)
-                      .map((area) => area.qtde)}
-              </p>
-            </div>
-            <div className="flex w-full items-center justify-between">
-              <p className="text-sm font-bold">Área de Serviço Coberta:</p>
-              <p>
-                {vistoria.imovel?.divisao?.areaServico &&
-                vistoria.imovel.divisao.areaServico.filter(
-                  (area) => area.tipo == TipoAreaServico.Externa
-                ).length <= 0
-                  ? 0
-                  : vistoria.imovel?.divisao?.areaServico
-                      .filter((area) => area.tipo == TipoAreaServico.Externa)
-                      .map((area) => area.qtde)}
-              </p>
-            </div>
-            <div className="flex w-full items-center justify-between">
-              <p className="text-sm font-bold">Piscina:</p>
-              <p>{vistoria.imovel?.divisao?.piscina}</p>
-            </div>
-            <div className="flex w-full items-center justify-between">
-              <p className="text-sm font-bold">Outros:</p>
-              <p>{vistoria.imovel?.divisao?.outros}</p>
-            </div>
+      <RowContent>
+        <ColumnContent>
+          <h1 className="text-lg font-bold text-zin-900">
+            Soluções de infra-estrutura disponíveis junto à unidade, serviços e
+            equipamentos comunitários no entorno:
+          </h1>
+        </ColumnContent>
+      </RowContent>
+      <RowContent>
+        <ColumnContent>
+          <div className="flex flex-col w-full gap-1 items-start justify-start">
+            <p className="text-sm">
+              <span className="font-bold">Água:</span>
+              {TipoLote.TipoSolucao[Imovel?.solucoes.agua as number]}
+            </p>
+            <p className="text-sm">
+              <span className="font-bold">Esgoto:</span>
+              {TipoLote.TipoSolucao[Imovel?.solucoes.esgoto as number]}
+            </p>
+            <p className="text-sm">
+              <span className="font-bold">Energia elétrica:</span>
+              {TipoLote.TipoSolucao[Imovel?.solucoes.energia as number]}
+            </p>
+            <p className="text-sm">
+              <span className="font-bold">Iluminação Pública - </span>
+              {TipoLote.TipoSolucao[Imovel?.solucoes.iluminacao as number]}
+            </p>
+            <p className="text-sm">
+              <span className="font-bold">Telefone - </span>
+              {/* {TipoLote.TipoSolucao[Imovel?.solucoes.telefone as number]} */}
+              Satisfatorio
+            </p>
+            <p className="text-sm">
+              <span className="font-bold">Pavimentação - </span>
+              {TipoLote.TipoSolucao[Imovel?.solucoes.pavimentacao as number]}
+            </p>
+            <p className="text-sm">
+              <span className="font-bold">Águas pluviais - </span>
+              {TipoLote.TipoSolucao[Imovel?.solucoes.agua as number]}
+            </p>
+            <p className="text-sm">
+              <span className="font-bold">Guias e sarjetas - </span>
+              {/* {TipoLote.TipoSolucao[Imovel?.solucoes.agua as number]} */}
+              Satisfatorio
+            </p>
           </div>
         </ColumnContent>
-        {Imovel && (
-          <>
-            <ColumnContent>
-              <h1 className="text-2xl font-bold">Detalhes do Apartamento</h1>
-              <div className="flex w-full items-center justify-between">
-                <p className="text-sm font-bold">Andar:</p>
-                <p>{Imovel.andar}</p>
-              </div>
-              <div className="flex w-full items-center justify-between">
-                <p className="text-sm font-bold">Posição da Unidade:</p>
-                <p>{TipoPosicao[Imovel.posicao_]}</p>
-              </div>
-              <div className="flex w-full items-center justify-between">
-                <p className="text-sm font-bold">Vista Panorãmica:</p>
-                <p>{TipoVista[Imovel.vista]}</p>
-              </div>
-              <div className="flex w-full items-center justify-between">
-                <p className="text-sm font-bold">Administrador:</p>
-                <p>{Imovel.adminstradora}</p>
-              </div>
-              <div className="flex w-full items-center justify-between">
-                <p className="text-sm font-bold">Telefone Admin:</p>
-                <p>{Imovel.tel_Administradora}</p>
-              </div>
-              <div className="flex w-full items-center justify-between">
-                <p className="text-sm font-bold">Valor do Condominio:</p>
-                <p>{Imovel.condominioVal}</p>
-              </div>
-            </ColumnContent>
-            <ColumnContent>
-              <h1 className="text-2xl font-bold">Bloco/Predio</h1>
-              <div className="flex w-full items-center justify-between">
-                <p className="text-sm font-bold">Número de Pavimentos:</p>
-                <p>{Imovel.blocoPredio.pavimentos}</p>
-              </div>
-              <div className="flex w-full items-center justify-between">
-                <p className="text-sm font-bold">Quantidade de elevadores:</p>
-                <p>{Imovel.blocoPredio.elevadores}</p>
-              </div>
-              <div className="flex w-full items-center justify-between">
-                <p className="text-sm font-bold">Idade estimada:</p>
-                <p>{Imovel.blocoPredio.idade}</p>
-              </div>
-              <div className="flex w-full items-center justify-between">
-                <p className="text-sm font-bold">
-                  N° de apartamentos por andar:
-                </p>
-                <p>{Imovel.blocoPredio.aptosPorAndar}</p>
-              </div>
-              <div className="flex w-full items-center justify-between">
-                <p className="text-sm font-bold">N° de unidades no predio:</p>
-                <p>{Imovel.blocoPredio.unidadesPredio}</p>
-              </div>
-              <div className="flex w-full items-center justify-between">
-                <p className="text-sm font-bold">N° de subsolos:</p>
-                <p>{Imovel.blocoPredio.subsolos}</p>
-              </div>
-              <div className="flex w-full items-center justify-between">
-                <p className="text-sm font-bold">N° de blocos:</p>
-                <p>{Imovel.blocoPredio.blocos}</p>
-              </div>
-              <div className="flex w-full items-center justify-between">
-                <p className="text-sm font-bold">Outros:</p>
-                <p>{Imovel.blocoPredio.outros}</p>
-              </div>
-            </ColumnContent>
-          </>
-        )}
+        <ColumnContent>
+          <div className="flex flex-col w-full gap-1 items-start justify-start">
+            <p className="text-sm">
+              <span className="font-bold">Abast. de gás - </span>
+              {TipoLote.TipoSolucao[Imovel?.solucoes.absGas as number]}
+            </p>
+            <p className="text-sm">
+              <span className="font-bold">Coleta de lixo - </span>
+              {TipoLote.TipoSolucao[Imovel?.solucoes.coletaLixo as number]}
+            </p>
+            <p className="text-sm">
+              <span className="font-bold">Escola - </span>
+              {TipoLote.TipoSolucao[Imovel?.solucoes.escola as number]}
+            </p>
+            <p className="text-sm">
+              <span className="font-bold">Creche - </span>
+              {TipoLote.TipoSolucao[Imovel?.solucoes.creche as number]}
+            </p>
+            <p className="text-sm">
+              <span className="font-bold">Saúde Pública - </span>
+              {TipoLote.TipoSolucao[Imovel?.solucoes.saude as number]}
+            </p>
+            <p className="text-sm">
+              <span className="font-bold">Comércio - </span>
+              {TipoLote.TipoSolucao[Imovel?.solucoes.comercio as number]}
+            </p>
+            <p className="text-sm">
+              <span className="font-bold">Segurança Pública - </span>
+              {/* {TipoLote.TipoSolucao[Imovel?.solucoes.seguranca as number]} */}
+              Satisfatorio
+            </p>
+            <p className="text-sm">
+              <span className="font-bold">Lazer - </span>
+              {TipoLote.TipoSolucao[Imovel?.solucoes.lazer as number]}
+            </p>
+          </div>
+        </ColumnContent>
       </RowContent>
     </div>
   );

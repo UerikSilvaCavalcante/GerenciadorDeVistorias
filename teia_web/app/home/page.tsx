@@ -1,11 +1,17 @@
 import MainLayout from "../components/mainLayout";
 import MesageLayout from "../components/mesageLayout";
 import getMesagens from "../data/getMensagens";
+import { Metadata } from 'next'
+
+
+
+
+
 
 export default async function Home() {
   const response = await getMesagens();
   return (
-    <MainLayout id="home" width="w-[60%]">
+    <MainLayout id="home" width="w-[60%]" title="Home">
       <h1 className="text-zinc-950 text-center w-full p-0 text-4xl font-bold ">
         Mensagens
       </h1>

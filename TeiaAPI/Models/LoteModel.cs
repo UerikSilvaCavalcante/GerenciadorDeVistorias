@@ -23,6 +23,14 @@ namespace TeiaAPI.Models
         public int SolucoesId { get; set; }
         public virtual SolucoesModel? Solucoes { get; set; }
 
+        [Column("area_terreno")]
+        [Display(Name="AreaTerreno")]
+        public double AreaTerreno { get; set; }
+
+        [Column("frente")]
+        [Display(Name="Frente")]
+        public double Frente { get; set; }
+
         public enum TipoEnum{
             Unico = 1,
             Condominio = 2,
@@ -61,6 +69,13 @@ namespace TeiaAPI.Models
         [Display(Name="Topografia")]
         public TopografiaModelEnum Topografia { get; set; }
 
+        [Column("fechamento_terreno")]
+        [Display(Name="FechamentoTerreno")]
+        public string? FechamentoTerreno { get; set; }
+
+        [Column("localizacao_unidade")]
+        [Display(Name="LocalizacaoUnidade")]
+        public string? LocalizacaoUnidade { get; set; }
 
         public enum UsoPredoEnum{
             Residencial = 1,

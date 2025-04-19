@@ -12,6 +12,14 @@ export enum TipoArea {
   Terreno = 3,
 }
 
+export enum TipoDoImovelEnum{
+  Residencial = 1,
+  Comercial = 2,
+  Industrial = 3,
+  Rural = 4,
+  Outro = 5
+}
+
 export enum CotaGreide {
   acima = 1,
   nivelado = 2,

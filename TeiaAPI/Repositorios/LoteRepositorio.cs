@@ -25,7 +25,7 @@ namespace TeiaAPI.Repositorios
             int id = await _solucoesRepositorio.AddSolucoes(lote.Solucoes);
             lote.SolucoesId = id;
             await _context.Lotes.AddAsync(lote);
-            //await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
             return lote.Id;       
         }
 
@@ -63,6 +63,11 @@ namespace TeiaAPI.Repositorios
             newlote.Acabamento = lote.Acabamento;
             newlote.Densidade = lote.Densidade;
             newlote.TransportePublico = lote.TransportePublico;
+            newlote.AreaTerreno = lote.AreaTerreno;
+            newlote.Frente = lote.Frente;
+            newlote.LocalizacaoUnidade = lote.LocalizacaoUnidade;
+            newlote.FechamentoTerreno = lote.FechamentoTerreno;
+            
             _context.Lotes.Update(newlote);
             await _context.SaveChangesAsync();
             return newlote;

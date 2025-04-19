@@ -14,19 +14,26 @@ type SolucoesProps = {
     saude:TipoSolucao;
     lazer:TipoSolucao;
     comercio:TipoSolucao;
+    aguasPluviais:TipoSolucao;
+    guiasSarjetas:TipoSolucao;
+    seguranca:TipoSolucao;
     absGas:TipoSolucao;
 }
 
 export type LoteProps = {
-    id?: number;
-    solucoesId?: number;
-    solucoes?: SolucoesProps;
-    tipo?:TipoLote;
-    formato?:TipoFormato;
-    situacao?:TipoSituacao;
-    topografia?:TipoTopografia;
-    usoPredio?: TipoUsoPredominante;
-    acabamento?:TipoAcabamento;
-    densidade?: string;
-    transportePublico?: boolean;
+    id: number;
+    areaTerreno: number;
+    frente: number;
+    solucoesId: number;
+    solucoes: SolucoesProps;
+    tipo:TipoLote;
+    formato:TipoFormato;
+    situacao:TipoSituacao;
+    topografia:TipoTopografia;
+    usoPredio: TipoUsoPredominante;
+    acabamento:TipoAcabamento;
+    fechamentoTerreno: string;
+    localizacaoUnidade:string
+    densidade: string;
+    transportePublico: boolean;
 }

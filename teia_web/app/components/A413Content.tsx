@@ -1,6 +1,6 @@
-"server client";
+"use server";
 
-import { CotaGreide, Telhado, TipoArea } from "@/app/enums/imovel";
+import { CotaGreide, Telhado, TipoArea, TipoDoImovelEnum } from "@/app/enums/imovel";
 import { TipoSituacao } from "@/app/enums/lote";
 import {
   Estilo,
@@ -47,26 +47,37 @@ export default async function A413Content({
     );
     Imovel = Imovel as ApartamentoProps;
   }
-  console.log(Imovel);
+  // console.log(Imovel);
 
   return (
     <div className="flex flex-col px-4 h-full w-full">
       <RowContent>
         <ColumnContent>
-          <div className="flex gap-1 items-center justify-center">
-            <h1>Patologia</h1>
-          </div>
-        </ColumnContent>
-        <ColumnContent>
-          <div className="flex flex-col gap-1 items-center justify-center">
-            <h2 className="text-lg font-bold">Situacao:</h2>
+        <div className="flex flex-col gap-1 items-start justify-start">
+            <h2 className="text-lg font-bold">Patologia:</h2>
             <p className="text-sm">
-              {TipoSituacao[vistoria.imovel?.situacao as number]}
+              {vistoria.imovel?.patologia}
             </p>
           </div>
         </ColumnContent>
         <ColumnContent>
-          <div className="flex flex-col gap-1 items-center justify-center">
+        <div className="flex flex-col gap-1 items-start justify-start">
+            <h2 className="text-lg font-bold">Tipo do Imovel:</h2>
+            <p className="text-sm">
+              {TipoDoImovelEnum[vistoria.imovel?.tipoDoImovel as number]}
+            </p>
+          </div>
+        </ColumnContent>
+        <ColumnContent>
+          <div className="flex flex-col gap-1 items-start justify-start">
+            <h2 className="text-lg font-bold">Situacao:</h2>
+            <p className="text-sm">
+              {vistoria.imovel?.situacao as number == TipoSituacao.MeioDeQuadra ? "Meio de Quadra" : "Esquina"}
+            </p>
+          </div>
+        </ColumnContent>  
+        <ColumnContent>
+          <div className="flex flex-col gap-1 items-start justify-start">
             <h2 className="text-lg font-bold">Cota - Greide:</h2>
             <p className="text-sm">
               {CotaGreide[vistoria.imovel?.cotaGreide as number]}
@@ -74,13 +85,13 @@ export default async function A413Content({
           </div>
         </ColumnContent>
         <ColumnContent>
-          <div className="flex flex-col gap-1 items-center justify-center">
+          <div className="flex flex-col gap-1 items-start justify-start">
             <h2 className="text-lg font-bold">Posição de Unidade:</h2>
             <p className="text-sm">{vistoria.imovel?.posicaoUnidade}</p>
           </div>
         </ColumnContent>
         <ColumnContent>
-          <div className="flex flex-col gap-1 items-center justify-center">
+          <div className="flex flex-col gap-1 items-start justify-start">
             <h2 className="text-lg font-bold">Telhado:</h2>
             <p className="text-sm">
               {Telhado[vistoria.imovel?.telhado as number]}
@@ -360,11 +371,11 @@ export default async function A413Content({
               </div>
               <div className="flex w-full items-center justify-between">
                 <p className="text-sm font-bold">Posição da Unidade:</p>
-                <p>{TipoPosicao[Imovel.posicao_]}</p>
+                <p>{TipoPosicao[Imovel.posicao_ as number]}</p>
               </div>
               <div className="flex w-full items-center justify-between">
                 <p className="text-sm font-bold">Vista Panorãmica:</p>
-                <p>{TipoVista[Imovel.vista]}</p>
+                <p>{TipoVista[Imovel.vista as number]}</p>
               </div>
               <div className="flex w-full items-center justify-between">
                 <p className="text-sm font-bold">Administrador:</p>
@@ -377,6 +388,10 @@ export default async function A413Content({
               <div className="flex w-full items-center justify-between">
                 <p className="text-sm font-bold">Valor do Condominio:</p>
                 <p>{Imovel.condominioVal}</p>
+              </div>
+              <div className="flex w-full items-center justify-between">
+                <p className="text-sm font-bold">Identificação dos Pavimentos::</p>
+                <p>{Imovel.identificacaoPav}</p>
               </div>
             </ColumnContent>
             <ColumnContent>

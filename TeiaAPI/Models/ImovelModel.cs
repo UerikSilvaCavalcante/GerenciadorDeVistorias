@@ -31,6 +31,18 @@ namespace TeiaAPI.Models
         public int? IdAcabamento { get; set; }
         public virtual AcabamentoModel? Acabamento { get; set; }
 
+        [Column("valor_imovel")]
+        [Display(Name = "ValorImovel")]
+        public float ValorImovel { get; set; }
+
+        [Column("patologia")]
+        [Display(Name = "Patologia")]
+        public string? Patologia { get; set; }
+
+        [Column("idade_imovel")]
+        [Display(Name = "IdadeImovel")]    
+        public int IdadeImovel { get; set; }
+
         [Column("id_divisao")]
         [Display(Name = "IdDivisao")]
         [ForeignKey("Divisao")]
@@ -63,6 +75,17 @@ namespace TeiaAPI.Models
         [Display(Name = "Situacao")]
         public TipoSituacao Situacao { get; set; }
 
+        public enum TipoDoImovelEnum{
+            Residencial = 1,
+            Comercial = 2,
+            Industrial = 3,
+            Rural = 4,
+            Outro = 5
+        }
+
+        [Column("tipo_do_imovel")]
+        [Display(Name = "TipoDoImovel")]
+        public TipoDoImovelEnum TipoDoImovel { get; set; }
 
         public enum TipoCotaGreide
         {

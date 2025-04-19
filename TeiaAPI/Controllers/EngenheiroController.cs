@@ -22,14 +22,16 @@ namespace TeiaAPI.Controllers
         private readonly IApartamentoRepositorio _apartamentoRepositorio;
         private readonly ILoteRepositorio _loteRepositorio;
 
-        public EngenheiroController(IEngenheiroRepositorio engenheiroRepositorio, IUserRepositorio userRepositorio, IApartamentoRepositorio apartamentoRepositorio, ILoteRepositorio loteRepositorio)
+        private readonly IObraRepositorio _obraRepositorio;
+
+        public EngenheiroController(IEngenheiroRepositorio engenheiroRepositorio, IUserRepositorio userRepositorio, IApartamentoRepositorio apartamentoRepositorio, ILoteRepositorio loteRepositorio, IObraRepositorio obraRepositorio)
         {
+            _obraRepositorio = obraRepositorio;
             _engenheiroRepositorio = engenheiroRepositorio;
             _userRepositorio = userRepositorio;
             _apartamentoRepositorio = apartamentoRepositorio;
             _loteRepositorio = loteRepositorio;
         }
-
         [Authorize]
         [HttpGet("{id}")]
         public async Task<ActionResult<List<VistoriaModel>>> GetAllVistorias(int id, [FromQuery] StatusVistoriaEnum? status = null, [FromQuery] TypeEnum? TipoServico = null, [FromQuery] tipoImovelEnum? TipoImovel = null, [FromQuery] DateTime? dataInicio = null, [FromQuery] DateTime? dataFim = null)
@@ -37,7 +39,7 @@ namespace TeiaAPI.Controllers
             try
             {
                 UserModel user = await _userRepositorio.GetUserById(id);
-                if (user.Type != TypeUserEnum.Engenheiro && user.Status != StatusEnum.Ativado)
+                if ((user.Type != TypeUserEnum.Engenheiro) && (user.Status != StatusEnum.Ativado))
                 {
                     return BadRequest("Usuario não tem permissão para acessar essa rota");
                 }
@@ -81,6 +83,9 @@ namespace TeiaAPI.Controllers
                     case tipoImovelEnum.Lote:
                         LoteModel lotes = await _loteRepositorio.Get(id);
                         return Ok(lotes);
+                    case tipoImovelEnum.Obra:
+                        ObraModel obra = await _obraRepositorio.Get(id);
+                        return Ok(obra);
                     default:
                         return BadRequest("Tipo de Imovel não encontrado");
                 }

@@ -9,6 +9,7 @@ import { TipoImovel } from "@/app/enums/vistoria";
 import { cookies } from "next/headers";
 import { jwtDecode } from "jwt-decode";
 import { Type } from "@/app/enums/user";
+import Head from "@/app/head";
 
 interface getVistoriaProps {
   id: number,
@@ -44,6 +45,7 @@ export default async function DemandaId({
 
   return (
     <div className="flex flex-col pb-3 h-full w-full">
+      <Head title="Atualizar Demanda"/>
       <div className="flex items-center justify-between mb-4 p-2 w-full bg-gradient-to-r from-indigo-800 to-blue-950">
         <div className="flex justify-center items-center px-6 border-r-4 border-zinc-50">
           <Link href="/demandas">

@@ -68,6 +68,8 @@ namespace TeiaAPI.Repositorios
                 apartamentoToUpdate.Tel_Administradora = apartamento.Tel_Administradora;
                 apartamentoToUpdate.Vista = apartamento.Vista;
                 apartamentoToUpdate.Posicao_ = apartamento.Posicao_;
+                apartamentoToUpdate.IdentificacaoPav = apartamento.IdentificacaoPav;
+                
                 await _blocoRepositorio.Update(apartamentoToUpdate.BlocoPredioId, apartamento.BlocoPredio);
                 _context.Apartamentos.Update(apartamentoToUpdate);
                 await _context.SaveChangesAsync();

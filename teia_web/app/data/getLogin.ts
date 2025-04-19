@@ -18,5 +18,8 @@ export default async function getLogin(
     const data = await response.json();
     return data.token;
   }
+  if (response.status != 404){
+    return "usuario ou senha incorretos";
+  }
   return null;
 }

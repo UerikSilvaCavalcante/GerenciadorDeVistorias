@@ -8,7 +8,7 @@ export default function Demandas() {
   const {token} = parseCookies();
 
   return (
-    <MainLayout id="cadDemandas">
+    <MainLayout id="cadDemandas" title="Cadastrar Demanda">
      
       <FormsDemanda token={token}/>
     </MainLayout>

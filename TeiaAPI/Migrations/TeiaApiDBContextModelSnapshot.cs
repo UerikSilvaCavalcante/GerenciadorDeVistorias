@@ -199,6 +199,10 @@ namespace TeiaAPI.Migrations
                         .HasColumnType("real")
                         .HasColumnName("condominio_val");
 
+                    b.Property<string>("IdentificacaoPav")
+                        .HasColumnType("text")
+                        .HasColumnName("identificacao_pav");
+
                     b.Property<int>("Posicao_")
                         .HasColumnType("integer")
                         .HasColumnName("posicao");
@@ -402,6 +406,14 @@ namespace TeiaAPI.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("id_infraestrutura");
 
+                    b.Property<int>("IdadeImovel")
+                        .HasColumnType("integer")
+                        .HasColumnName("idade_imovel");
+
+                    b.Property<string>("Patologia")
+                        .HasColumnType("text")
+                        .HasColumnName("patologia");
+
                     b.Property<string>("PosicaoUnidade")
                         .HasColumnType("text")
                         .HasColumnName("posicao_unidade");
@@ -412,6 +424,14 @@ namespace TeiaAPI.Migrations
 
                     b.Property<int?>("Telhado")
                         .HasColumnType("integer");
+
+                    b.Property<int>("TipoDoImovel")
+                        .HasColumnType("integer")
+                        .HasColumnName("tipo_do_imovel");
+
+                    b.Property<float>("ValorImovel")
+                        .HasColumnType("real")
+                        .HasColumnName("valor_imovel");
 
                     b.HasKey("Id");
 
@@ -478,15 +498,31 @@ namespace TeiaAPI.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("acabamento");
 
+                    b.Property<double>("AreaTerreno")
+                        .HasColumnType("double precision")
+                        .HasColumnName("area_terreno");
+
                     b.Property<string>("Densidade")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)")
                         .HasColumnName("densidade");
 
+                    b.Property<string>("FechamentoTerreno")
+                        .HasColumnType("text")
+                        .HasColumnName("fechamento_terreno");
+
                     b.Property<int>("Formato")
                         .HasColumnType("integer")
                         .HasColumnName("formato");
+
+                    b.Property<double>("Frente")
+                        .HasColumnType("double precision")
+                        .HasColumnName("frente");
+
+                    b.Property<string>("LocalizacaoUnidade")
+                        .HasColumnType("text")
+                        .HasColumnName("localizacao_unidade");
 
                     b.Property<int>("Situacao")
                         .HasColumnType("integer")
@@ -788,6 +824,10 @@ namespace TeiaAPI.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("agua");
 
+                    b.Property<int>("AguasPluviais")
+                        .HasColumnType("integer")
+                        .HasColumnName("aguas_pluviais");
+
                     b.Property<int>("ColetaLixo")
                         .HasColumnType("integer")
                         .HasColumnName("coleta_lixo");
@@ -812,6 +852,10 @@ namespace TeiaAPI.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("esgoto");
 
+                    b.Property<int>("GuiasSarjetas")
+                        .HasColumnType("integer")
+                        .HasColumnName("guias_sarjetas");
+
                     b.Property<int>("Iluminacao")
                         .HasColumnType("integer")
                         .HasColumnName("iluminacao");
@@ -827,6 +871,10 @@ namespace TeiaAPI.Migrations
                     b.Property<int>("Saude")
                         .HasColumnType("integer")
                         .HasColumnName("saude");
+
+                    b.Property<int>("Seguranca")
+                        .HasColumnType("integer")
+                        .HasColumnName("seguranca");
 
                     b.HasKey("Id");
 
@@ -887,44 +935,6 @@ namespace TeiaAPI.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("users");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreatedAt = new DateTime(2025, 3, 31, 1, 7, 51, 96, DateTimeKind.Utc).AddTicks(1181),
-                            Email = "turistajose1@gmail.com",
-                            Name = "Engenheiro",
-                            Password = "40BD001563085FC35165329EA1FF5C5ECBDBBEEF",
-                            Phone = "(62) 9 9999-9999",
-                            Status = 1,
-                            Type = 2,
-                            UserName = "Engenheiro"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CreatedAt = new DateTime(2025, 3, 31, 1, 7, 51, 101, DateTimeKind.Utc).AddTicks(2743),
-                            Email = "turistajose1@gmail.com",
-                            Name = "Vistoriador",
-                            Password = "5F6955D227A320C7F1F6C7DA2A6D96A851A8118F",
-                            Phone = "(62) 9 9999-9999",
-                            Status = 1,
-                            Type = 3,
-                            UserName = "Vistoriador"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CreatedAt = new DateTime(2025, 3, 31, 1, 7, 51, 101, DateTimeKind.Utc).AddTicks(3706),
-                            Email = "uerisalcaval003@gmail.com",
-                            Name = "Admin",
-                            Password = "F865B53623B121FD34EE5426C792E5C33AF8C227",
-                            Phone = "(62) 9 9999-9999",
-                            Status = 1,
-                            Type = 1,
-                            UserName = "Admin"
-                        });
                 });
 
             modelBuilder.Entity("TeiaAPI.Models.VistoriaModel", b =>

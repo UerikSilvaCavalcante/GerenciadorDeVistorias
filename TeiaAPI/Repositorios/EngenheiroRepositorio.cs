@@ -62,19 +62,26 @@ namespace TeiaAPI.Repositorios
             {
                 return false;
             }
-            if(vistoria.Status == enums.Vistoria.StatusVistoriaEnum.Concluida)
+            if (vistoria.Status == StatusVistoriaEnum.Concluida)
             {
-                if (vistoria.Endereco.TipoImovel == tipoImovelEnum.Apartamento)
+                if (vistoria.Type == TypeEnum.A413)
                 {
-                    await _apartamentoRepositorio.Delete((int)vistoria.IdTipoImovel);
-                }else if (vistoria.Endereco.TipoImovel == tipoImovelEnum.Lote)
+                    if (vistoria.Endereco.TipoImovel == tipoImovelEnum.Apartamento)
+                    {
+
+                        await _apartamentoRepositorio.Delete((int)vistoria.IdTipoImovel);
+                    }
+                    await _imovelRepositorio.Delete((int)vistoria.IdImovel);
+                }
+                else if ((vistoria.Type == TypeEnum.B437 )|| (vistoria.Type == TypeEnum.B438))
                 {
                     await _loteRepositorio.Delete((int)vistoria.IdTipoImovel);
-                }else if (vistoria.Endereco.TipoImovel == tipoImovelEnum.Obra)
+                }
+                else if (vistoria.Type == TypeEnum.E401)
                 {
                     await _obraRepositorio.DeleteObra((int)vistoria.IdTipoImovel);
                 }
-                await _imovelRepositorio.Delete((int)vistoria.IdImovel);
+
             }
             await _enderecoRepositorio.Delete((int)vistoria.IdEndereco);
             _context.Vistorias.Remove(vistoria);
@@ -86,48 +93,48 @@ namespace TeiaAPI.Repositorios
         {
             List<VistoriaModel> vistorias = new List<VistoriaModel>();
             var query = _context.Vistorias.AsQueryable();
-                if (status != null)
-                {
-                    query = query.Where(v => v.Status == status);
-                }
+            if (status != null)
+            {
+                query = query.Where(v => v.Status == status);
+            }
 
-                if (tipoServico != null)
-                {
-                    query = query.Where(v => v.Type == tipoServico);
-                }
+            if (tipoServico != null)
+            {
+                query = query.Where(v => v.Type == tipoServico);
+            }
 
-                if (dataInicio != null)
-                {
-                    query = query.Where(v => v.DataAbertura >= dataInicio);
-                }
+            if (dataInicio != null)
+            {
+                query = query.Where(v => v.DataAbertura >= dataInicio);
+            }
 
-                if (dataFim != null)
-                {
-                    query = query.Where(v => v.DataAbertura <= dataFim);
-                }
+            if (dataFim != null)
+            {
+                query = query.Where(v => v.DataAbertura <= dataFim);
+            }
 
-                if (tipoImovel != null)
-                {
-                    query = query.Where(v => v.Endereco.TipoImovel == tipoImovel);
-                }
+            if (tipoImovel != null)
+            {
+                query = query.Where(v => v.Endereco.TipoImovel == tipoImovel);
+            }
 
-                if (id != null)
-                {
-                    vistorias = await query
-                        .Where(v => v.IdEngenheiro == id)
-                        .Include(v => v.Endereco)
-                        .Include(v => v.Vistoriador)
-                        .ToListAsync();
-                }
-                else
-                {
-                    vistorias = await query
-                        .Include(v => v.Endereco)
-                        .Include(v => v.Vistoriador)
-                        .ToListAsync();
-                }
-                
-            return vistorias;    
+            if (id != null)
+            {
+                vistorias = await query
+                    .Where(v => v.IdEngenheiro == id)
+                    .Include(v => v.Endereco)
+                    .Include(v => v.Vistoriador)
+                    .ToListAsync();
+            }
+            else
+            {
+                vistorias = await query
+                    .Include(v => v.Endereco)
+                    .Include(v => v.Vistoriador)
+                    .ToListAsync();
+            }
+
+            return vistorias;
         }
 
         public async Task<VistoriaModel> GetVistoriaById(int id, int idEngenheiro)

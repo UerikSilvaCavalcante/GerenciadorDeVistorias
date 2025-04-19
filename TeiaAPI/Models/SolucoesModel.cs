@@ -27,6 +27,15 @@ namespace TeiaAPI.Models
         [Column("pavimentacao")]
         [Display(Name="Pavimentacao")]
         public SolucaoEnum Pavimentacao { get; set; }
+
+        [Column("aguas_pluviais")]
+        [Display(Name="AguasPluviais")]
+        public SolucaoEnum AguasPluviais { get; set; }
+
+        [Column("guias_sarjetas")]
+        [Display(Name="GuiasSarjetas")]
+        public SolucaoEnum GuiasSarjetas { get; set; }
+        
         [Column("iluminacao")]
         [Display(Name="Iluminacao")]
         public SolucaoEnum Iluminacao { get; set; }
@@ -42,6 +51,12 @@ namespace TeiaAPI.Models
         [Column("saude")]
         [Display(Name="Saude")]
         public SolucaoEnum Saude { get; set; }
+        
+
+        [Column("seguranca")]
+        [Display(Name="Seguranca")]
+        public SolucaoEnum Seguranca { get; set; }
+
         [Column("lazer")]
         [Display(Name="Lazer")]
         public SolucaoEnum Lazer { get; set; }

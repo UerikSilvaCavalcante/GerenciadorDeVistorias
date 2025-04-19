@@ -249,11 +249,11 @@ export default function FormsComplete({
     }
   }, [revokedPreviews]);
 
-  const handleUploadAll = async () => {
+  const handleUploadAll = async (folderName:string) => {
     try {
       const results = await Promise.all(
         files.map((file, index) => {
-          return uploadToCloudinary(file.file, index);
+          return uploadToCloudinary(file.file, index, folderName);
         })
       );
     } catch (error) {
@@ -511,7 +511,7 @@ export default function FormsComplete({
     console.log(complete);
     toast.promise(
       completeVistoria(user?.id as number, complete, token).then(() => {
-        handleUploadAll();
+        handleUploadAll(vistoria.numOs.toString());
         queryClient.invalidateQueries({ queryKey: ["vistorias"] });
         router.push("/demandas");
       }),

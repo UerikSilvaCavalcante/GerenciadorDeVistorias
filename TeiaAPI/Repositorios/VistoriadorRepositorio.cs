@@ -45,7 +45,7 @@ namespace TeiaAPI.Repositorios
             {
                 if (vistoriaAtualizada.Type == TypeEnum.A413)
                 {
-                    int imovelId = await _imovelRepositorio.AddImovel(vistoria.Imovel);//, vistoria);
+                    int imovelId = await _imovelRepositorio.AddImovel(vistoria.Imovel as ImovelModel);//, vistoria);
                     vistoriaAtualizada.IdImovel = imovelId;
                     switch (vistoriaAtualizada.Endereco.TipoImovel)
                     {
@@ -55,8 +55,12 @@ namespace TeiaAPI.Repositorios
                             break;
                     }
                 }
-                else if (vistoriaAtualizada.Type == TypeEnum.B437 || vistoriaAtualizada.Type == TypeEnum.B438)
+                else if (vistoriaAtualizada.Type == TypeEnum.B437)
                 {
+                    int idLote = await _loteRepositorio.Add(vistoria.Lote);
+                    vistoriaAtualizada.IdTipoImovel = idLote;
+                }
+                else if(vistoriaAtualizada.Type == TypeEnum.B438){
                     int idLote = await _loteRepositorio.Add(vistoria.Lote);
                     vistoriaAtualizada.IdTipoImovel = idLote;
                 }

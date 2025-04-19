@@ -25,7 +25,7 @@ namespace TeiaAPI.Models
 
             [JsonIgnore]
             public int IdImovel { get; set; }
-            public ImovelModel Imovel { get; set; }
+            public ImovelModel? Imovel { get; set; }
 
             public ApartamentoModel? Apartamento { get; set; }
             public ObraModel? Obra { get; set; }

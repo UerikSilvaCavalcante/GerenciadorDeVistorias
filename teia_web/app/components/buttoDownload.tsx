@@ -2,11 +2,15 @@
 import fileIcon from "../assets/file-download.svg";
 import Image from "next/image";
 
-export default function ButtonDownload({ folderName }: { folderName: string }) {
+export default function ButtonDownload({
+  folderName,
+  id,
+}: {
+  folderName: string;
+  id: string;
+}) {
   const handleDownloadZip = async () => {
-    const response = await fetch(
-      `/api/download_zip?folder=folder_${folderName}`
-    );
+    const response = await fetch(`/api/download_zip?folder=folder_${folderName}&id=${id}`);
     const blob = await response.blob();
     const url = URL.createObjectURL(blob);
 

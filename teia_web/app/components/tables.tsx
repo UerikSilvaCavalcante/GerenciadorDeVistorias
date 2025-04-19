@@ -81,17 +81,21 @@ export function BasicTable({
       ),
   });
 
-  const handleDelete = async (id: number) => {
-    const response = deleteVistoria(id, token as string);
-    toast.promise(
-      response.then(() => true),
+  const handleDelete = async (id: number, numOs:number) => {
+    toast.promise(deleteVistoria(id, token).then( async () => {
+      const res = await fetch(`/api/delete_folder?folder=folder_${numOs}`, {
+        method: "DELETE"
+      });
+      
+      queryClient.invalidateQueries({ queryKey: ["vistorias"] });
+    }),
       {
         loading: "Deletando Vistoria...",
         success: "Vistoria deletada com sucesso",
         error: "Erro ao deletar Vistoria",
       }
     );
-    queryClient.invalidateQueries({ queryKey: ["vistorias"] });
+    
   };
 
   const filteredVistorias = data
@@ -352,7 +356,7 @@ export function BasicTable({
                       <TableCell>
                         <button
                           className="cursor-pointer flex justify-center items-center bg-blue-600 w-6 h-6 rounded-md hover:bg-red-600 transition-colors duration-300"
-                          onClick={() => handleDelete(vistoria.id)}
+                          onClick={() => handleDelete(vistoria.id, vistoria.numOs)}
                         >
                           <Image
                             src={trash}

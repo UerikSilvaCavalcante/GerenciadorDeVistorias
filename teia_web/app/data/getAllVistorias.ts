@@ -8,7 +8,6 @@ export default async function getAllVistorias(
   type:number,
   token:string
 ): Promise<VistoriaProps[]> {
-  console.log(type)
   let response;
   if(type == Type.engenheiro){
     response = await fetch(`http://localhost:5017/api/Engenheiro/${id}`, {

@@ -532,7 +532,7 @@ export default function FormsDemanda({
 
       <div className="flex gap-8 w-full justify-start items-center">
         <button
-          className="flex gap-1 items-center justify-center bg-blue-600 text-nowrap text-white px-4 py-2 rounded-md"
+          className="flex gap-1 items-center justify-center bg-blue-600 text-nowrap text-white px-4 py-2 rounded-md cursor-pointer"
           type="button"
           onClick={() => {
             const file = document.getElementById("fileInput");

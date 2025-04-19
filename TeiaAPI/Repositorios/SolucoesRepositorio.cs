@@ -59,6 +59,9 @@ namespace TeiaAPI.Repositorios
             solucoesAtualizadas.Lazer = solucoes.Lazer;
             solucoesAtualizadas.Comercio = solucoes.Comercio;
             solucoesAtualizadas.AbsGas = solucoes.AbsGas;
+            solucoesAtualizadas.AguasPluviais = solucoes.AguasPluviais;
+            solucoesAtualizadas.GuiasSarjetas = solucoes.GuiasSarjetas;
+            solucoesAtualizadas.Seguranca = solucoes.Seguranca;
             _context.Solucoes.Update(solucoesAtualizadas);
             await _context.SaveChangesAsync();
             return solucoesAtualizadas;   

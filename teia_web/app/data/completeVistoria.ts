@@ -11,7 +11,7 @@ interface requesteProps {
   latitude: string;
   longitude: string;
   obs: string;
-  imovel: ImovelProps;
+  imovel?: ImovelProps;
   apartamento?: ApartamentoProps;
   obra?: ObraProps;
   lote?: LoteProps;

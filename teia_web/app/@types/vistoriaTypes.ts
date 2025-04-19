@@ -26,7 +26,6 @@ export type VistoriaProps = {
   idTipoImovel?: number;
   status: number;
   type: number;
-  tipoImovel?: null;
   dataAbertura: Date;
   dataConclusao: Date;
   dataLancamento: Date;

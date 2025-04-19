@@ -1,30 +1,28 @@
-#See https://aka.ms/customizecontainer to learn how to customize your debug container and how Visual Studio uses this Dockerfile to build your images for faster debugging.
+# Stage 1: Build Stage
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+WORKDIR /src
 
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
-USER app
-WORKDIR /app
-EXPOSE 5017
 # EXPOSE 8081
 
-ENV ASPNETCORE_URLS=http://+:5017;
-ENV ASPNETCORE_ENVIRONMENT=Development
-
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
-ARG BUILD_CONFIGURATION=Release
-WORKDIR /src
-COPY ["TeiaAPI.csproj", "."]
+# restore
+COPY ["./TeiaAPI.csproj", "./"]
 RUN dotnet restore "./TeiaAPI.csproj"
-RUN dotnet tool install --global dotnet-ef
-ENV PATH="${PATH}:/root/.dotnet/tools"
-COPY . .
-WORKDIR "/src/."
-RUN dotnet build "./TeiaAPI.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
+#build
+COPY ["./", "./"]
+WORKDIR /src
+RUN dotnet build "./TeiaAPI.csproj" -c Release -o /app/build
+
+# Stage 2: publish Stage
 FROM build AS publish
-ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./TeiaAPI.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./TeiaAPI.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
-FROM base AS final
+# Stage 3: Final Stage
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
+ENV ASPNETCORE_HTTP_PORTS=5001
+EXPOSE 5001
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "TeiaAPI.dll", "entrypoint.sh"]
+ENTRYPOINT ["dotnet", "TeiaAPI.dll"]
+
+

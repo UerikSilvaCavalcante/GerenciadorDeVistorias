@@ -13,12 +13,13 @@ type BlocoPredioProps = {
 };
 
 export type ApartamentoProps = {
-  id?: number;
-  andar?: number;
-  condominioVal?: number;
-  adminstradora?: string;
-  tel_Administradora?: string;
-  vista?: TipoVista;
-  posicao_?: TipoPosicao;
-  blocoPredio?: BlocoPredioProps;
+  id: number;
+  andar: number;
+  condominioVal: number;
+  adminstradora: string;
+  tel_Administradora: string;
+  identificacaoPav: string;
+  vista: TipoVista;
+  posicao_: TipoPosicao;
+  blocoPredio: BlocoPredioProps;
 };

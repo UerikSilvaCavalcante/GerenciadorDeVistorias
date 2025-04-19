@@ -18,7 +18,7 @@ export async function GET(req: NextRequest) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        expression: `folder:${folderName} AND resource_type:image`,
+        expression: `folder:${folderName}/fotos AND resource_type:image`,
       }),
     }
   );

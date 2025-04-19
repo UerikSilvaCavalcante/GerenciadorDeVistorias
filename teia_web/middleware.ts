@@ -3,38 +3,65 @@ import { cookies } from "next/headers";
 import { jwtDecode } from "jwt-decode";
 import { Type } from "./app/enums/user";
 
+
 export async function Autentication(request: NextRequest) {
   const cookiesData = await cookies();
   const token = cookiesData.get("token");
-  const protectedRoutes = [
+
+  const response = NextResponse.next()
+
+  response.headers.set('X-From-Middleware', 'HelloUerik')
+  response.headers.set('Cache-Control', 'no-store')
+
+
+
+  const pathname = request.nextUrl.pathname;
+
+  const isProtectedRoute = [
     "/home",
     "/demandas",
     "/perfil",
     "/cadDemandas",
     "/vistoriadores",
     "/completeDemanda",
-  ];
-  const isCadDemandas = request.nextUrl.pathname.startsWith("/cadDemandas");
+  ].some((route) => pathname.startsWith(route));
 
-  const isProtectedRoute = protectedRoutes.includes(request.nextUrl.pathname);
-
-  if (isProtectedRoute && !token) {
+  if (!token && isProtectedRoute) {
     return NextResponse.redirect(new URL("/", request.url));
   }
 
   if (token) {
-    const decode = jwtDecode<{
-      id: string;
-      userName: string;
-      tipo: string;
-    }>(token.value);
-    if (isCadDemandas && decode.tipo !== "Engenheiro") {
-      return NextResponse.redirect(new URL("/home", request.url));
+    try {
+      const decoded = jwtDecode<{
+        id: string;
+        userName: string;
+        tipo: string;
+        exp: number;
+      }>(token.value);
+
+      const currentTime = Date.now() / 1000;
+
+      if (decoded.exp < currentTime) {
+        // Token expirado
+        const response = NextResponse.redirect(new URL("/", request.url));
+        response.cookies.delete("token");
+        return response;
+      }
+
+      const isCadDemandas = pathname.startsWith("/cadDemandas");
+      if (isCadDemandas && decoded.tipo !== "Engenheiro") {
+        return NextResponse.redirect(new URL("/home", request.url));
+      }
+    } catch (error) {
+      const response = NextResponse.redirect(new URL("/", request.url));
+      response.cookies.delete("token");
+      return response;
     }
   }
 
   return NextResponse.next();
 }
+
 
 export const config = {
   matcher: [
@@ -46,5 +73,6 @@ export const config = {
     "/completeDemanda/:path*",
   ],
 };
+
 
 export { Autentication as middleware };

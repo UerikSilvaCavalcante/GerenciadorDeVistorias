@@ -46,6 +46,23 @@ export function AcabamentoField({
   return (
     <Field legend="Acabamento">
       <div className="flex w-full gap-5 justify-start items-start">
+      <div className="flex w-full flex-col gap-3 justify-start items-start">
+          <Label htmlFor="patologia">
+            {formState.errors.patologia && (
+              <span className="text-red-600">
+                {" "}
+                Campo obrigatorio <br />
+              </span>
+            )}
+            Patologia{" "}
+          </Label>
+          <Input
+              id="patologia"
+              type="text"
+              style={{ width: "100%" }}
+              {...register("patologia")}
+            />
+        </div>
         <div className="flex w-full flex-col gap-3 justify-start items-start">
           <Label htmlFor="padrao">
             {formState.errors.padrao && (
@@ -810,6 +827,23 @@ export function ApartamentoField({
             />
           </div>
           <div className="flex w-full flex-col gap-3 justify-start items-start">
+            <Label htmlFor="identificacaoPav">
+              {/* {formState.errors.administradora && (
+                <span className="text-red-600">
+                  {" "}
+                  Campo obrigatorio <br />
+                </span>
+              )} */}
+              Identificação dos Pavimentos:{" "}
+            </Label>
+            <Input
+              id="identificacaoPav"
+              type="text"
+              style={{ width: "100%" }}
+              {...register("apartamento.identificacaoPav")}
+            />
+          </div>
+          <div className="flex w-full flex-col gap-3 justify-start items-start">
             <Label htmlFor="tel_Administradora">
               {/* {formState.errors.telAdministradora && (
                 <span className="text-red-600">
@@ -1307,286 +1341,3 @@ export function ObraField({
   );
 }
 
-export function LoteField({
-  register,
-  formState,
-}: {
-  register: ReturnType<typeof useForm>["register"];
-  formState: ReturnType<typeof useForm>["formState"];
-}) {
-  return (
-    <Field legend="Lote">
-      <div className="flex flex-col w-full gap-5 justify-start items-start">
-        <div className="flex w-full gap-5 justify-start items-start">
-          <div className="flex flex-col w-full gap-3 justify-start items-start">
-            <Label htmlFor="agua">Agua </Label>
-            <Select
-              id="agua"
-              style={{ width: "100%" }}
-              {...register("lote.solucoes.agua", { valueAsNumber: true })}
-            >
-              <option value="0">Selecione</option>
-              <option value={TipoSolucao.Satifatoria}>Satifatoria</option>
-              <option value={TipoSolucao.Precario}>Precario</option>
-              <option value={TipoSolucao.NaoDisponivel}>Não Disponivel</option>
-            </Select>
-          </div>
-          <div className="flex flex-col w-full gap-3 justify-start items-start">
-            <Label htmlFor="esgoto">Esgoto </Label>
-            <Select
-              id="esgoto"
-              style={{ width: "100%" }}
-              {...register("lote.solucoes.esgoto", { valueAsNumber: true })}
-            >
-              <option value="0">Selecione</option>
-              <option value={TipoSolucao.Satifatoria}>Satifatoria</option>
-              <option value={TipoSolucao.Precario}>Precario</option>
-              <option value={TipoSolucao.NaoDisponivel}>Não Disponivel</option>
-            </Select>
-          </div>
-          <div className="flex flex-col w-full gap-3 justify-start items-start">
-            <Label htmlFor="energia">Energia </Label>
-            <Select
-              id="energia"
-              style={{ width: "100%" }}
-              {...register("lote.solucoes.energia", { valueAsNumber: true })}
-            >
-              <option value="0">Selecione</option>
-              <option value={TipoSolucao.Satifatoria}>Satifatoria</option>
-              <option value={TipoSolucao.Precario}>Precario</option>
-              <option value={TipoSolucao.NaoDisponivel}>Não Disponivel</option>
-            </Select>
-          </div>
-          <div className="flex flex-col w-full gap-3 justify-start items-start">
-            <Label htmlFor="pavimentacao">Pavimentação </Label>
-            <Select
-              id="pavimentacao"
-              style={{ width: "100%" }}
-              {...register("lote.solucoes.pavimentacao", {
-                valueAsNumber: true,
-              })}
-            >
-              <option value="0">Selecione</option>
-              <option value={TipoSolucao.Satifatoria}>Satifatoria</option>
-              <option value={TipoSolucao.Precario}>Precario</option>
-              <option value={TipoSolucao.NaoDisponivel}>Não Disponivel</option>
-            </Select>
-          </div>
-          <div className="flex flex-col w-full gap-3 justify-start items-start">
-            <Label htmlFor="iluminacao">Iluminação </Label>
-            <Select
-              id="iluminacao"
-              style={{ width: "100%" }}
-              {...register("lote.solucoes.iluminacao", { valueAsNumber: true })}
-            >
-              <option value="0">Selecione</option>
-              <option value={TipoSolucao.Satifatoria}>Satifatoria</option>
-              <option value={TipoSolucao.Precario}>Precario</option>
-              <option value={TipoSolucao.NaoDisponivel}>Não Disponivel</option>
-            </Select>
-          </div>
-        </div>
-        <div className="flex w-full gap-5 justify-start items-start">
-          <div className="flex flex-col w-full gap-3 justify-start items-start">
-            <Label htmlFor="coletaLixo">Coleta de Lixo </Label>
-            <Select
-              id="coletaLixo"
-              style={{ width: "100%" }}
-              {...register("lote.solucoes.coletaLixo", { valueAsNumber: true })}
-            >
-              <option value="0">Selecione</option>
-              <option value={TipoSolucao.Satifatoria}>.Satifatoria</option>
-              <option value={TipoSolucao.Precario}>Precario</option>
-              <option value={TipoSolucao.NaoDisponivel}>Não Disponivel</option>
-            </Select>
-          </div>
-          <div className="flex flex-col w-full gap-3 justify-start items-start">
-            <Label htmlFor="creche">Creche </Label>
-            <Select
-              id="creche"
-              style={{ width: "100%" }}
-              {...register("lote.solucoes.creche", { valueAsNumber: true })}
-            >
-              <option value="0">Selecione</option>
-              <option value={TipoSolucao.Satifatoria}>Satifatoria</option>
-              <option value={TipoSolucao.Precario}>Precario</option>
-              <option value={TipoSolucao.NaoDisponivel}>Não Disponivel</option>
-            </Select>
-          </div>
-          <div className="flex flex-col w-full gap-3 justify-start items-start">
-            <Label htmlFor="escola">Escola </Label>
-            <Select
-              id="escola"
-              style={{ width: "100%" }}
-              {...register("lote.solucoes.escola", { valueAsNumber: true })}
-            >
-              <option value="0">Selecione</option>
-              <option value={TipoSolucao.Satifatoria}>.Satifatoria</option>
-              <option value={TipoSolucao.Precario}>Precario</option>
-              <option value={TipoSolucao.NaoDisponivel}>Não Disponivel</option>
-            </Select>
-          </div>
-          <div className="flex flex-col w-full gap-3 justify-start items-start">
-            <Label htmlFor="saude">Saude </Label>
-            <Select
-              id="saude"
-              style={{ width: "100%" }}
-              {...register("lote.solucoes.saude", { valueAsNumber: true })}
-            >
-              <option value="0">Selecione</option>
-              <option value={TipoSolucao.Satifatoria}>Satifatoria</option>
-              <option value={TipoSolucao.Precario}>Precario</option>
-              <option value={TipoSolucao.NaoDisponivel}>Não Disponivel</option>
-            </Select>
-          </div>
-          <div className="flex flex-col w-full gap-3 justify-start items-start">
-            <Label htmlFor="lazer">Lazer </Label>
-            <Select
-              id="lazer"
-              style={{ width: "100%" }}
-              {...register("lote.solucoes.lazer", { valueAsNumber: true })}
-            >
-              <option value="0">Selecione</option>
-              <option value={TipoSolucao.Satifatoria}>Satifatoria</option>
-              <option value={TipoSolucao.Precario}>Precario</option>
-              <option value={TipoSolucao.NaoDisponivel}>Não Disponivel</option>
-            </Select>
-          </div>
-        </div>
-        <div className="flex w-full gap-5 justify-start items-start">
-          <div className="flex flex-col w-full gap-3 justify-start items-start">
-            <Label htmlFor="comercio">Comercio </Label>
-            <Select
-              id="comercio"
-              style={{ width: "100%" }}
-              {...register("lote.solucoes.comercio", { valueAsNumber: true })}
-            >
-              <option value="0">Selecione</option>
-              <option value={TipoSolucao.Satifatoria}>Satifatoria</option>
-              <option value={TipoSolucao.Precario}>Precario</option>
-              <option value={TipoSolucao.NaoDisponivel}>Não Disponivel</option>
-            </Select>
-          </div>
-          <div className="flex flex-col w-full gap-3 justify-start items-start">
-            <Label htmlFor="absGas">Abastecimento de Gas </Label>
-            <Select
-              id="absGas"
-              style={{ width: "100%" }}
-              {...register("lote.solucoes.absGas", { valueAsNumber: true })}
-            >
-              <option value="0">Selecione</option>
-              <option value={TipoSolucao.Satifatoria}>Satifatoria</option>
-              <option value={TipoSolucao.Precario}>Precario</option>
-              <option value={TipoSolucao.NaoDisponivel}>Não Disponivel</option>
-            </Select>
-          </div>
-          <div className="flex flex-col w-full gap-3 justify-start items-start">
-            <Label htmlFor="tipo">Tipo do Imovel </Label>
-            <Select
-              id="tipo"
-              style={{ width: "100%" }}
-              {...register("lote.tipo", { valueAsNumber: true })}
-            >
-              <option value="0">Selecione</option>
-              <option value={TipoLote.Condominio}>Condominio</option>
-              <option value={TipoLote.Unico}>Unico</option>
-            </Select>
-          </div>
-          <div className="flex flex-col w-full gap-3 justify-start items-start">
-            <Label htmlFor="formato">Formato do Terreno </Label>
-            <Select
-              id="formato"
-              style={{ width: "100%" }}
-              {...register("lote.formato", { valueAsNumber: true })}
-            >
-              <option value="0">Selecione</option>
-              <option value={TipoFormato.Quadrado}>Quadrado</option>
-              <option value={TipoFormato.Retangular}>Retangular</option>
-              <option value={TipoFormato.Triangular}>Triangular</option>
-              <option value={TipoFormato.Irregular}>Irregular</option>
-            </Select>
-          </div>
-          <div className="flex flex-col w-full gap-3 justify-start items-start">
-            <Label htmlFor="situacao">Situacao do Terreno </Label>
-            <Select
-              id="situacao"
-              style={{ width: "100%" }}
-              {...register("lote.situacao", { valueAsNumber: true })}
-            >
-              <option value="0">Selecione</option>
-              <option value={TipoSituacao.Esquina}>Esquina</option>
-              <option value={TipoSituacao.MeioDeQuadra}>Meio de Quadra</option>
-            </Select>
-          </div>
-        </div>
-        <div className="flex w-full gap-5 justify-start items-start">
-          <div className="flex flex-col w-full gap-3 justify-start items-start">
-            <Label htmlFor="topografia">Topografia do Terreno </Label>
-            <Select
-              id="topografia"
-              style={{ width: "100%" }}
-              {...register("lote.topografia", { valueAsNumber: true })}
-            >
-              <option value="0">Selecione</option>
-              <option value={TipoTopografia.Aclive}>Aclive</option>
-              <option value={TipoTopografia.Aterro}>Aterro</option>
-              <option value={TipoTopografia.Declive}>Declive</option>
-              <option value={TipoTopografia.Plano}>Plano</option>
-            </Select>
-          </div>
-          <div className="flex flex-col w-full gap-3 justify-start items-start">
-            <Label htmlFor="usoPredio">Uso Predominante </Label>
-            <Select
-              id="usoPredio"
-              style={{ width: "100%" }}
-              {...register("lote.usoPredio", { valueAsNumber: true })}
-            >
-              <option value="0">Selecione</option>
-              <option value={TipoUsoPredominante.Comercial}>Comercial</option>
-              <option value={TipoUsoPredominante.Industrial}>Industrial</option>
-              <option value={TipoUsoPredominante.Misto}>Misto</option>
-              <option value={TipoUsoPredominante.Residencial}>
-                Residencial
-              </option>
-              <option value={TipoUsoPredominante.Rural}>Rural</option>
-            </Select>
-          </div>
-          <div className="flex flex-col w-full gap-3 justify-start items-start">
-            <Label htmlFor="acabamento">Acabamento </Label>
-            <Select
-              id="acabamento"
-              style={{ width: "100%" }}
-              {...register("lote.acabamento", { valueAsNumber: true })}
-            >
-              <option value="0">Selecione</option>
-              <option value={TipoAcabamento.Alto}>Alto</option>
-              <option value={TipoAcabamento.Normal}>Normal</option>
-              <option value={TipoAcabamento.Baixo}>Baixo</option>
-            </Select>
-          </div>
-          <div className="flex flex-col w-full gap-3 justify-start items-start">
-            <Label htmlFor="densidade">Densidade </Label>
-            <Input
-              type="text"
-              id="densidade"
-              style={{ width: "100%" }}
-              {...register("lote.densidade")}
-            />
-          </div>
-          <div className="flex flex-col w-full gap-3 justify-start items-start">
-            <Label htmlFor="transportePublico">Transporte Publico </Label>
-            <Select
-              id="transportePublico"
-              style={{ width: "100%" }}
-              {...register("lote.transportePublico", { valueAsNumber: true })}
-            >
-              <option value="0">Selecione</option>
-              <option value={1}>Sim</option>
-              <option value={0}>Não</option>
-            </Select>
-          </div>
-        </div>
-      </div>
-    </Field>
-  );
-}

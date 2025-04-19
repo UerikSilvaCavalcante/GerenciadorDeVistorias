@@ -51,6 +51,10 @@ namespace TeiaAPI.Models
         [Display(Name="Posicao")]
         public PosicaoEnum Posicao_ { get; set; }
 
+        [Column("identificacao_pav")]
+        [Display(Name="IdentificacaoPav")]
+        public string? IdentificacaoPav { get; set; }
+
         [Column("bloco_predio_id")]
         [Display(Name="BlocoPredioId")]
 

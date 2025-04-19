@@ -29,7 +29,7 @@ const handleLimitChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setLimit(parseInt(event.target.value));
 }
   return (
-    <MainLayout id="vistoriadores">
+    <MainLayout id="vistoriadores" title="Vistoriadores">
       <div className="flex items-center justify-around w-full gap-3">
         <Input type="text" placeholder="Nome do vistoriador" width="w-full" id="name" />
         

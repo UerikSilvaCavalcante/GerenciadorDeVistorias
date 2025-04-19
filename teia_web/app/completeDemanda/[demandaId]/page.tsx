@@ -4,8 +4,11 @@ import { cookies } from "next/headers";
 import getVistoriaById from "../../data/getVistoriaById";
 import { status, Type } from "@/app/enums/user";
 import FormsComplete from "@/app/components/formsComplete";
-import { Status } from "@/app/enums/vistoria";
+import { Status, Tipo } from "@/app/enums/vistoria";
 import getImovel from "@/app/data/getImovel";
+import FormsA413 from "@/app/components/formsA413";
+import FormsB438 from "@/app/components/formsB438";
+import FormsE401 from "@/app/components/formsE401";
 
 interface getVistoriaProps {
   id: number;
@@ -47,11 +50,13 @@ export default async function DemandaId({
   }
 
   return (
-    <MainLayout id="demanda">
+    <MainLayout id="demanda" title="Completar Demanda">
       <div className="flex justify-center items-center h-20 text-blue-900 font-bold text-2xl">
-        <h1>Completar Demanda</h1>
+        <h1>Completar Demanda {`- ${vistoria.numOs}`}</h1>
       </div>
-      <FormsComplete vistoria={vistoria} imovel={imovel} />
+      {vistoria.type == Tipo.A413 && (<FormsA413 vistoria={vistoria} imovel={imovel}/>)}
+      {(vistoria.type == Tipo.B438 || vistoria.type == Tipo.B437) && (<FormsB438 vistoria={vistoria} imovel={imovel}/>)}
+      {vistoria.type == Tipo.E401 && (<FormsE401 vistoria={vistoria} imovel={imovel}/>)}
     </MainLayout>
   );
 }
