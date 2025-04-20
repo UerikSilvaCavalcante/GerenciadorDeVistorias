@@ -378,14 +378,6 @@ export function BasicTable({
   );
 }
 
-interface Vistoriador {
-  id: number;
-  name: string;
-  username: string;
-  email: string;
-  phone: string;
-  status: number;
-}
 
 export function VistoriadorTable({
   name,

@@ -239,7 +239,7 @@ export default function FormsB438({
     console.log(complete);
     toast.promise(
       completeVistoria(user?.id as number, complete, token).then(() => {
-        // handleUploadAll(vistoria.numOs.toString());
+        handleUploadAll(vistoria.numOs.toString());
         queryClient.invalidateQueries({ queryKey: ["vistorias"] });
         router.push("/demandas");
       }),

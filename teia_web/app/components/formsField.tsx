@@ -742,10 +742,8 @@ export function InfraestruturaField({
 
 export function ApartamentoField({
   register,
-  formState,
 }: {
   register: ReturnType<typeof useForm>["register"];
-  formState: ReturnType<typeof useForm>["formState"];
 }) {
   return (
     <Field legend="Apartamento">

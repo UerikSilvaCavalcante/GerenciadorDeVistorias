@@ -81,7 +81,7 @@ export const ModalPass = ({
     }
   };
 
-  const handleCompare = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleCompare = () => {
     const input = document.getElementById("password") as HTMLInputElement;
     const input2 = document.getElementById("password2") as HTMLInputElement;
     if (input && input2) {
