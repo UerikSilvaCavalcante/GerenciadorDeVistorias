@@ -17,11 +17,7 @@ const geistMono = Geist_Mono({
 
 
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: { children: React.ReactNode; types: React.ReactNode }){
   return (
     <html lang="pt-br">
     <Head title="Login"/>
