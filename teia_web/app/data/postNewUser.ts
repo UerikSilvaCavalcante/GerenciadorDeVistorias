@@ -11,7 +11,9 @@ interface ResponseProps {
 export default async function postNewUSer(
   user: ResponseProps
 ): Promise<UserProps> {
-  const response = await fetch(`http://localhost:5017/api/User`, {
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+
+  const response = await fetch(`${baseUrl}/User`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

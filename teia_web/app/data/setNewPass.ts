@@ -1,6 +1,8 @@
 
 export default async function setNewPassword(id:number, password:string, token:string):Promise<boolean>{
-    const response = await fetch(`http://localhost:5017/api/User/UpdatePassword/${id}`, {
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+
+    const response = await fetch(`${baseUrl}/User/UpdatePassword/${id}`, {
         method: "PUT",
         headers: {
         "Content-Type": "application/json",

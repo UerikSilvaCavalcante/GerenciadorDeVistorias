@@ -28,6 +28,7 @@ type responseProps = {
 }
 
 export default async function postNewVistoria(id:number ,form: FormPorps, token:string):Promise<responseProps> {
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
   const engenheiro: EngenheiroProps = {
     idEngenheiro: id,
@@ -54,7 +55,7 @@ export default async function postNewVistoria(id:number ,form: FormPorps, token:
     longitude: form.longitude as string,
     obs: form.obs,
   };
-  const response = await fetch("http://localhost:5017/api/Engenheiro", {
+  const response = await fetch(`${baseUrl}/Engenheiro`, {
     method: "POST",
     headers: {
       "Authorization": `Bearer ${token}`,

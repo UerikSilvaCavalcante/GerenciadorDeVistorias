@@ -28,6 +28,8 @@ type responseProps = {
 }
 
 export default async function putVistoria(userId:number ,form: FormPorps, id:number, token:string):Promise<responseProps> {
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+
   const putVistoria: EngenheiroProps = {
     idEngenheiro: userId,
     idVistoriador: parseInt(form.idVistoriador),
@@ -53,7 +55,7 @@ export default async function putVistoria(userId:number ,form: FormPorps, id:num
     longitude: form.longitude as string,
     obs: form.obs,
   };
-  const response = await fetch(`http://localhost:5017/api/Engenheiro/${id}`, {
+  const response = await fetch(`${baseUrl}/Engenheiro/${id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",

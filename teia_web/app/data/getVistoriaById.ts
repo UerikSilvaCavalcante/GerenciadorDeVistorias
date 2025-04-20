@@ -11,17 +11,19 @@ interface getVistoriaProps {
 export default async function getVistoriaById(
   { id, type, idVistoria, token }: getVistoriaProps
 ): Promise<VistoriaProps> {
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+
   let response;
   if(type === Type.engenheiro){
 
-    response = await fetch(`http://localhost:5017/api/Engenheiro/${id}/${idVistoria}`, {
+    response = await fetch(`${baseUrl}/Engenheiro/${id}/${idVistoria}`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
   }else {
-    response = await fetch(`http://localhost:5017/api/Vistoriador/${id}/${idVistoria}`, {
+    response = await fetch(`${baseUrl}/Vistoriador/${id}/${idVistoria}`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,

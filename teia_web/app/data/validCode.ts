@@ -4,7 +4,9 @@ export default async function ValidCode(
   code: string,
   token: string
 ):Promise<boolean> {
-  const response = await fetch(`http://localhost:5017/api/User/GetCode/${id}`, {
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+
+  const response = await fetch(`${baseUrl}/User/GetCode/${id}`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,

@@ -1,7 +1,9 @@
 import { UserProps } from "../@types/usersTypes";
 
 export default async function putUser(data: UserProps, token:string):Promise<boolean> {
-    const response = await fetch(`http://localhost:5017/api/User/${data.id}`, {
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+
+    const response = await fetch(`${baseUrl}/User/${data.id}`, {
         method: "PUT",
         headers: {
         "Content-Type": "application/json",

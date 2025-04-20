@@ -1,6 +1,8 @@
 
 export default async function SetCode(id:number,  token:string):Promise<boolean>{
-    const response = await fetch(`http://localhost:5017/api/User/SetCode/${id}`, {
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+
+    const response = await fetch(`${baseUrl}/User/SetCode/${id}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',

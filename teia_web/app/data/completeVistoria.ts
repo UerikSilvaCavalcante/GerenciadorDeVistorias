@@ -22,7 +22,9 @@ export default async function completeVistoria(
   request: requesteProps,
   token: string
 ): Promise<VistoriaProps> {
-  const respone = await fetch(`http://localhost:5017/api/Vistoriador/${id}`, {
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+
+  const respone = await fetch(`${baseUrl}/Vistoriador/${id}`, {
     method: "PUT",
     headers: {
       Authorization: `Bearer ${token}`,

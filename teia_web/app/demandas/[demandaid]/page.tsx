@@ -1,4 +1,4 @@
-"use server";
+// "use server";
 import getVistoriaById from "@/app/data/getVistoriaById";
 import goBack from "../../assets/goBack.svg";
 import Image from "next/image";
@@ -52,7 +52,6 @@ export default async function DemandaId({
 
   // console.log(vistoria);
 
-  if (vistoria) {
     return (
       <ClientProvider>
         <Head title={`Demanda ${vistoria.numOs}`}/>
@@ -64,9 +63,11 @@ export default async function DemandaId({
               </Link>
             </div>
             <div className="flex flex-col items-center justify-center">
-              <h1 className="text-xl font-bold text-zinc-50">
+              {vistoria ? (<h1 className="text-xl font-bold text-zinc-50">
                 Vistoria de {TipoImovel[vistoria.endereco.tipoImovel]}
-              </h1>
+              </h1>) : (
+                <div className="w-20 h-5 bg-blue-950 animate-pulse rounded-md"></div>
+              )}
             </div>
           </div>
           <div className="flex items-center justify-center w-[35px] h-[35px] bg-gradient-to-r from-indigo-800 to-blue-950 rounded-full fixed top-14 right-14 p-2 pdf">
@@ -232,5 +233,4 @@ export default async function DemandaId({
         </div>
       </ClientProvider>
     );
-  }
 }
