@@ -8,15 +8,13 @@ import { ModalPass, useModalTransition } from "../components/modalPass";
 import { useContext, useState, useEffect } from "react";
 import { AuthContext } from "../actions/valid";
 import { status, Type } from "../enums/user";
-import { PatternFormat, PatternFormatProps } from "react-number-format";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { UserProps } from "../@types/usersTypes";
 import putUser from "../data/putUser";
 import { parseCookies } from "nookies";
 import { toast } from "sonner";
-import getUserById from "../data/getUserById";
 import SetCode from "../data/setCode";
 
 const userForm = z.object({
@@ -46,7 +44,7 @@ export default function Perfil() {
     }
   }, [user]);
 
-  const { register, control, handleSubmit, formState, reset } =
+  const { register, handleSubmit, formState, reset } =
     useForm<UserFormProps>({
       resolver: zodResolver(userForm),
       defaultValues: {

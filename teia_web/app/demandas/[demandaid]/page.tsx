@@ -1,4 +1,4 @@
-// "use server";
+"use server";
 import getVistoriaById from "@/app/data/getVistoriaById";
 import goBack from "../../assets/goBack.svg";
 import Image from "next/image";

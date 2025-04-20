@@ -1,6 +1,4 @@
-import getAllVistorias from "@/app/data/getAllVistorias";
 import getVistoriaById from "@/app/data/getVistoriaById";
-import MainLayout from "../../components/mainLayout";
 import FormsDemanda from "@/app/components/formsDemanda";
 import Link from "next/link";
 import goBack from "../../assets/goBack.svg";
