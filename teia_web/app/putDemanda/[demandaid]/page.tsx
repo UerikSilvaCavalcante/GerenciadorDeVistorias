@@ -19,7 +19,7 @@ interface getVistoriaProps {
 export default async function DemandaId({
   params,
 }: {
-  params: { demandaid: string };
+  params: Promise<{ demandaid: string }>;
 }) {
   const { demandaid } = await params;
   const token = (await cookies()).get("token")?.value;
