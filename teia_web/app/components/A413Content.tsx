@@ -1,6 +1,6 @@
 "use server";
 
-import { CotaGreide, Telhado, TipoArea, TipoDoImovelEnum } from "@/app/enums/imovel";
+import { CotaGreide, Telhado, TipoDoImovelEnum } from "@/app/enums/imovel";
 import { TipoSituacao } from "@/app/enums/lote";
 import {
   Estilo,

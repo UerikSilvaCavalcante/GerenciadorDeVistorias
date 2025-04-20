@@ -6,14 +6,11 @@ import {
   DialogTitle,
   DialogBackdrop,
 } from "@headlessui/react";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { PrimaryButton, SecondaryButton } from "../components/UI/buttons";
 import { Input } from "../components/UI/input";
 import ValidCode from "../data/validCode";
 import { toast } from "sonner";
-import { parseCookies } from "nookies";
-import { AuthContext } from "../actions/valid";
-import { Condiment } from "next/font/google";
 import setNewPassword from "../data/setNewPass";
 
 export const useModalTransition = () => {

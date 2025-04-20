@@ -10,7 +10,7 @@ const auth =
 async function listResources(
   folderPath: string,
   resourceType: string
-): Promise<any[]> {
+): Promise<{ public_id: string }[]> {
   const expression = `resource_type:${resourceType} AND folder:${folderPath}`;
   const response = await fetch(
     `https://api.cloudinary.com/v1_1/${cloudName}/resources/search`,

@@ -8,10 +8,9 @@ import Label from "./UI/label";
 import { Input, Select } from "./UI/input";
 import { PrimaryButton } from "./UI/buttons";
 import getLogin from "../data/getLogin";
-import { AuthContext, AuthProvider } from "../actions/valid";
+import { AuthContext } from "../actions/valid";
 import postNewUSer from "../data/postNewUser";
 import { toast } from "sonner";
-import { Type } from "../enums/user";
 import { PatternFormat } from "react-number-format";
 import { queryClient } from "../helper/useQuery";
 

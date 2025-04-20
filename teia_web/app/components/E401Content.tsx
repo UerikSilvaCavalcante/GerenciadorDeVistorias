@@ -1,21 +1,11 @@
 "server client";
 
-import { CotaGreide, Telhado, TipoArea } from "@/app/enums/imovel";
-import * as TipoLote from "@/app/enums/lote";
 
-import {
-  TipoAreaServico,
-  TipoBanheiro,
-  TipoGaragem,
-} from "@/app/enums/divisao";
-import { ApartamentoProps } from "@/app/@types/apartamentoTypes";
 import { VistoriaProps } from "../@types/vistoriaTypes";
 import { TipoImovel } from "../enums/vistoria";
 import getImovel from "../data/getImovel";
-import { TipoPosicao, TipoVista } from "../enums/apartamento";
 import { RowContent } from "./UI/rowContent";
 import { ColumnContent } from "./UI/columnContent";
-import { LoteProps } from "../@types/loteTypes";
 import { ObraProps } from "../@types/obraTypes";
 
 export default async function E401Content({

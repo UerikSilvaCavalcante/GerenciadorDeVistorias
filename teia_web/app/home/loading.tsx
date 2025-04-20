@@ -1,4 +1,3 @@
-import MainLayout from "../components/mainLayout";
 
 export default function Loading() {
   return (

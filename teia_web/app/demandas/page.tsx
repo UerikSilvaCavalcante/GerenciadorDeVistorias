@@ -15,7 +15,6 @@ import { useContext, useState } from "react";
 import { Status } from "../enums/vistoria";
 import { Select } from "../components/UI/input";
 import Label from "../components/UI/label";
-import { parseCookies } from "nookies";
 import { AuthContext } from "../actions/valid";
 import { Type } from "../enums/user";
 

@@ -1,5 +1,4 @@
-import { Estilo, TipoBancada, TipoEstadoConservacao, TipoJanela, TipoLoc, TipoLocal, TipoMaterial, TipoMuro , TipoPadrao, tipoPintura, TipoPiso, TipoRevestimento, TipoTeto } from "../enums/acabamento";
-import { Tipo } from "../enums/vistoria";
+import { Estilo, TipoBancada, TipoEstadoConservacao, TipoJanela, TipoLoc, TipoLocal, TipoMaterial, TipoMuro, TipoPadrao, tipoPintura, TipoPiso, TipoRevestimento, TipoTeto } from "../enums/acabamento";
 
 type PinturaProps = {
     id: number;

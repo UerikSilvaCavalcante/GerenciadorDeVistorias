@@ -3,7 +3,6 @@
 import trash from "../assets/trash.svg";
 import down from "../assets/down.svg";
 import Image from "next/image";
-import { PrimaryButton, SecondaryButton } from "./UI/buttons";
 import { useState } from "react";
 import { toast } from "sonner";
 

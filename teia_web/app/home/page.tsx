@@ -1,7 +1,6 @@
 import MainLayout from "../components/mainLayout";
 import MesageLayout from "../components/mesageLayout";
 import getMesagens from "../data/getMensagens";
-import { Metadata } from 'next'
 
 
 

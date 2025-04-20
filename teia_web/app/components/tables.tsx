@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useContext, useCallback } from "react";
+import { useState } from "react";
 import getAllVistorias from "../data/getAllVistorias";
 import getAllVistoriador from "../data/getAllVistoriador";
 import {
@@ -11,8 +11,7 @@ import {
   TableHead,
   TableRow,
   Paper,
-  TableSortLabel,
-  CircularProgress,
+  TableSortLabel
 } from "@mui/material";
 import { Status, Tipo, TipoImovel } from "../enums/vistoria";
 import { status, Type } from "../enums/user";
@@ -22,12 +21,10 @@ import eye from "../assets/eye.svg";
 import trash from "../assets/trash.svg";
 import edit from "../assets/pencil-fill.svg";
 import down from "../assets/down.svg";
-import complete from "../assets/box-arrow-in-up-right.svg"
+import complete from "../assets/box-arrow-in-up-right.svg";
 import { VistoriaProps } from "../@types/vistoriaTypes";
 import { useQuery } from "@tanstack/react-query";
-import { UserProps } from "../@types/usersTypes";
 import { parseCookies } from "nookies";
-import { AuthContext } from "../actions/valid";
 import { jwtDecode } from "jwt-decode";
 import { deleteVistoria } from "../data/deleteVistoria";
 import { toast } from "sonner";
@@ -86,8 +83,12 @@ export function BasicTable({
       const res = await fetch(`/api/delete_folder?folder=folder_${numOs}`, {
         method: "DELETE"
       });
-      
-      queryClient.invalidateQueries({ queryKey: ["vistorias"] });
+      if (res){
+
+        queryClient.invalidateQueries({ queryKey: ["vistorias"] });
+      }else {
+        throw new Error("Erro ao deletar a pasta");
+      }
     }),
       {
         loading: "Deletando Vistoria...",

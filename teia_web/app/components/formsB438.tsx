@@ -3,21 +3,7 @@
 import { VistoriaProps } from "../@types/vistoriaTypes";
 import { Input, Select } from "../components/UI/input";
 import Label from "../components/UI/label";
-import {
-  TipoBancada,
-  TipoEstadoConservacao,
-  TipoJanela,
-  TipoLoc,
-  TipoLocal,
-  TipoMaterial,
-  TipoMuro,
-  TipoPadrao,
-  TipoPiso,
-  TipoRevestimento,
-  TipoTeto,
-} from "../enums/acabamento";
-import { CotaGreide, Telhado, TipoArea } from "../enums/imovel";
-import { Status, Tipo, TipoImovel } from "../enums/vistoria";
+import { Status } from "../enums/vistoria";
 import Field from "../components/UI/field";
 import {
   EspecialButton,
@@ -25,16 +11,10 @@ import {
 } from "../components/UI/buttons";
 import Link from "next/link";
 import { useForm, Controller } from "react-hook-form";
-import { number, z } from "zod";
+import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { teal } from "@mui/material/colors";
-import { TipoAreaServico, TipoBanheiro, TipoGaragem } from "../enums/divisao";
 import { PatternFormat } from "react-number-format";
-import { ImovelProps } from "../@types/imovelTypes";
-import { ApartamentoProps } from "../@types/apartamentoTypes";
-import { ObraProps } from "../@types/obraTypes";
 import { LoteProps } from "../@types/loteTypes";
-import { TipoPosicao, TipoVista } from "../enums/apartamento";
 import {
   TipoAcabamento,
   TipoFormato,
@@ -48,23 +28,13 @@ import {
 import plus from "../assets/plus.svg";
 import trash from "../assets/trash.svg";
 
-import {
-  AcabamentoField,
-  DivisaoField,
-  InfraestruturaField,
-  ApartamentoField,
-  ObraField,
-} from "./formsField";
 import completeVistoria from "../data/completeVistoria";
 import { toast } from "sonner";
 import { AuthContext } from "../actions/valid";
 import { parseCookies } from "nookies";
 import { ChangeEvent, useContext, useEffect, useState } from "react";
-import { userAgent } from "next/server";
 import { useRouter } from "next/navigation";
 import { queryClient } from "../helper/useQuery";
-import getImovel from "../data/getImovel";
-import { useQuery } from "@tanstack/react-query";
 import { TipoImovelProps } from "../@types/tipoImove";
 import Image from "next/image";
 import { uploadToCloudinary } from "../data/upload";
@@ -162,7 +132,7 @@ export default function FormsB438({
 
   const handleUploadAll = async (folderName: string) => {
     try {
-      const results = await Promise.all(
+      await Promise.all(
         files.map((file, index) => {
           return uploadToCloudinary(file.file, index, folderName);
         })
@@ -215,7 +185,7 @@ export default function FormsB438({
     };
   }
 
-  const { register, control, handleSubmit, formState, reset } =
+  const { register, control, handleSubmit, formState } =
     useForm<DemandaForm>({
       resolver: zodResolver(getDemandaForm),
       defaultValues: formsObj,

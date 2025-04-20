@@ -8,7 +8,7 @@ import {
 } from "../components/UI/buttons";
 import Label from "../components/UI/label";
 import { Tipo, TipoImovel } from "../enums/vistoria";
-import { PatternFormat, PatternFormatProps } from "react-number-format";
+import { PatternFormat } from "react-number-format";
 import Image from "next/image";
 import plus from "../assets/plus.svg";
 import Link from "next/link";
@@ -16,15 +16,12 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Controller } from "react-hook-form";
 import { useRouter } from "next/navigation";
-import { useQuery } from "@tanstack/react-query";
 import postNewVistoria from "../data/postNewVistoria";
 import { queryClient } from "../helper/useQuery";
 import { VistoriaProps } from "../@types/vistoriaTypes";
 import putVistoria from "../data/putVistoriaEng";
-import { handleNotification } from "./UI/notifications";
 import getAllVistoriador from "../data/getAllVistoriador";
 import { toast } from "sonner";
-import { validData } from "@hookform/resolvers/class-validator/src/__tests__/__fixtures__/data.js";
 import { AuthContext } from "../actions/valid";
 
 const getVistoriaForm = z.object({
@@ -75,7 +72,6 @@ export default function FormsDemanda({
   const [errorMenssage, setErrorMenssage] = useState<string>("");
   const [documentFile, setDocument] = useState<File | null>(null);
   const router = useRouter();
-  const { isOpen, open, close } = handleNotification();
   const { user } = useContext(AuthContext);
 
   const { register, control, handleSubmit, formState } = useForm<VistoriaForm>({
@@ -95,8 +91,6 @@ export default function FormsDemanda({
   };
   async function handleSubmitForm(dataForm: VistoriaForm) {
     try {
-      console.log(dataForm);
-      let res;
 
       if (vistoria) {
         toast.promise(
@@ -553,7 +547,7 @@ export default function FormsDemanda({
             const fileInputValue = document.getElementById("fileInputValue");
             setDocument(e.target.files[0]);
             if (file && fileInputValue) {
-              let fileText = (file as HTMLInputElement).value.split("\\");
+              const fileText = (file as HTMLInputElement).value.split("\\");
               (fileInputValue as HTMLInputElement).value =
                 fileText[fileText.length - 1];
             }

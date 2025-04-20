@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { VistoriaProps } from "../@types/vistoriaTypes";
 import { Input } from "../components/UI/input";
@@ -62,7 +62,7 @@ const getDemandaForm = z.object({
   instalacoesEsgoto: z.number(),
   loucasMetais: z.number(),
   complementos: z.number(),
-  
+
   outros: z.string(),
   obs: z.string().optional(),
 });
@@ -115,7 +115,7 @@ export default function FormsE401({
 
   const handleUploadAll = async (folderName: string) => {
     try {
-      const results = await Promise.all(
+      await Promise.all(
         files.map((file, index) => {
           return uploadToCloudinary(file.file, index, folderName);
         })
@@ -132,14 +132,38 @@ export default function FormsE401({
   const router = useRouter();
   let formsObj = undefined;
   if (vistoria.status == Status.Concluida) {
-    formsObj = {};
+    formsObj = {
+      latitude: vistoria.latitude,
+      longitude: vistoria.longitude,
+      servico: (imovel as ObraProps)?.servico || 0,
+      infraestrutura: (imovel as ObraProps)?.infraestrutura || 0,
+      supraEstruturas: (imovel as ObraProps)?.supraEstrutura || 0,
+      paredes: (imovel as ObraProps)?.paredes || 0,
+      esquadarias: (imovel as ObraProps)?.esquadrias || 0,
+      vidrosPlasticos: (imovel as ObraProps)?.vidrosPlasticos || 0,
+      cobertura: (imovel as ObraProps)?.cobertura || 0,
+      impermeabilizacao: (imovel as ObraProps)?.impermeabilizacao || 0,
+      revestimentosInternos: (imovel as ObraProps)?.revestimentosInternos || 0,
+      revestimentosExternos: (imovel as ObraProps)?.revestimentosExternos || 0,
+      forros: (imovel as ObraProps)?.forros || 0,
+      pisos: (imovel as ObraProps)?.pisos || 0,
+      pinturas: (imovel as ObraProps)?.pinturas || 0,
+      acabamentos: (imovel as ObraProps)?.acabamentos || 0,
+      instalacoesEletricas: (imovel as ObraProps)?.instalacoesEletricas || 0,
+      instalacoesHidraulicas:
+        (imovel as ObraProps)?.instalacoesHidraulicas || 0,
+      instalacoesEsgoto: (imovel as ObraProps)?.instalacoesEsgoto || 0,
+      loucasMetais: (imovel as ObraProps)?.loucasMetais || 0,
+      complementos: (imovel as ObraProps)?.complementos || 0,
+      outros: (imovel as ObraProps)?.outros || "",
+      obs: vistoria.obs || "",
+    };
   }
 
-  const { register, control, handleSubmit, formState, reset } =
-    useForm<DemandaForm>({
-      resolver: zodResolver(getDemandaForm),
-      defaultValues: formsObj,
-    });
+  const { register, control, handleSubmit, formState } = useForm<DemandaForm>({
+    resolver: zodResolver(getDemandaForm),
+    defaultValues: formsObj,
+  });
 
   function handleComplete(data: DemandaForm) {
     // console.log(data);
@@ -171,7 +195,6 @@ export default function FormsE401({
         supraEstrutura: data.supraEstruturas,
         vidrosPlasticos: data.vidrosPlasticos,
         outros: data.outros,
-        
       },
       URLImagens: `folder_${vistoria.numOs}/fotos`,
     };

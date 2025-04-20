@@ -1,12 +1,8 @@
-import { VistoriaProps } from "../@types/vistoriaTypes";
 import { Input, Select } from "../components/UI/input";
 import Label from "../components/UI/label";
 import {
-  TipoBancada,
   TipoEstadoConservacao,
   TipoJanela,
-  TipoLoc,
-  TipoLocal,
   TipoMaterial,
   TipoMuro,
   TipoPadrao,
@@ -14,27 +10,10 @@ import {
   TipoRevestimento,
   TipoTeto,
 } from "../enums/acabamento";
-import { Telhado, TipoArea } from "../enums/imovel";
-import { Tipo, TipoImovel } from "../enums/vistoria";
 import Field from "../components/UI/field";
-import { TipoAreaServico, TipoBanheiro, TipoGaragem } from "../enums/divisao";
-import { PatternFormat } from "react-number-format";
-import { ImovelProps } from "../@types/imovelTypes";
-import { ApartamentoProps } from "../@types/apartamentoTypes";
-import { ObraProps } from "../@types/obraTypes";
-import { LoteProps } from "../@types/loteTypes";
 import { TipoPosicao, TipoVista } from "../enums/apartamento";
-import {
-  TipoAcabamento,
-  TipoFormato,
-  TipoSituacao,
-  TipoSolucao,
-  TipoTopografia,
-  TipoUsoPredominante,
-  TipoLote,
-} from "../enums/lote";
 
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 
 export function AcabamentoField({
   register,
@@ -46,22 +25,22 @@ export function AcabamentoField({
   return (
     <Field legend="Acabamento">
       <div className="flex w-full gap-5 justify-start items-start">
-      <div className="flex w-full flex-col gap-3 justify-start items-start">
+        <div className="flex w-full flex-col gap-3 justify-start items-start">
           <Label htmlFor="patologia">
             {formState.errors.patologia && (
               <span className="text-red-600">
                 {" "}
-                Campo obrigatorio <br />
+                Campo obrigat&#39;rio <br />
               </span>
             )}
             Patologia{" "}
           </Label>
           <Input
-              id="patologia"
-              type="text"
-              style={{ width: "100%" }}
-              {...register("patologia")}
-            />
+            id="patologia"
+            type="text"
+            style={{ width: "100%" }}
+            {...register("patologia")}
+          />
         </div>
         <div className="flex w-full flex-col gap-3 justify-start items-start">
           <Label htmlFor="padrao">
@@ -971,7 +950,9 @@ export function ApartamentoField({
               min={0}
               style={{ width: "100%" }}
               id="idade"
-              {...register("apartamento.blocoPredio.idade", { valueAsNumber: true })}
+              {...register("apartamento.blocoPredio.idade", {
+                valueAsNumber: true,
+              })}
             />
           </div>
           <div
@@ -1065,7 +1046,9 @@ export function ApartamentoField({
               min={0}
               style={{ width: "100%" }}
               id="blocos"
-              {...register("apartamento.blocoPredio.blocos", { valueAsNumber: true })}
+              {...register("apartamento.blocoPredio.blocos", {
+                valueAsNumber: true,
+              })}
             />
           </div>
         </div>
@@ -1095,249 +1078,3 @@ export function ApartamentoField({
     </Field>
   );
 }
-
-export function ObraField({
-  register,
-  formState,
-}: {
-  register: ReturnType<typeof useForm>["register"];
-  formState: ReturnType<typeof useForm>["formState"];
-}) {
-  return (
-    <Field legend="Obra">
-      <div className="flex flex-col w-full gap-5 justify-start items-start">
-        <div className="flex w-full gap-5 justify-start items-start">
-          <div className="flex flex-col w-full gap-3 justify-start items-start">
-            <Label htmlFor="servico">Serviço </Label>
-            <Input
-              id="servico"
-              type="number"
-              style={{ width: "100%" }}
-              {...register("obra.servico", { valueAsNumber: true })}
-            />
-          </div>
-          <div className="flex flex-col w-full gap-3 justify-start items-start">
-            <Label htmlFor="infraestrutura">Infraestrutura </Label>
-            <Input
-              id="infraestrutura"
-              type="number"
-              style={{ width: "100%" }}
-              {...register("obra.infraestrutura", { valueAsNumber: true })}
-            />
-          </div>
-          <div className="flex flex-col w-full gap-3 justify-start items-start">
-            <Label htmlFor="supraEstruturas">Estrutura </Label>
-            <Input
-              id="supraEstruturas"
-              type="number"
-              style={{ width: "100%" }}
-              {...register("obra.supraEstruturas", { valueAsNumber: true })}
-            />
-          </div>
-          <div className="flex flex-col w-full gap-3 justify-start items-start">
-            <Label htmlFor="paredes">Paredes </Label>
-            <Input
-              id="paredes"
-              type="number"
-              style={{ width: "100%" }}
-              {...register("obra.paredes", { valueAsNumber: true })}
-            />
-          </div>
-          <div className="flex flex-col w-full gap-3 justify-start items-start">
-            <Label htmlFor="esquadarias">Esquadarias </Label>
-            <Input
-              id="esquadarias"
-              type="number"
-              style={{ width: "100%" }}
-              {...register("obra.esquadarias", { valueAsNumber: true })}
-            />
-          </div>
-        </div>
-        <div className="flex w-full gap-5 justify-start items-start">
-          <div className="flex flex-col w-full gap-3 justify-start items-start">
-            <Label htmlFor="vidrosPlasticos">Vidros Plasticos </Label>
-            <Input
-              id="vidrosPlasticos"
-              type="number"
-              style={{ width: "100%" }}
-              {...register("obra.vidrosPlasticos", { valueAsNumber: true })}
-            />
-          </div>
-          <div className="flex flex-col w-full gap-3 justify-start items-start">
-            <Label htmlFor="vidrosPlasticos">Vidros Plasticos </Label>
-            <Input
-              id="vidrosPlasticos"
-              type="number"
-              style={{ width: "100%" }}
-              {...register("obra.vidrosPlasticos", { valueAsNumber: true })}
-            />
-          </div>
-          <div className="flex flex-col w-full gap-3 justify-start items-start">
-            <Label htmlFor="cobertura">Coberturas </Label>
-            <Input
-              id="cobertura"
-              type="number"
-              style={{ width: "100%" }}
-              {...register("obra.cobertura", { valueAsNumber: true })}
-            />
-          </div>
-          <div className="flex flex-col w-full gap-3 justify-start items-start">
-            <Label htmlFor="impermeabilizacao">impermeabilizacao </Label>
-            <Input
-              id="impermeabilizacao"
-              type="number"
-              style={{ width: "100%" }}
-              {...register("obra.impermeabilizacao", { valueAsNumber: true })}
-            />
-          </div>
-          <div className="flex flex-col w-full gap-3 justify-start items-start">
-            <Label htmlFor="revestimentosInternos">
-              Revestimentos Internos{" "}
-            </Label>
-            <Input
-              id="revestimentosInternos"
-              type="number"
-              style={{ width: "100%" }}
-              {...register("obra.revestimentosInternos", {
-                valueAsNumber: true,
-              })}
-            />
-          </div>
-          <div className="flex flex-col w-full gap-3 justify-start items-start">
-            <Label htmlFor="revestimentosExternos">
-              Revestimentos Externos{" "}
-            </Label>
-            <Input
-              id="revestimentosExternos"
-              type="number"
-              style={{ width: "100%" }}
-              {...register("obra.revestimentosExternos", {
-                valueAsNumber: true,
-              })}
-            />
-          </div>
-        </div>
-        <div className="flex w-full gap-5 justify-start items-start">
-          <div className="flex flex-col w-full gap-3 justify-start items-start">
-            <Label htmlFor="forros">Forros </Label>
-            <Input
-              id="forros"
-              type="number"
-              style={{ width: "100%" }}
-              {...register("obra.forros", { valueAsNumber: true })}
-            />
-          </div>
-          <div className="flex flex-col w-full gap-3 justify-start items-start">
-            <Label htmlFor="pisos">Pisos </Label>
-            <Input
-              id="pisos"
-              type="number"
-              style={{ width: "100%" }}
-              {...register("obra.pisos", { valueAsNumber: true })}
-            />
-          </div>
-          <div className="flex flex-col w-full gap-3 justify-start items-start">
-            <Label htmlFor="pinturas">Pinturas </Label>
-            <Input
-              id="pinturas"
-              type="number"
-              style={{ width: "100%" }}
-              {...register("obra.pinturas", { valueAsNumber: true })}
-            />
-          </div>
-          <div className="flex flex-col w-full gap-3 justify-start items-start">
-            <Label htmlFor="acabamentos">Acabamentos </Label>
-            <Input
-              id="acabamentos"
-              type="number"
-              style={{ width: "100%" }}
-              {...register("obra.acabamentos", { valueAsNumber: true })}
-            />
-          </div>
-          <div className="flex flex-col w-full gap-3 justify-start items-start">
-            <Label htmlFor="instalacoesEletricas">Instalações Eletricas </Label>
-            <Input
-              id="instalacoesEletricas"
-              type="number"
-              style={{ width: "100%" }}
-              {...register("obra.instalacoesEletricas", {
-                valueAsNumber: true,
-              })}
-            />
-          </div>
-        </div>
-        <div className="flex w-full gap-5 justify-start items-start">
-          <div className="flex flex-col w-full gap-3 justify-start items-start">
-            <Label htmlFor="instalacoesHidraulicas">
-              Instalações Hidraulicas{" "}
-            </Label>
-            <Input
-              id="instalacoesHidraulicas"
-              type="number"
-              style={{ width: "100%" }}
-              {...register("obra.instalacoesHidraulicas", {
-                valueAsNumber: true,
-              })}
-            />
-          </div>
-          <div className="flex flex-col w-full gap-3 justify-start items-start">
-            <Label htmlFor="instalacoesEsgoto">Instalações Esgoto </Label>
-            <Input
-              id="instalacoesEsgoto"
-              type="number"
-              style={{ width: "100%" }}
-              {...register("obra.instalacoesEsgoto", {
-                valueAsNumber: true,
-              })}
-            />
-          </div>
-          <div className="flex flex-col w-full gap-3 justify-start items-start">
-            <Label htmlFor="loucasMetais">Louças e Metais </Label>
-            <Input
-              id="loucasMetais"
-              type="number"
-              style={{ width: "100%" }}
-              {...register("obra.loucasMetais", {
-                valueAsNumber: true,
-              })}
-            />
-          </div>
-          <div className="flex flex-col w-full gap-3 justify-start items-start">
-            <Label htmlFor="complementos">Complementos </Label>
-            <Input
-              id="complementos"
-              type="number"
-              style={{ width: "100%" }}
-              {...register("obra.complementos", {
-                valueAsNumber: true,
-              })}
-            />
-          </div>
-          <div className="flex flex-col w-full gap-3 justify-start items-start">
-            <Label htmlFor="complementos">Complementos </Label>
-            <Input
-              id="complementos"
-              type="number"
-              style={{ width: "100%" }}
-              {...register("obra.complementos", {
-                valueAsNumber: true,
-              })}
-            />
-          </div>
-        </div>
-        <div className="flex w-full gap-5 justify-start items-start">
-          <div className="flex flex-col w-full gap-3 justify-start items-start">
-            <Label htmlFor="outros">Outros </Label>
-            <Input
-              id="outros"
-              type="text"
-              style={{ width: "100%" }}
-              {...register("obra.outros")}
-            />
-          </div>
-        </div>
-      </div>
-    </Field>
-  );
-}
-

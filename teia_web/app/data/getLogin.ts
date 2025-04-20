@@ -1,4 +1,3 @@
-import { UserProps } from "../@types/usersTypes";
 
 export default async function getLogin(
   userName: string,

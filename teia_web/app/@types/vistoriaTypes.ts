@@ -1,6 +1,6 @@
-import { TipoImovel, Tipo } from "../enums/vistoria";
-import { UserProps } from "./usersTypes";
+import { TipoImovel } from "../enums/vistoria";
 import { ImovelProps } from "./imovelTypes";
+import { UserProps } from "./usersTypes";
 
 export type EnderecoProps = {
   id?: number;
@@ -12,15 +12,15 @@ export type EnderecoProps = {
   cep: string;
   complemento: string;
   tipoImovel: TipoImovel;
-}
+};
 
 export type VistoriaProps = {
   id: number;
   numOs: number;
   idEngenheiro: number;
-  engenheiro: any;
+  engenheiro: UserProps;
   idVistoriador: number;
-  vistoriador: any;
+  vistoriador: UserProps;
   idImovel?: number;
   imovel?: ImovelProps;
   idTipoImovel?: number;
@@ -38,4 +38,4 @@ export type VistoriaProps = {
   urlImagens: string;
   urlMatricula: string;
   obs: string;
-}
+};

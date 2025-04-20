@@ -1,8 +1,6 @@
 // app/api/upload/route.ts
 
 import { NextRequest, NextResponse } from 'next/server';
-import { IncomingForm } from 'formidable';
-import { promises as fs } from 'fs';
 import cloudinary from 'cloudinary';
 
 cloudinary.v2.config({

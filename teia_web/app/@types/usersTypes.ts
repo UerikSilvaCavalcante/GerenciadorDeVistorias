@@ -1,5 +1,5 @@
 import { status, Type } from "../enums/user";
-import { Status, Tipo, TipoImovel } from "../enums/vistoria";
+import { Tipo } from "../enums/vistoria";
 import { EnderecoProps } from "./vistoriaTypes";
 
 export type UserProps = {

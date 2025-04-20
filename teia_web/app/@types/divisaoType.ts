@@ -1,5 +1,4 @@
 import { TipoAreaServico, TipoBanheiro, TipoGaragem } from "../enums/divisao";
-import { Tipo } from "../enums/vistoria";
 
 type AreaServicoProps = {
   id: number;

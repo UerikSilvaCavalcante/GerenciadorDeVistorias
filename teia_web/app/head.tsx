@@ -1,5 +1,4 @@
 import React from "react";
-import { string } from "zod";
 
 export default function Head({title}: {title: string}) {
   return (

@@ -3,19 +3,14 @@ import { jwtDecode } from "jwt-decode";
 // import { cookies } from "next/headers";
 import { ReactNode, useEffect, useState } from "react";
 import { createContext } from "react";
-import getLogin from "../data/getLogin";
 import { setCookie, parseCookies, destroyCookie } from "nookies";
-import { cp } from "fs";
-import { parse } from "path";
 import { UserProps } from "../@types/usersTypes";
 import getUserById from "../data/getUserById";
-import { set } from "zod";
-import { queryClient } from "../helper/useQuery";
 
 type AuthContextProps = {
   isAuthenticaded: boolean;
   user: UserProps | null;
-  Login: (data: any) => Promise<boolean>;
+  Login: (data: string) => Promise<boolean>;
 };
 
 export const AuthContext = createContext({} as AuthContextProps);
