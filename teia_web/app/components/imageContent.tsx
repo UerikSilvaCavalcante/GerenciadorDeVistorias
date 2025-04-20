@@ -6,6 +6,7 @@ import { CldImage } from "next-cloudinary";
 import { ColumnContent } from "./UI/columnContent";
 import { RowContent } from "./UI/rowContent";
 import Image from "next/image";
+import { Key } from "react";
 
 const handleDownload = async (url: string, filename: string) => {
   try {
@@ -49,7 +50,7 @@ export default function ImageContent({ folderName }: { folderName: string }) {
               </div>
             </div>
           ) : (
-            data.map((image, index) => (
+            data.map((image: { public_id: string; url: string; }, index: Key | null | undefined) => (
               <div
                 key={index}
                 className="p-2 flex flex-col items-center justify-center gap-2"
