@@ -138,7 +138,6 @@ export async function GET(req: NextRequest) {
       },
     });
   } catch (err: any) {
-    console.log(err);
     return NextResponse.json({ error: err.message }, { status: 500 });
   }
 }

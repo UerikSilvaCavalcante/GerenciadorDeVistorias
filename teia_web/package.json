@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "postinstall": "npx puppeteer browsers install chrome"
+    "postinstall": "npx --yes @puppeteer/browsers install chrome@stable"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",

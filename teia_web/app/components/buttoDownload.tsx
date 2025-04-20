@@ -1,6 +1,7 @@
 "use client";
 import fileIcon from "../assets/file-download.svg";
 import Image from "next/image";
+import { toast } from "sonner";
 
 export default function ButtonDownload({
   folderName,
@@ -10,16 +11,32 @@ export default function ButtonDownload({
   id: string;
 }) {
   const handleDownloadZip = async () => {
-    const response = await fetch(`/api/download_zip?folder=folder_${folderName}&id=${id}`);
-    const blob = await response.blob();
-    const url = URL.createObjectURL(blob);
+    toast.promise(
+      fetch(`/api/download_zip?folder=folder_${folderName}&id=${id}`).then(
+        async (res) => {
+          if (!res.ok) {
+            throw new Error("Falha ao baixar o arquivo");
+          }
+          const blob = res.blob();
+          const url = URL.createObjectURL(await blob);
 
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = `os_${folderName}.zip`;
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
+          const link = document.createElement("a");
+          link.href = url;
+          link.download = `os_${folderName}.zip`;
+          document.body.appendChild(link);
+          link.click();
+          link.remove();
+        }
+      ),
+      {
+        loading: "Baixando arquivo...",
+        success: "Arquivo baixado com sucesso!",
+        error: (error) => {
+          console.error(error);
+          return "Falha ao baixar o arquivo";
+        },
+      }
+    );
   };
 
   return (
