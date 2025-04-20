@@ -29,7 +29,7 @@ import {
   EspecialSecondaryButton,
 } from "../components/UI/buttons";
 import Link from "next/link";
-import { useForm, Controller } from "react-hook-form";
+import { useForm, Controller, UseFormRegister } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { TipoAreaServico, TipoBanheiro, TipoGaragem } from "../enums/divisao";
@@ -39,9 +39,7 @@ import { ApartamentoProps } from "../@types/apartamentoTypes";
 import { ObraProps } from "../@types/obraTypes";
 import { LoteProps } from "../@types/loteTypes";
 import { TipoPosicao, TipoVista } from "../enums/apartamento";
-import {
-  TipoSituacao
-} from "../enums/lote";
+import { TipoSituacao } from "../enums/lote";
 
 import plus from "../assets/plus.svg";
 import trash from "../assets/trash.svg";
@@ -155,7 +153,7 @@ type UploadFile = {
   preview: string;
 };
 
-type DemandaForm = z.infer<typeof getDemandaForm>;
+export type DemandaForm = z.infer<typeof getDemandaForm>;
 
 export default function FormsA413({
   vistoria,
@@ -236,7 +234,7 @@ export default function FormsA413({
       telhado: (vistoria.imovel?.telhado as number) || 0,
       situacao: (vistoria.imovel?.situacao as TipoSituacao) || 0,
       cotaGreide: (vistoria.imovel?.cotaGreide as CotaGreide) || 0,
-      idade: (vistoria.imovel?.idade as number) || 0,
+      idade: (vistoria.imovel?.idadeImovel as number) || 0,
       valorImovel: (vistoria.imovel?.valorImovel as number) || 0,
       tipoDoImovel: (vistoria.imovel?.tipoDoImovel as TipoDoImovelEnum) || 1,
       patologia: (vistoria.imovel?.patologia as string) || "",
@@ -314,11 +312,10 @@ export default function FormsA413({
     // console.log(formObj);
   }
   // console.log(formObj);
-  const { register, control, handleSubmit, formState } =
-    useForm<DemandaForm>({
-      resolver: zodResolver(getDemandaForm),
-      defaultValues: formObj,
-    });
+  const { register, control, handleSubmit, formState } = useForm<DemandaForm>({
+    resolver: zodResolver(getDemandaForm),
+    defaultValues: formObj,
+  });
 
   // console.log(formState);
   function handleComplete(data: DemandaForm) {
@@ -339,7 +336,7 @@ export default function FormsA413({
         frente: data.frente,
         valorImovel: data.valorImovel,
         patologia: data.patologia,
-        idade: data.idade,
+        idadeImovel: data.idade,
         tipoDoImovel: data.tipoDoImovel,
         acabamento: {
           id: 0,
@@ -495,7 +492,7 @@ export default function FormsA413({
                 Campo obrigatorio <br />
               </span>
             )}
-            Idade estimada do Imovel{" "}
+            Idade estimada{" "}
           </Label>
           <Input
             id="area"
@@ -745,9 +742,18 @@ export default function FormsA413({
           />
         </div>
       </div>
-      <AcabamentoField register={register} formState={formState} />
-      <DivisaoField register={register} formState={formState} />
-      <InfraestruturaField register={register} formState={formState} />
+      <AcabamentoField
+        register={register as UseFormRegister<DemandaForm>}
+        formState={formState}
+      />
+      <DivisaoField
+        register={register as UseFormRegister<DemandaForm>}
+        formState={formState}
+      />
+      <InfraestruturaField
+        register={register as UseFormRegister<DemandaForm>}
+        formState={formState}
+      />
 
       <div className="flex w-full gap-5 justify-start items-start">
         <div className="flex w-full flex-col gap-3 justify-start items-start">
@@ -761,7 +767,7 @@ export default function FormsA413({
         </div>
       </div>
       {vistoria.endereco.tipoImovel == TipoImovel.Apartamento && (
-        <ApartamentoField register={register} formsState={formState} />
+        <ApartamentoField register={register} />
       )}
       <Field legend="Imagens">
         <div className="flex w-full gap-5 justify-center items-center text-blue-700 font-bold">

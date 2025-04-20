@@ -17,7 +17,7 @@ export type ImovelProps = {
   frente: number;
   valorImovel: number;
   patologia: string;
-  idade: number;
+  idadeImovel: number;
   tipoDoImovel: TipoDoImovelEnum;
   idAcabamento?: number;
   acabamento?: AcabamentoProps;

@@ -50,7 +50,6 @@ export default async function DemandaId({
   };
   const vistoria = await getVistoriaById(requestProps);
 
-  // console.log(vistoria);
 
     return (
       <ClientProvider>
@@ -150,7 +149,7 @@ export default async function DemandaId({
                   <ColumnContent>
                   <div className="flex gap-1 items-center justify-center">
                   <h2 className="text-sm font-bold">Idade:</h2>
-                  <p className="text-sm">{vistoria.imovel?.idade}</p>
+                  <p className="text-sm">{vistoria.imovel?.idadeImovel}</p>
                 </div>
                 <div className="flex gap-1 items-center justify-center">
                   <h2 className="text-sm font-bold">Valor:</h2>

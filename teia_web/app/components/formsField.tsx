@@ -13,13 +13,14 @@ import {
 import Field from "../components/UI/field";
 import { TipoPosicao, TipoVista } from "../enums/apartamento";
 
-import { useForm } from "react-hook-form";
+import { useForm, UseFormRegister } from "react-hook-form";
+import { DemandaForm } from "./formsA413";
 
 export function AcabamentoField({
   register,
   formState,
 }: {
-  register: ReturnType<typeof useForm>["register"];
+  register: UseFormRegister<DemandaForm>;
   formState: ReturnType<typeof useForm>["formState"];
 }) {
   return (
@@ -332,7 +333,7 @@ export function DivisaoField({
   register,
   formState,
 }: {
-  register: ReturnType<typeof useForm>["register"];
+  register: UseFormRegister<DemandaForm>;
   formState: ReturnType<typeof useForm>["formState"];
 }) {
   return (
@@ -627,7 +628,7 @@ export function InfraestruturaField({
   register,
   formState,
 }: {
-  register: ReturnType<typeof useForm>["register"];
+  register: UseFormRegister<DemandaForm>;
   formState: ReturnType<typeof useForm>["formState"];
 }) {
   return (
@@ -743,7 +744,7 @@ export function InfraestruturaField({
 export function ApartamentoField({
   register,
 }: {
-  register: ReturnType<typeof useForm>["register"];
+  register: UseFormRegister<DemandaForm>;
 }) {
   return (
     <Field legend="Apartamento">
@@ -1068,7 +1069,7 @@ export function ApartamentoField({
               type="text"
               id="outros"
               style={{ width: "100%" }}
-              {...register("apartamento.bloco.outros")}
+              {...register("apartamento.blocoPredio.outros")}
             />
           </div>
         </div>
