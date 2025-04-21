@@ -9,7 +9,7 @@ import { NextRequest, NextResponse } from "next/server";
 export async function GET(req: NextRequest) {
   const id = req.nextUrl.searchParams.get("id") || "default_id";
   const folder = req.nextUrl.searchParams.get("folder") || "default_folder";
-  const token = req.cookies.get("token")?.value;
+  // const token = req.cookies.get("token")?.value;
   console.log(id);
 
   const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
