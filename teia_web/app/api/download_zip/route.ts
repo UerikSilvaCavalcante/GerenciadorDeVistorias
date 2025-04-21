@@ -2,31 +2,31 @@
 
 import JSZip from "jszip";
 import { NextRequest, NextResponse } from "next/server";
-import puppeteer from "puppeteer";
+import { chromium } from "playwright";
 
 async function generatePdfBuffer(token: string, id: string) {
   let browser;
   try {
     // Inicia o Puppeteer com as opções recomendadas para produção
-    browser = await puppeteer.launch({
-      args: ["--no-sandbox", "--disable-setuid-sandbox"],
-    });
-    const page = await browser.newPage();
+    browser = await chromium.launch();
+    const context = await browser.newContext();
 
     // Caso exista token, injete-o como cookie na página que será renderizada
-    if (token) {
-      await page.setCookie({
+    await context.addCookies([
+      {
         name: "token",
         value: token,
-        domain: "localhost:3000", // altere para o domínio da sua aplicação
+        domain: "localhost:3000",
+        path: "/",
         httpOnly: true,
-        secure: true,
-      });
-    }
+        secure: false, // Defina como true se estiver usando HTTPS
+      },
+    ]);
+    const page = await context.newPage();
 
     // URL da rota protegida que você quer transformar em PDF
     const urlProtegida = `http://localhost:3000/demandas/${id}`;
-    await page.goto(urlProtegida, { waitUntil: "networkidle0" });
+    await page.goto(urlProtegida, { waitUntil: "networkidle" });
 
     // Aguarda um seletor específico para garantir que a renderização esteja completa.
     // Altere '.container-principal' para um seletor que esteja presente na sua página.

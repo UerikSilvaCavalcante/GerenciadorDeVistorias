@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "postinstall": "npx --yes @puppeteer/browsers install chrome@stable"
+    "postinstall": "npx -y playwright install"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -25,7 +25,7 @@
     "next-themes": "^0.4.4",
     "node-fetch": "^3.3.2",
     "nookies": "^2.5.2",
-    "puppeteer": "^24.6.1",
+    "playwright": "^1.52.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-number-format": "^5.4.3",
