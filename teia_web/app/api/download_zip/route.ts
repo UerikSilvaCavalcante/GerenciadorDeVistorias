@@ -2,67 +2,9 @@
 
 import JSZip from "jszip";
 import { NextRequest, NextResponse } from "next/server";
-import { chromium } from "playwright";
 
-async function generatePdfBuffer(token: string, id: string) {
-  let browser;
-  try {
-    // Inicia o Puppeteer com as opções recomendadas para produção
-    browser = await chromium.launch();
-    const context = await browser.newContext();
 
-    // Caso exista token, injete-o como cookie na página que será renderizada
-    await context.addCookies([
-      {
-        name: "token",
-        value: token,
-        domain: "localhost:3000",
-        path: "/",
-        httpOnly: true,
-        secure: false, // Defina como true se estiver usando HTTPS
-      },
-    ]);
-    const page = await context.newPage();
 
-    // URL da rota protegida que você quer transformar em PDF
-    const urlProtegida = `http://localhost:3000/demandas/${id}`;
-    await page.goto(urlProtegida, { waitUntil: "networkidle" });
-
-    // Aguarda um seletor específico para garantir que a renderização esteja completa.
-    // Altere '.container-principal' para um seletor que esteja presente na sua página.
-    await page.waitForSelector(".flex");
-
-    await page.evaluate(() => {
-      // Removendo elementos específicos da página, por exemplo, um menu ou banner desnecessário
-      const elementosRemover = document.querySelectorAll(".pdf");
-      elementosRemover.forEach((el) => el.remove());
-
-      // Alternativamente, você pode adicionar estilos para ocultar elementos:
-      // const style = document.createElement('style');
-      // style.innerHTML = `
-      //   .elemento-desnecessario, .banner-publicidade { display: none !important; }
-      // `;
-      // document.head.appendChild(style);
-    });
-
-    // Gera o PDF com as configurações desejadas
-    const pdfBuffer = await page.pdf({
-      format: "A4",
-      printBackground: true, // Mantém os backgrounds para preservar o layout
-      margin: { top: "20px", right: "20px", bottom: "20px", left: "20px" },
-    });
-
-    // Fecha o navegador
-    await browser.close();
-    return pdfBuffer;
-  } catch (error) {
-    console.error("Erro ao gerar PDF:", error);
-    if (browser) {
-      await browser.close();
-    }
-    throw error;
-  }
-}
 
 export async function GET(req: NextRequest) {
   const id = req.nextUrl.searchParams.get("id") || "default_id";
@@ -107,11 +49,11 @@ export async function GET(req: NextRequest) {
     // Busca imagens da subpasta "fotos/"
     const imagens = await fetchResources("image", `${folder}/fotos`);
 
-    const pdfBuffer = await generatePdfBuffer(token as string, id);
+    
 
     const zip = new JSZip();
 
-    zip.file("vistoria.pdf", pdfBuffer);
+    
 
     // Adiciona os PDFs no zip
     for (const doc of documentos) {
