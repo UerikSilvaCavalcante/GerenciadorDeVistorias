@@ -21,8 +21,8 @@ async function gen_pdf(
         type: Number(type),
       })
     );
-  } catch (error) {
-    throw new Error("Failed to generate PDF");
+  } catch (err) {
+    throw new Error(`Erro ao gerar PDF: ${err}`);
   }
   return buffer;
 }

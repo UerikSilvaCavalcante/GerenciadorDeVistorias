@@ -1211,7 +1211,7 @@ export const PdfDocumento = async ({
         {/* Dados extras para A413 */}
         {vistoria.status === Status.Concluida &&
           vistoria.type === Tipo.A413 && (
-            <A413Content vistoria={vistoria} token={token} />
+            <A413Content vistoria={vistoria}  />
           )}
         {vistoria.status === Status.Concluida &&
           vistoria.endereco.tipoImovel == TipoImovel.Apartamento && (

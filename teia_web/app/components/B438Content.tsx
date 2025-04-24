@@ -2,7 +2,6 @@
 
 import * as TipoLote from "@/app/enums/lote";
 
-import { VistoriaProps } from "../@types/vistoriaTypes";
 import { TipoImovel } from "../enums/vistoria";
 import getImovel from "../data/getImovel";
 import { RowContent } from "./UI/rowContent";
