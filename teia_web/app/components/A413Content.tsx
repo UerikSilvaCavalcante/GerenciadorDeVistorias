@@ -390,7 +390,7 @@ export default async function A413Content({
                 <p>{Imovel.condominioVal}</p>
               </div>
               <div className="flex w-full items-center justify-between">
-                <p className="text-sm font-bold">Identificação dos Pavimentos::</p>
+                <p className="text-sm font-bold">Identificação dos Pavimentos:</p>
                 <p>{Imovel.identificacaoPav}</p>
               </div>
             </ColumnContent>

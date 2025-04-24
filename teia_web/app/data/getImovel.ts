@@ -7,6 +7,7 @@ export default async function getImovel(
   token: string
 ): Promise<TipoImovelProps> {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+  
 
   const response = await fetch(
     `${baseUrl}/Engenheiro/TipoImovel/${id}?tipoImovel=${tipoImovel}`,

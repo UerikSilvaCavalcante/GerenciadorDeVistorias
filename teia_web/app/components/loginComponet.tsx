@@ -61,13 +61,14 @@ export default function Login() {
       setLoading(true);
       const res = await getLogin(data.username, data.password);
       queryClient.invalidateQueries();
-      if (res) {
-        await Login(res);
+      if (res.status == 200) {
+        await Login(res.message as string);
         router.push("/home");
-      } else if (res == "usuario ou senha incorretos") {
-        setErrorMenssage("Usuário ou senha incorretos");
+      }
+      if (res.status == 400) {
+        setErrorMenssage(res.message);
         setLoading(false);
-      } else {
+      } if(res.status == 404){
         setErrorMenssage("Usuario não exsite!");
         setLoading(false);
       }

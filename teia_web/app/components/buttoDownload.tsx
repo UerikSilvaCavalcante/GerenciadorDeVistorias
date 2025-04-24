@@ -6,13 +6,17 @@ import { toast } from "sonner";
 export default function ButtonDownload({
   folderName,
   id,
+  type,
+  idVistoria,
 }: {
   folderName: string;
   id: string;
+  type: number;
+  idVistoria: string;
 }) {
   const handleDownloadZip = async () => {
     toast.promise(
-      fetch(`/api/download_zip?folder=folder_${folderName}&id=${id}`).then(
+      fetch(`/api/download_zip?folder=folder_${folderName}&id=${id}&type=${type}&idVistoria=${idVistoria}`).then(
         async (res) => {
           if (!res.ok) {
             throw new Error("Falha ao baixar o arquivo");
@@ -37,6 +41,7 @@ export default function ButtonDownload({
         },
       }
     );
+    
   };
 
   return (

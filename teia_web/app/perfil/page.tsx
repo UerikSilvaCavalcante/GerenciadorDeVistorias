@@ -31,8 +31,6 @@ export default function Perfil() {
   const { user } = useContext(AuthContext);
   const { token } = parseCookies();
 
-  
-
   useEffect(() => {
     if (user) {
       reset({
@@ -44,16 +42,15 @@ export default function Perfil() {
     }
   }, [user]);
 
-  const { register, handleSubmit, formState, reset } =
-    useForm<UserFormProps>({
-      resolver: zodResolver(userForm),
-      defaultValues: {
-        name: user?.name || "Deu errado",
-        userName: user?.userName || "Deu errado",
-        email: user?.email || "Deu errado",
-        phone: user?.phone || "Deu errado",
-      },
-    });
+  const { register, handleSubmit, formState, reset } = useForm<UserFormProps>({
+    resolver: zodResolver(userForm),
+    defaultValues: {
+      name: user?.name || "",
+      userName: user?.userName || "",
+      email: user?.email || "",
+      phone: user?.phone || "",
+    },
+  });
 
   async function handleSave(data: UserFormProps) {
     const userUpdate: UserProps = {
@@ -206,7 +203,12 @@ export default function Perfil() {
           Solicitar troca de senha
         </SecondaryButton>
       </div>
-      <ModalPass isOpen={isOpen} close={close} id={user?.id as number} token={token} />
+      <ModalPass
+        isOpen={isOpen}
+        close={close}
+        id={user?.id as number}
+        token={token}
+      />
     </MainLayout>
   );
 }

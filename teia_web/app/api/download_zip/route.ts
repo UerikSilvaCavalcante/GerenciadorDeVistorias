@@ -1,16 +1,39 @@
 // app/api/download-folder/route.ts
 
+import { PdfDocumento } from "@/app/components/pdfComponent";
+import { renderToBuffer } from "@react-pdf/renderer";
 import JSZip from "jszip";
 import { NextRequest, NextResponse } from "next/server";
 
-
-
+async function gen_pdf(
+  id: number,
+  token: string,
+  type: number,
+  idVistoria: number
+) {
+  let buffer;
+  try {
+    buffer = await renderToBuffer(
+      await PdfDocumento({
+        id: Number(id),
+        idVistoria: Number(idVistoria),
+        token: token as string,
+        type: Number(type),
+      })
+    );
+  } catch (error) {
+    throw new Error("Failed to generate PDF");
+  }
+  return buffer;
+}
 
 export async function GET(req: NextRequest) {
   const id = req.nextUrl.searchParams.get("id") || "default_id";
   const folder = req.nextUrl.searchParams.get("folder") || "default_folder";
-  // const token = req.cookies.get("token")?.value;
-  console.log(id);
+  const type = req.nextUrl.searchParams.get("type") || "default_type";
+  const idVistoria =
+    req.nextUrl.searchParams.get("idVistoria") || "default_idVistoria";
+  const token = req.cookies.get("token")?.value;
 
   const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
   const apiKey = process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY;
@@ -49,11 +72,7 @@ export async function GET(req: NextRequest) {
     // Busca imagens da subpasta "fotos/"
     const imagens = await fetchResources("image", `${folder}/fotos`);
 
-    
-
     const zip = new JSZip();
-
-    
 
     // Adiciona os PDFs no zip
     for (const doc of documentos) {
@@ -70,6 +89,13 @@ export async function GET(req: NextRequest) {
       const filename = img.public_id.replace(`${folder}/`, ""); // mantém estrutura de pasta
       zip.file(filename, Buffer.from(buffer));
     }
+    const pdfBuffer = await gen_pdf(
+      Number(id),
+      token as string,
+      Number(type),
+      Number(idVistoria)
+    );
+    zip.file(`os_${folder}.pdf`, pdfBuffer);
 
     const zipContent = await zip.generateAsync({ type: "nodebuffer" });
 

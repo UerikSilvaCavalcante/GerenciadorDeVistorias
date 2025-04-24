@@ -10,38 +10,28 @@ import { ColumnContent } from "./UI/columnContent";
 import { LoteProps } from "../@types/loteTypes";
 
 export default async function B438Content({
-  vistoria,
+  id,
   token,
 }: {
-  vistoria: VistoriaProps;
+  id: number;
   token: string;
 }) {
-  let Imovel = null;
-  console.log(vistoria);
-  if (vistoria.endereco.tipoImovel == TipoImovel.Lote) {
-    Imovel = await getImovel(
-      vistoria.idTipoImovel as number,
-      vistoria.endereco.tipoImovel,
-      token
-    );
-    Imovel = Imovel as LoteProps;
-  }
-  console.log(Imovel);
+
+  const Imovel: LoteProps = await getImovel(id,TipoImovel.Lote, token) as LoteProps;
+
   return (
     <div className="flex flex-col px-4 h-full w-full">
       <RowContent>
-      <ColumnContent>
+        <ColumnContent>
           <div className="flex flex-col gap-1 items-start justify-start">
             <h2 className="text-lg font-bold">Area do Terreno:</h2>
-            <p className="text-sm">
-              {Imovel?.areaTerreno} m²
-            </p>
+            <p className="text-sm">{Imovel?.areaTerreno} m²</p>
           </div>
         </ColumnContent>
         <ColumnContent>
           <div className="flex flex-col gap-1 items-start justify-start">
             <h2 className="text-lg font-bold">Tipo de Terreno:</h2>
-            <p className="text-sm">
+            <p className="text-sm">     
               {TipoLote.TipoLote[Imovel?.tipo as number]}
             </p>
           </div>
@@ -85,13 +75,10 @@ export default async function B438Content({
         </ColumnContent>
       </RowContent>
       <RowContent>
-     
         <ColumnContent>
           <div className="flex flex-col gap-1 items-start justify-start">
             <h2 className="text-lg font-bold">Frente :</h2>
-            <p className="text-sm">
-              {Imovel?.frente} m²
-            </p>
+            <p className="text-sm">{Imovel?.frente} m²</p>
           </div>
         </ColumnContent>
         <ColumnContent>
@@ -174,8 +161,7 @@ export default async function B438Content({
             </p>
             <p className="text-sm">
               <span className="font-bold">Guias e sarjetas - </span>
-              {/* {TipoLote.TipoSolucao[Imovel?.solucoes.agua as number]} */}
-              Satisfatorio
+              {TipoLote.TipoSolucao[Imovel?.solucoes.agua as number]}
             </p>
           </div>
         </ColumnContent>

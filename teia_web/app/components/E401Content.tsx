@@ -9,23 +9,14 @@ import { ColumnContent } from "./UI/columnContent";
 import { ObraProps } from "../@types/obraTypes";
 
 export default async function E401Content({
-  vistoria,
+  id,
   token,
 }: {
-  vistoria: VistoriaProps;
+  id: number;
   token: string;
 }) {
-  let Imovel = null;
-  console.log(vistoria);
-  if (vistoria.endereco.tipoImovel == TipoImovel.Obra) {
-    Imovel = await getImovel(
-      vistoria.idTipoImovel as number,
-      vistoria.endereco.tipoImovel,
-      token
-    );
-    Imovel = Imovel as ObraProps;
-  }
-  console.log(Imovel);
+  
+  const Imovel: ObraProps = await getImovel(id, TipoImovel.Obra, token) as ObraProps;
   return (
     <div className="flex flex-col px-4 h-full w-full">
       <RowContent>
