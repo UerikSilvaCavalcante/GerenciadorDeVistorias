@@ -1,4 +1,4 @@
-"server client";
+"use server";
 
 import { TipoImovel } from "../enums/vistoria";
 import getImovel from "../data/getImovel";

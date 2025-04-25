@@ -1,4 +1,4 @@
-"server client";
+"use server";
 
 import * as TipoLote from "@/app/enums/lote";
 
