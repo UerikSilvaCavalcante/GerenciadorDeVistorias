@@ -113,7 +113,7 @@ export default function Login() {
           logOrCad ? "log" : "cad"
         }`}
       >
-        <div className="flex flex-col gap-5 justify-center items-center w-full h-1/2">
+        <div className="flex flex-col gap-5 justify-center items-center w-full h-1/2 md:h-full">
           <div className="flex flex-col w-full justify-around items-center  h-full">
             <h1 className="text-4xl font-bold text-center text-indigo-700">
               Login
@@ -208,7 +208,7 @@ export default function Login() {
             </button>
           </div>
         </div>
-        <div className="flex flex-col h-1/2 relative justify-center items-center w-full ">
+        <div className="flex flex-col md:h-full h-1/2 relative justify-center items-center w-full ">
           <div className="flex flex-col   w-full justify-around items-center h-full">
             <h1 className="text-4xl font-bold text-center text-indigo-700">
               Cadastrar-se
