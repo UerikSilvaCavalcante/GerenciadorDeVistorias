@@ -219,7 +219,7 @@ export default function FormsE401({
       className="flex flex-col gap-3 w-full justify-center items-center "
       action=""
     >
-      <div className="flex w-full gap-5 justify-start items-start">
+      <div className="flex w-full gap-5 justify-start items-start md:flex-nowrap flex-wrap">
         <div className="flex w-full flex-col gap-3 justify-start items-start">
           <Label htmlFor="latitude">
             {formState.errors.latitude && (
@@ -275,7 +275,7 @@ export default function FormsE401({
       </div>
       <Field legend="Obra">
         <div className="flex flex-col w-full gap-5 justify-start items-start">
-          <div className="flex w-full gap-5 justify-start items-start">
+          <div className="flex w-full gap-5 justify-start items-start md:flex-nowrap flex-wrap">
             <div className="flex flex-col w-full gap-3 justify-start items-start">
               <Label htmlFor="servico">
                 {formState.errors.servico && (
@@ -362,7 +362,7 @@ export default function FormsE401({
               />
             </div>
           </div>
-          <div className="flex w-full gap-5 justify-start items-start">
+          <div className="flex w-full gap-5 justify-start items-start md:flex-nowrap flex-wrap">
             <div className="flex flex-col w-full gap-3 justify-start items-start">
               <Label htmlFor="vidrosPlasticos">
                 {formState.errors.vidrosPlasticos && (
@@ -454,7 +454,7 @@ export default function FormsE401({
               />
             </div>
           </div>
-          <div className="flex w-full gap-5 justify-start items-start">
+          <div className="flex w-full gap-5 justify-start items-start md:flex-nowrap flex-wrap">
             <div className="flex flex-col w-full gap-3 justify-start items-start">
               <Label htmlFor="forros">
                 {formState.errors.forros && (
@@ -543,7 +543,7 @@ export default function FormsE401({
               />
             </div>
           </div>
-          <div className="flex w-full gap-5 justify-start items-start">
+          <div className="flex w-full gap-5 justify-start items-start md:flex-nowrap flex-wrap">
             <div className="flex flex-col w-full gap-3 justify-start items-start">
               <Label htmlFor="instalacoesHidraulicas">
                 {formState.errors.instalacoesHidraulicas && (
@@ -640,7 +640,7 @@ export default function FormsE401({
               />
             </div>
           </div>
-          <div className="flex w-full gap-5 justify-start items-start">
+          <div className="flex w-full gap-5 justify-start items-start md:flex-nowrap flex-wrap">
             <div className="flex flex-col w-full gap-3 justify-start items-start">
               <Label htmlFor="outros">Outros </Label>
               <Input

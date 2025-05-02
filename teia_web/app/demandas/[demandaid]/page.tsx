@@ -53,7 +53,7 @@ export default async function DemandaId({
   return (
     <ClientProvider>
       <Head title={`Demanda ${vistoria.numOs}`} />
-      <div className="flex flex-col pb-3 h-full w-full ">
+      <div className="flex flex-col pb-3 md:h-full w-full ">
         <div className="flex items-center justify-between mb-4 p-2 w-full bg-gradient-to-r from-indigo-800 to-blue-950">
           <div className="flex justify-center items-center px-6 border-r-4 border-zinc-50 pdf">
             <Link href="/demandas">

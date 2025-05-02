@@ -15,8 +15,11 @@ export default async function B438Content({
   id: number;
   token: string;
 }) {
-
-  const Imovel: LoteProps = await getImovel(id,TipoImovel.Lote, token) as LoteProps;
+  const Imovel: LoteProps = (await getImovel(
+    id,
+    TipoImovel.Lote,
+    token
+  )) as LoteProps;
 
   return (
     <div className="flex flex-col px-4 h-full w-full">
@@ -30,7 +33,7 @@ export default async function B438Content({
         <ColumnContent>
           <div className="flex flex-col gap-1 items-start justify-start">
             <h2 className="text-lg font-bold">Tipo de Terreno:</h2>
-            <p className="text-sm">     
+            <p className="text-sm">
               {TipoLote.TipoLote[Imovel?.tipo as number]}
             </p>
           </div>
@@ -120,7 +123,7 @@ export default async function B438Content({
 
       <RowContent>
         <ColumnContent>
-          <h1 className="text-lg font-bold text-zin-900">
+          <h1 className="text-lg text-wrap font-bold text-zin-900">
             Soluções de infra-estrutura disponíveis junto à unidade, serviços e
             equipamentos comunitários no entorno:
           </h1>

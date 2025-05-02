@@ -106,7 +106,7 @@ export default function Perfil() {
   };
 
   return (
-    <MainLayout id="perfil" width="w-1/2" title="Perfil">
+    <MainLayout id="perfil" width="md:w-[40%]" title="Perfil">
       <h1 className="text-indigo-700 font-bold text-xl">Perfil do Usuario</h1>
 
       <div className="w-full h-full flex flex-wrap justify-center items-center gap-5">

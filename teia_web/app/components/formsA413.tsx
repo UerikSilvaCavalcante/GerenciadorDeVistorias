@@ -463,7 +463,7 @@ export default function FormsA413({
       className="flex flex-col gap-3 w-full justify-center items-center "
       action=""
     >
-      <div className="flex w-full gap-5 justify-start items-start">
+      <div className="flex w-full gap-5 justify-start items-start md:flex-nowrap flex-wrap">
         <div className="flex w-full flex-col gap-3 justify-start items-start">
           <Label htmlFor="area">
             {formState.errors.valorImovel && (
@@ -637,7 +637,7 @@ export default function FormsA413({
           />
         </div>
       </div>
-      <div className="flex w-full gap-5 justify-start items-start">
+      <div className="flex w-full gap-5 justify-start items-start md:flex-nowrap flex-wrap">
         <div className="flex w-full flex-col gap-3 justify-start items-start">
           <Label htmlFor="telhado">
             {formState.errors.telhado && (

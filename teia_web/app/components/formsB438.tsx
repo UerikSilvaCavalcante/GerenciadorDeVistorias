@@ -255,7 +255,7 @@ export default function FormsB438({
       className="flex flex-col gap-3 w-full justify-center items-center "
       action=""
     >
-      <div className="flex w-full gap-5 justify-start items-start">
+      <div className="flex w-full gap-5 justify-start items-start md:flex-nowrap flex-wrap">
         <div className="flex w-full flex-col gap-3 justify-start items-start">
           <Label htmlFor="latitude">
             {formState.errors.latitude && (
@@ -348,8 +348,8 @@ export default function FormsB438({
         </div>
       </div>
       <Field legend="Lote">
-        <div className="flex flex-col w-full gap-5 justify-start items-start">
-          <div className="flex w-full gap-5 justify-start items-start">
+        <div className="flex flex-col w-full gap-5 justify-start items-start ">
+          <div className="flex w-full gap-5 justify-start items-start md:flex-nowrap flex-wrap">
             <div className="flex flex-col w-full gap-3 justify-start items-start">
               <Label htmlFor="agua">
                 {formState.errors.solucoes?.agua && (
@@ -520,7 +520,7 @@ export default function FormsB438({
               </Select>
             </div>
           </div>
-          <div className="flex w-full gap-5 justify-start items-start">
+          <div className="flex w-full gap-5 justify-start items-start md:flex-nowrap flex-wrap">
             <div className="flex flex-col w-full gap-3 justify-start items-start">
               <Label htmlFor="coletaLixo">
                 {formState.errors.solucoes?.coletaLixo && (
@@ -662,7 +662,7 @@ export default function FormsB438({
               </Select>
             </div>
           </div>
-          <div className="flex w-full gap-5 justify-start items-start">
+          <div className="flex w-full gap-5 justify-start items-start md:flex-nowrap flex-wrap">
             <div className="flex flex-col w-full gap-3 justify-start items-start">
               <Label htmlFor="comercio">
                 {formState.errors.solucoes?.comercio && (
@@ -774,7 +774,7 @@ export default function FormsB438({
               </Select>
             </div>
           </div>
-          <div className="flex w-full gap-5 justify-start items-start">
+          <div className="flex w-full gap-5 justify-start items-start md:flex-nowrap flex-wrap">
             <div className="flex flex-col w-full gap-3 justify-start items-start">
               <Label htmlFor="topografia">
                 {formState.errors.topografia && (

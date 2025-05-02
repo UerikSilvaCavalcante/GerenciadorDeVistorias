@@ -25,7 +25,7 @@ export function AcabamentoField({
 }) {
   return (
     <Field legend="Acabamento">
-      <div className="flex w-full gap-5 justify-start items-start">
+      <div className="flex w-full gap-5 justify-start items-start md:flex-nowrap flex-wrap">
         <div className="flex w-full flex-col gap-3 justify-start items-start">
           <Label htmlFor="patologia">
             {formState.errors.patologia && (
@@ -181,7 +181,7 @@ export function AcabamentoField({
           </Select>
         </div>
       </div>
-      <div className="flex w-full gap-5 justify-start items-start">
+      <div className="flex w-full gap-5 justify-start items-start md:flex-nowrap flex-wrap">
         <div className="flex w-full flex-col gap-3 justify-start items-start">
           <Label htmlFor="muro">
             {formState.errors.muro && (
@@ -338,7 +338,7 @@ export function DivisaoField({
 }) {
   return (
     <Field legend="Divisão">
-      <div className="flex w-full gap-5 justify-start items-start">
+      <div className="flex w-full gap-5 justify-start items-start md:flex-nowrap flex-wrap">
         <div className="flex w-full flex-col gap-3 justify-start items-start">
           <Label htmlFor="areaServicoInterna">
             {formState.errors.areaServicoInterna && (
@@ -474,7 +474,7 @@ export function DivisaoField({
           />
         </div>
       </div>
-      <div className="flex w-full gap-4 justify-start items-start">
+      <div className="flex w-full gap-4 justify-start items-start md:flex-nowrap flex-wrap">
         <div className="flex w-full flex-col gap-3 justify-start items-start">
           <Label htmlFor="areaServicoExterna">
             {formState.errors.areaServicoExterna && (
@@ -633,7 +633,7 @@ export function InfraestruturaField({
 }) {
   return (
     <Field legend="Infraestrutura">
-      <div className="flex w-full gap-5 justify-start items-start">
+      <div className="flex w-full gap-5 justify-start items-start md:flex-nowrap flex-wrap">
         <div className="flex w-full flex-col gap-3 justify-start items-start">
           <Label htmlFor="redeAgua">
             {formState.errors.redeAgua && (
@@ -749,7 +749,7 @@ export function ApartamentoField({
   return (
     <Field legend="Apartamento">
       <div className="flex flex-col w-full gap-5 justify-start items-start">
-        <div className="flex w-full gap-5 justify-start items-start">
+        <div className="flex w-full gap-5 justify-start items-start md:flex-nowrap flex-wrap">
           <div className="flex flex-col w-full gap-3 justify-start items-start">
             <Label htmlFor="andar">
               {/* {formState.errors.andar && (
@@ -882,7 +882,7 @@ export function ApartamentoField({
             </Select>
           </div>
         </div>
-        <div className="flex w-full gap-5 justify-start items-start">
+        <div className="flex w-full gap-5 justify-start items-start md:flex-nowrap flex-wrap">
           <div
             className="flex w-full flex-col gap-3
           justify-start items-start"
@@ -1051,7 +1051,7 @@ export function ApartamentoField({
             />
           </div>
         </div>
-        <div className="flex w-full gap-5 justify-start items-start">
+        <div className="flex w-full gap-5 justify-start items-start md:flex-nowrap flex-wrap">
           <div
             className="flex w-full flex-col gap-3
           justify-start items-start"

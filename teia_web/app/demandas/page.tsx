@@ -33,7 +33,6 @@ export default function Demandas() {
     const deInput = document.getElementById("de") as HTMLInputElement;
     const paraInput = document.getElementById("ate") as HTMLInputElement;
     if (deInput && paraInput) {
-      
       setDe(deInput.value ? new Date(deInput.value) : "");
       setAte(paraInput.value ? new Date(paraInput.value) : "");
     }
@@ -64,12 +63,17 @@ export default function Demandas() {
   };
 
   return (
-    <MainLayout id="demandas" title="Demandas">
-      <div className="flex items-center justify-around w-full gap-3">
-        <Input type="text" placeholder="N° OS" width="w-full" id="numOs" />
+    <MainLayout id="demandas" title="Demandas" width="w-[95%]">
+      <div className="flex flex-wrap items-center justify-around w-full  gap-3 md:text-base text-sm md:flex-nowrap">
+        <Input
+          type="text"
+          placeholder="N° OS"
+          width="w-full min-w-[200px]"
+          id="numOs"
+        />
         <select
           id="type"
-          className={`w-80  bg-zinc-950 rounded-md border-2 focus:shadow-md border-indigo-600  shadow-indigo-700 py-2 `}
+          className={`md:w-80 w-full bg-zinc-950 rounded-md border-2 focus:shadow-md border-indigo-600  shadow-indigo-700 py-2 `}
           onChange={handleFilterChange}
         >
           <option value="">Todos</option>
@@ -77,29 +81,37 @@ export default function Demandas() {
           <option value={2}>Em Andamento</option>
           <option value={3}>Concluida</option>
         </select>
-        <div className="flex items-center justify-center text-indigo-800 gap-2">
+        <div className="flex w-full items-center justify-center text-indigo-800 gap-2">
           <h1 className="font-bold text-lg">De:</h1>
           <Input
             type="date"
-            width="w-36 text-zinc-200"
+            width="md:w-36  text-zinc-200"
             id="de"
             style={{ colorScheme: "dark" }}
           />
         </div>
-        <div className="flex items-center justify-center text-indigo-800 gap-2">
+        <div className="flex w-full items-center justify-center text-indigo-800 gap-2">
           <h1 className="font-bold text-lg">Ate:</h1>
           <Input
             type="date"
-            width="w-36 text-zinc-200 "
+            width="md:w-36  text-zinc-200 "
             id="ate"
             style={{ colorScheme: "dark" }}
           />
         </div>
-        <div className="flex items-center justify-center gap-2">
-          <PrimaryButton type="submit" onClick={handleSearchChange}>
+        <div className="flex w-full items-center justify-center gap-2">
+          <PrimaryButton
+            type="submit"
+            onClick={handleSearchChange}
+            style={{ width: "100%" }}
+          >
             Buscar
           </PrimaryButton>
-          <SecondaryButton type="reset" onClick={handleReset}>
+          <SecondaryButton
+            type="reset"
+            onClick={handleReset}
+            style={{ width: "100%" }}
+          >
             Limpar
           </SecondaryButton>
         </div>
@@ -111,12 +123,12 @@ export default function Demandas() {
         ate={ate}
         limit={limit}
       />
-      <div className="flex items-center justify-between gap-2 w-full">
-        <div className="flex items-center justify-center gap-2 text-nowrap">
+      <div className="flex md:flex-nowrap  flex-wrap items-center justify-between gap-2 w-full">
+        <div className="flex items-center justify-center gap-2 text-nowrap w-full md:w-[200px]">
           <Label htmlFor="limit">Limite de registros: </Label>
           <Select
             id="limit"
-            style={{ width: "100px" }}
+            style={{ width: "100%" }}
             onChange={handleLimitChange}
           >
             <option value={10}>10</option>

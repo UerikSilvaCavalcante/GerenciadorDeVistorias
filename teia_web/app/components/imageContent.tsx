@@ -36,6 +36,8 @@ export default function ImageContent({ folderName }: { folderName: string }) {
       const data = await res.json();
       return data.resources;
     },
+    refetchOnWindowFocus: false,
+    staleTime: 1000,
   });
   return (
     <RowContent>
@@ -50,34 +52,39 @@ export default function ImageContent({ folderName }: { folderName: string }) {
               </div>
             </div>
           ) : (
-            data.map((image: { public_id: string; url: string; }, index: Key | null | undefined) => (
-              <div
-                key={index}
-                className="p-2 flex flex-col items-center justify-center gap-2"
-              >
-                <CldImage
-                  src={image.public_id}
-                  alt={`Image ${index}`}
-                  width={180}
-                  height={180}
-                  style={{ objectFit: "cover" }}
-                />
-                <button
-                  onClick={() =>
-                    handleDownload(image.url, `image_${index}.jpg`)
-                  }
-                  className="p-1 bg-blue-700 rounded"
+            data.map(
+              (
+                image: { public_id: string; url: string },
+                index: Key | null | undefined
+              ) => (
+                <div
+                  key={index}
+                  className="p-2 flex flex-col items-center justify-center gap-2"
                 >
-                  <Image
-                    src={downloadIcon}
-                    alt="Download"
-                    width={15}
-                    height={15}
-                    className=""
+                  <CldImage
+                    src={image.public_id}
+                    alt={`Image ${index}`}
+                    width={180}
+                    height={180}
+                    style={{ objectFit: "cover" }}
                   />
-                </button>
-              </div>
-            ))
+                  <button
+                    onClick={() =>
+                      handleDownload(image.url, `image_${index}.jpg`)
+                    }
+                    className="p-1 bg-blue-700 rounded"
+                  >
+                    <Image
+                      src={downloadIcon}
+                      alt="Download"
+                      width={15}
+                      height={15}
+                      className=""
+                    />
+                  </button>
+                </div>
+              )
+            )
           )}
         </div>
       </ColumnContent>

@@ -1,7 +1,7 @@
-import { useContext } from "react";
+import { memo, useContext } from "react";
 import { AuthContext } from "../actions/valid";
 
-export default function Usuario() {
+function Usuario() {
   const { user } = useContext(AuthContext);
 
   return (
@@ -10,3 +10,5 @@ export default function Usuario() {
     </div>
   );
 }
+
+export default memo(Usuario);

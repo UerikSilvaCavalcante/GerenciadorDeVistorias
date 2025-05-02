@@ -91,7 +91,6 @@ export default function FormsDemanda({
   };
   async function handleSubmitForm(dataForm: VistoriaForm) {
     try {
-
       if (vistoria) {
         toast.promise(
           putVistoria(user?.id as number, dataForm, vistoria.id, token).then(
@@ -173,11 +172,11 @@ export default function FormsDemanda({
 
   return (
     <form
-      className="flex flex-col gap-7 w-full justify-start items-start"
+      className="flex flex-col gap-7 w-full justify-start items-start md:text-base text-xs"
       action=""
     >
-      <div className="flex gap-8 w-full justify-start items-center">
-        <div className="flex flex-col gap-3 justify-start items-start">
+      <div className="flex md:flex-nowrap flex-wrap gap-8 w-full justify-start items-center">
+        <div className="flex flex-col gap-3 justify-start items-start w-full min-w-[200px]">
           <Label htmlFor="numOs">
             Numero OS{" "}
             {formState.errors.numOs && (
@@ -191,7 +190,7 @@ export default function FormsDemanda({
             defaultValue={vistoria?.numOs.toString() as string}
           />
         </div>
-        <div className="flex flex-col  gap-3 justify-start items-start">
+        <div className="flex flex-col  gap-3 justify-start items-start w-full min-w-[200px]">
           <Label htmlFor="type">
             Tipo de Serviço{" "}
             {formState.errors.tipo && (
@@ -200,7 +199,7 @@ export default function FormsDemanda({
           </Label>
           <Select
             id="tipo"
-            style={{ width: "260px" }}
+            style={{ width: "100%" }}
             {...register("tipo")}
             defaultValue={vistoria?.type as Tipo}
           >
@@ -211,7 +210,7 @@ export default function FormsDemanda({
             <option value={Tipo.E401}>E-401</option>
           </Select>
         </div>
-        <div className="flex flex-col gap-3 justify-start items-start">
+        <div className="flex flex-col gap-3 justify-start items-start w-full min-w-[200px]">
           <Label htmlFor="dataAbertura">
             Data de Abertura{" "}
             {formState.errors.dataAbertura && (
@@ -221,7 +220,7 @@ export default function FormsDemanda({
           <Input
             id="dataAbertura"
             type="date"
-            style={{ colorScheme: "dark", width: "250px" }}
+            style={{ colorScheme: "dark" }}
             {...register("dataAbertura")}
             defaultValue={
               vistoria?.dataAbertura
@@ -230,7 +229,7 @@ export default function FormsDemanda({
             }
           />
         </div>
-        <div className="flex flex-col gap-3 justify-start items-start">
+        <div className="flex flex-col gap-3 justify-start items-start w-full min-w-[200px]">
           <Label htmlFor="idVistoriador">
             Vistoriador{" "}
             {formState.errors.idVistoriador && (
@@ -272,8 +271,8 @@ export default function FormsDemanda({
           </ul>
         </div>
       </div>
-      <div className="flex gap-8 w-full justify-start items-center">
-        <div className="flex flex-col gap-3 justify-start items-start w-full">
+      <div className="flex gap-8 w-full justify-start items-center md:flex-nowrap flex-wrap">
+        <div className="flex flex-col gap-3 justify-start items-start w-full min-w-[200px]">
           <Label htmlFor="contratante">
             Contratante{" "}
             {formState.errors.contratante && (
@@ -329,8 +328,8 @@ export default function FormsDemanda({
           />
         </div>
       </div>
-      <div className="flex gap-8 w-full justify-start items-center">
-        <div className="flex flex-col gap-3 justify-start items-start w-full">
+      <div className="flex gap-8 w-full justify-start items-center md:flex-nowrap flex-wrap">
+        <div className="flex flex-col gap-3 justify-start items-start w-full min-w-[200px]">
           <Label htmlFor="endereco">
             Endereço{" "}
             {formState.errors.endereco && (
@@ -345,7 +344,7 @@ export default function FormsDemanda({
             defaultValue={vistoria?.endereco.rua as string}
           />
         </div>
-        <div className="flex flex-col gap-3 justify-start items-start w-full">
+        <div className="flex flex-col gap-3 justify-start items-start w-full max-w-[500px]">
           <Label htmlFor="complemento">
             Complemento{" "}
             {formState.errors.complemento && (
@@ -360,7 +359,7 @@ export default function FormsDemanda({
             defaultValue={vistoria?.endereco.complemento as string}
           />
         </div>
-        <div className="flex flex-col gap-3 justify-start items-start ">
+        <div className="flex flex-col gap-3 justify-start items-start max-w-[100px]">
           <Label htmlFor="numero">
             Numero{" "}
             {formState.errors.numero && (
@@ -370,12 +369,11 @@ export default function FormsDemanda({
           <Input
             id="numero"
             type="text"
-            style={{ width: "200px" }}
             {...register("numero")}
             defaultValue={vistoria?.endereco.numero.toString() as string}
           />
         </div>
-        <div className="flex flex-col gap-3 justify-start items-start w-full">
+        <div className="flex flex-col gap-3 justify-start items-start w-full min-w-[200px]">
           <Label htmlFor="bairro">
             Bairro{" "}
             {formState.errors.bairro && (
@@ -390,7 +388,7 @@ export default function FormsDemanda({
             defaultValue={vistoria?.endereco.bairro as string}
           />
         </div>
-        <div className="flex flex-col gap-3 justify-start items-start ">
+        <div className="flex flex-col gap-3 justify-start items-start w-full ">
           <Label htmlFor="latitude">Latitude</Label>
           <Controller
             name="latitude"
@@ -408,7 +406,7 @@ export default function FormsDemanda({
             )}
           />
         </div>
-        <div className="flex flex-col gap-3 justify-start items-start ">
+        <div className="flex flex-col gap-3 justify-start items-start w-full">
           <Label htmlFor="latitude">Longitude</Label>
           <Controller
             name="longitude"
@@ -427,7 +425,7 @@ export default function FormsDemanda({
           />
         </div>
       </div>
-      <div className="flex gap-8 w-full justify-start items-center">
+      <div className="flex gap-8 w-full justify-start items-center md:flex-nowrap flex-wrap">
         <div className="flex flex-col gap-3 justify-start items-start w-full">
           <Label htmlFor="cidade">
             Cidade
@@ -463,7 +461,7 @@ export default function FormsDemanda({
             <option value="MT">MT</option>
           </Select>
         </div>
-        <div className="flex flex-col gap-3 justify-start items-start ">
+        <div className="flex flex-col gap-3 justify-start items-start w-full ">
           <Label htmlFor="cep">
             CEP
             {formState.errors.cep && (

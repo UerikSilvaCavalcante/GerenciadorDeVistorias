@@ -68,7 +68,8 @@ export default function Login() {
       if (res.status == 400) {
         setErrorMenssage(res.message);
         setLoading(false);
-      } if(res.status == 404){
+      }
+      if (res.status == 404) {
         setErrorMenssage("Usuario não exsite!");
         setLoading(false);
       }
@@ -108,12 +109,12 @@ export default function Login() {
   return (
     <div className="flex h-screen justify-center items-center">
       <div
-        className={`flex items-start justify-between gap-5 p-5 bg-zinc-50 drop-shadow-2xl shadow-2xl rounded-lg w-[60%] h-[85%] relative before:bg-gradient-to-r before:from-blue-700 before:to-indigo-900 ${
+        className={`flex md:flex-row flex-col items-start justify-between gap-5 p-5 bg-zinc-50 drop-shadow-2xl shadow-2xl rounded-lg w-[75%] md:w-[60%] h-[95%] md:h-[85%] relative before:bg-gradient-to-r before:from-blue-700 before:to-indigo-900  ${
           logOrCad ? "log" : "cad"
         }`}
       >
-        <div className="flex flex-col gap-5 justify-center items-center w-full ">
-          <div className="flex flex-col w-full justify-center items-center gap-[100px]">
+        <div className="flex flex-col gap-5 justify-center items-center w-full h-full">
+          <div className="flex flex-col w-full justify-around items-center  h-full">
             <h1 className="text-4xl font-bold text-center text-indigo-700">
               Login
             </h1>
@@ -135,7 +136,7 @@ export default function Login() {
                   <Input
                     type="text"
                     placeholder="Digite seu usuário"
-                    width={`w-80`}
+                    width={`md:w-80 `}
                     id="username"
                     {...register("username")}
                   />
@@ -145,7 +146,7 @@ export default function Login() {
                   <Input
                     type="password"
                     placeholder="Digite sua Senha"
-                    width={`w-80`}
+                    width={`md:w-80`}
                     id="password"
                     {...register("password")}
                   />
@@ -186,8 +187,8 @@ export default function Login() {
             </form>
           </div>
           <div
-            className={`flex flex-col gap-16  absolute top-1/2 trasnform -translate-y-1/2 items-center justify-center  ${
-              logOrCad ? "In " : "Out -z-20 opacity-0 "
+            className={`flex flex-col gap-16  absolute  trasnform md:top-1/2 md:-translate-y-1/2 items-center justify-center  ${
+              logOrCad ? "In z-20" : "Out -z-20 opacity-0 "
             }`}
           >
             <h1 className="text-4xl font-bold text-center text-zinc-50">
@@ -207,121 +208,122 @@ export default function Login() {
             </button>
           </div>
         </div>
-        <div className="flex flex-col  w-full">
-          <div className="flex flex-col gap-2 w-full justify-center items-center">
+        <div className="flex flex-col h-full relative justify-center items-center w-full">
+          <div className="flex flex-col gap-20  w-full justify-center items-center h-full">
             <h1 className="text-4xl font-bold text-center text-indigo-700">
-              Cadastra-se
+              Cadastrar-se
             </h1>
             <form
               onSubmit={handleSubmitNewUser(handleNewUserForm)}
               action=""
               className="flex flex-col gap-4 w-full justify-center items-center"
             >
-              <div className="flex flex-col gap-3 w-full justify-center items-center">
-                <div className="flex flex-col gap-1 ">
-                  <Label htmlFor="username">
-                    Nome{" "}
-                    {formState.errors.username && (
-                      <span className="text-red-500 text-sm">
-                        campo obrigatório
-                      </span>
-                    )}
-                  </Label>
-                  <Input
-                    type="text"
-                    placeholder="Digite seu usuário"
-                    width={`w-80`}
-                    id="name"
-                    {...registerNewUser("name")}
-                  />
+              <div className="flex flex-col gap-5 w-full justify-center items-center">
+                <div className="flex w-full justify-around items-center gap-4 ">
+                  <div className="flex flex-col gap-1 ">
+                    <Label htmlFor="username">
+                      Nome{" "}
+                      {formState.errors.username && (
+                        <span className="text-red-500 text-sm">
+                          campo obrigatório
+                        </span>
+                      )}
+                    </Label>
+                    <Input
+                      type="text"
+                      placeholder="Digite seu usuário"
+                      id="name"
+                      {...registerNewUser("name")}
+                    />
+                  </div>
+                  <div className="flex flex-col gap-1 ">
+                    <Label htmlFor="user">
+                      Usuário{" "}
+                      {formStateNewUser.errors.username && (
+                        <span className="text-red-500 text-sm">
+                          Campo obrigatório
+                        </span>
+                      )}
+                    </Label>
+                    <Input
+                      type="text"
+                      placeholder="Digite seu usuário"
+                      id="user"
+                      {...registerNewUser("username")}
+                    />
+                  </div>
                 </div>
-                <div className="flex flex-col gap-1 ">
-                  <Label htmlFor="user">
-                    Usuário{" "}
-                    {formStateNewUser.errors.username && (
-                      <span className="text-red-500 text-sm">
-                        Campo obrigatório
-                      </span>
-                    )}
-                  </Label>
-                  <Input
-                    type="text"
-                    placeholder="Digite seu usuário"
-                    width={`w-80 `}
-                    id="user"
-                    {...registerNewUser("username")}
-                  />
+                <div className="flex w-full justify-around items-center gap-4">
+                  <div className="flex flex-col gap-1 ">
+                    <Label htmlFor="email">
+                      Email{" "}
+                      {formStateNewUser.errors.email && (
+                        <span className="text-red-500 text-sm">
+                          Campo obrigatório
+                        </span>
+                      )}
+                    </Label>
+                    <Input
+                      type="email"
+                      placeholder="Digite seu email"
+                      id="email"
+                      {...registerNewUser("email")}
+                    />
+                  </div>
+                  <div className="flex flex-col gap-1 ">
+                    <Label htmlFor="pass">
+                      Senha{" "}
+                      {formStateNewUser.errors.password && (
+                        <span className="text-red-500 text-sm">
+                          Campo obrigatório
+                        </span>
+                      )}
+                    </Label>
+                    <Input
+                      type="password"
+                      placeholder="Digite sua Senha"
+                      id="pass"
+                      {...registerNewUser("password")}
+                    />
+                  </div>
                 </div>
-                <div className="flex flex-col gap-1 ">
-                  <Label htmlFor="email">
-                    Email{" "}
-                    {formStateNewUser.errors.email && (
-                      <span className="text-red-500 text-sm">
-                        Campo obrigatório
-                      </span>
-                    )}
-                  </Label>
-                  <Input
-                    type="email"
-                    placeholder="Digite seu email"
-                    width={`w-80 `}
-                    id="email"
-                    {...registerNewUser("email")}
-                  />
-                </div>
-                <div className="flex flex-col gap-1 ">
-                  <Label htmlFor="pass">
-                    Senha{" "}
-                    {formStateNewUser.errors.password && (
-                      <span className="text-red-500 text-sm">
-                        Campo obrigatório
-                      </span>
-                    )}
-                  </Label>
-                  <Input
-                    type="password"
-                    placeholder="Digite sua Senha"
-                    width={`w-80`}
-                    id="pass"
-                    {...registerNewUser("password")}
-                  />
-                </div>
-                <div className="flex flex-col gap-1 ">
-                  <Label htmlFor="phone">Telefone</Label>
-                  <Controller
-                    name="phone"
-                    control={control}
-                    render={({ field }) => (
-                      <PatternFormat
-                        format="(##) #####-####"
-                        autoComplete="tel-national"
-                        customInput={Input}
-                        placeholder="(99) 99999-9999"
-                        style={{ width: "320px" }}
-                        id="phone"
-                        {...field}
-                      />
-                    )}
-                  />
-                </div>
-                <div className="flex flex-col gap-1 ">
-                  <Label>
-                    Tipo{" "}
-                    {formStateNewUser.errors.type && (
-                      <span className="text-red-500 text-sm">
-                        Campo obrigatório
-                      </span>
-                    )}
-                  </Label>
-                  <Select
-                    id="type"
-                    {...registerNewUser("type", { valueAsNumber: true })}
-                    style={{ width: "320px" }}
-                  >
-                    <option value="0">Selecione</option>
-                    <option value={2}>Engenheiro</option>
-                    <option value={3}>Vistoriador</option>
-                  </Select>
+                <div className="flex w-full justify-around items-center gap-4">
+                  <div className="flex flex-col gap-1 w-full">
+                    <Label htmlFor="phone">Telefone</Label>
+                    <Controller
+                      name="phone"
+                      control={control}
+                      render={({ field }) => (
+                        <PatternFormat
+                          format="(##) #####-####"
+                          autoComplete="tel-national"
+                          customInput={Input}
+                          placeholder="(99) 99999-9999"
+                          id="phone"
+                          {...field}
+                        />
+                      )}
+                    />
+                  </div>
+
+                  <div className="flex flex-col w-full gap-1 ">
+                    <Label>
+                      Tipo{" "}
+                      {formStateNewUser.errors.type && (
+                        <span className="text-red-500 text-sm">
+                          Campo obrigatório
+                        </span>
+                      )}
+                    </Label>
+                    <Select
+                      id="type"
+                      {...registerNewUser("type", { valueAsNumber: true })}
+                    >
+                      <option value="0">Selecione</option>
+                      <option value={2}>Engenheiro</option>
+                      <option value={3}>Vistoriador</option>
+                    </Select>
+                  </div>
                 </div>
               </div>
               <div className="flex flex-col gap-5 w-60 justify-center items-center">
@@ -330,8 +332,8 @@ export default function Login() {
             </form>
           </div>
           <div
-            className={`flex flex-col gap-16  absolute top-1/2 right-6 trasnform -translate-y-1/2 items-center justify-center ${
-              logOrCad ? "Out -z-20 opacity-0" : "In"
+            className={`flex flex-col gap-16  absolute   items-center justify-center ${
+              logOrCad ? "Out -z-20 opacity-0" : "In z-20"
             }`}
           >
             <h1 className="text-4xl font-bold text-center text-zinc-50">
