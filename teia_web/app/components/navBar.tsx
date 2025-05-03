@@ -9,6 +9,8 @@ import { lazy, Suspense, useContext } from "react";
 import { Type } from "../enums/user";
 import { queryClient } from "../helper/useQuery";
 
+const Usuario = lazy(() => import("./usuario"));
+
 export default function NavBar({ id }: { id: string }) {
   const router = useRouter();
   const { user } = useContext(AuthContext);
@@ -18,9 +20,9 @@ export default function NavBar({ id }: { id: string }) {
     router.push("/");
   }
 
-  const Usuario = lazy(() => import("./usuario"));
+  
   return (
-    <nav className="flex bg-gradient-to-r from-indigo-800 to-blue-950 h-9 w-full items-center justify-between px-3 py-1 fixed top-0 z-10">
+    <nav className="flex bg-gradient-to-r from-indigo-800 to-blue-950 h-9 w-full items-center justify-between px-3 py-1 fixed top-0 text-zinc-50 z-10">
       <Suspense fallback={<div className="w-20 h-5 bg-blue-950 animate-pulse rounded-md"></div>}>
         <Usuario />
       </Suspense>

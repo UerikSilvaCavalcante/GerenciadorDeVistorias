@@ -49,7 +49,7 @@ export default function NavBarMobile({ id }: { id: string }) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <nav className="flex bg-gradient-to-r from-indigo-800 to-blue-950 h-9 w-full items-center justify-between px-3 py-1 fixed top-0 z-10 ">
+    <nav className="flex bg-gradient-to-r from-indigo-800 to-blue-950 h-9 w-full items-center justify-between px-3 py-1 fixed top-0 z-10 text-zinc-50">
       <Suspense
         fallback={
           <div className="w-20 h-5 bg-blue-950 animate-pulse rounded-md"></div>
