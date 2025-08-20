@@ -12,8 +12,8 @@ using TeiaAPI.Data;
 namespace TeiaAPI.Migrations
 {
     [DbContext(typeof(TeiaApiDBContext))]
-    [Migration("20250331010526_fixError")]
-    partial class fixError
+    [Migration("20250820040422_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -201,6 +201,10 @@ namespace TeiaAPI.Migrations
                     b.Property<float>("CondominioVal")
                         .HasColumnType("real")
                         .HasColumnName("condominio_val");
+
+                    b.Property<string>("IdentificacaoPav")
+                        .HasColumnType("text")
+                        .HasColumnName("identificacao_pav");
 
                     b.Property<int>("Posicao_")
                         .HasColumnType("integer")
@@ -405,6 +409,14 @@ namespace TeiaAPI.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("id_infraestrutura");
 
+                    b.Property<int>("IdadeImovel")
+                        .HasColumnType("integer")
+                        .HasColumnName("idade_imovel");
+
+                    b.Property<string>("Patologia")
+                        .HasColumnType("text")
+                        .HasColumnName("patologia");
+
                     b.Property<string>("PosicaoUnidade")
                         .HasColumnType("text")
                         .HasColumnName("posicao_unidade");
@@ -415,6 +427,14 @@ namespace TeiaAPI.Migrations
 
                     b.Property<int?>("Telhado")
                         .HasColumnType("integer");
+
+                    b.Property<int>("TipoDoImovel")
+                        .HasColumnType("integer")
+                        .HasColumnName("tipo_do_imovel");
+
+                    b.Property<float>("ValorImovel")
+                        .HasColumnType("real")
+                        .HasColumnName("valor_imovel");
 
                     b.HasKey("Id");
 
@@ -481,15 +501,31 @@ namespace TeiaAPI.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("acabamento");
 
+                    b.Property<double>("AreaTerreno")
+                        .HasColumnType("double precision")
+                        .HasColumnName("area_terreno");
+
                     b.Property<string>("Densidade")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)")
                         .HasColumnName("densidade");
 
+                    b.Property<string>("FechamentoTerreno")
+                        .HasColumnType("text")
+                        .HasColumnName("fechamento_terreno");
+
                     b.Property<int>("Formato")
                         .HasColumnType("integer")
                         .HasColumnName("formato");
+
+                    b.Property<double>("Frente")
+                        .HasColumnType("double precision")
+                        .HasColumnName("frente");
+
+                    b.Property<string>("LocalizacaoUnidade")
+                        .HasColumnType("text")
+                        .HasColumnName("localizacao_unidade");
 
                     b.Property<int>("Situacao")
                         .HasColumnType("integer")
@@ -791,6 +827,10 @@ namespace TeiaAPI.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("agua");
 
+                    b.Property<int>("AguasPluviais")
+                        .HasColumnType("integer")
+                        .HasColumnName("aguas_pluviais");
+
                     b.Property<int>("ColetaLixo")
                         .HasColumnType("integer")
                         .HasColumnName("coleta_lixo");
@@ -815,6 +855,10 @@ namespace TeiaAPI.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("esgoto");
 
+                    b.Property<int>("GuiasSarjetas")
+                        .HasColumnType("integer")
+                        .HasColumnName("guias_sarjetas");
+
                     b.Property<int>("Iluminacao")
                         .HasColumnType("integer")
                         .HasColumnName("iluminacao");
@@ -830,6 +874,10 @@ namespace TeiaAPI.Migrations
                     b.Property<int>("Saude")
                         .HasColumnType("integer")
                         .HasColumnName("saude");
+
+                    b.Property<int>("Seguranca")
+                        .HasColumnType("integer")
+                        .HasColumnName("seguranca");
 
                     b.HasKey("Id");
 

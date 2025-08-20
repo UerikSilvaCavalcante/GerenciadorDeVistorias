@@ -4,8 +4,6 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
-
 namespace TeiaAPI.Migrations
 {
     /// <inheritdoc />
@@ -253,11 +251,14 @@ namespace TeiaAPI.Migrations
                     esgoto = table.Column<int>(type: "integer", nullable: false),
                     energia = table.Column<int>(type: "integer", nullable: false),
                     pavimentacao = table.Column<int>(type: "integer", nullable: false),
+                    aguas_pluviais = table.Column<int>(type: "integer", nullable: false),
+                    guias_sarjetas = table.Column<int>(type: "integer", nullable: false),
                     iluminacao = table.Column<int>(type: "integer", nullable: false),
                     coleta_lixo = table.Column<int>(type: "integer", nullable: false),
                     creche = table.Column<int>(type: "integer", nullable: false),
                     escola = table.Column<int>(type: "integer", nullable: false),
                     saude = table.Column<int>(type: "integer", nullable: false),
+                    seguranca = table.Column<int>(type: "integer", nullable: false),
                     lazer = table.Column<int>(type: "integer", nullable: false),
                     comercio = table.Column<int>(type: "integer", nullable: false),
                     abs_gas = table.Column<int>(type: "integer", nullable: false)
@@ -299,6 +300,7 @@ namespace TeiaAPI.Migrations
                     tel_administradora = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: true),
                     vista = table.Column<int>(type: "integer", nullable: false),
                     posicao = table.Column<int>(type: "integer", nullable: false),
+                    identificacao_pav = table.Column<string>(type: "text", nullable: true),
                     bloco_predio_id = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
@@ -392,10 +394,14 @@ namespace TeiaAPI.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Frente = table.Column<float>(type: "real", nullable: false),
                     id_acabamento = table.Column<int>(type: "integer", nullable: true),
+                    valor_imovel = table.Column<float>(type: "real", nullable: false),
+                    patologia = table.Column<string>(type: "text", nullable: true),
+                    idade_imovel = table.Column<int>(type: "integer", nullable: false),
                     id_divisao = table.Column<int>(type: "integer", nullable: true),
                     id_infraestrutura = table.Column<int>(type: "integer", nullable: true),
                     Telhado = table.Column<int>(type: "integer", nullable: true),
                     situacao = table.Column<int>(type: "integer", nullable: false),
+                    tipo_do_imovel = table.Column<int>(type: "integer", nullable: false),
                     cota_greide = table.Column<int>(type: "integer", nullable: false),
                     posicao_unidade = table.Column<string>(type: "text", nullable: true)
                 },
@@ -498,10 +504,14 @@ namespace TeiaAPI.Migrations
                     id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     solucoes_id = table.Column<int>(type: "integer", nullable: false),
+                    area_terreno = table.Column<double>(type: "double precision", nullable: false),
+                    frente = table.Column<double>(type: "double precision", nullable: false),
                     tipo = table.Column<int>(type: "integer", nullable: false),
                     formato = table.Column<int>(type: "integer", nullable: false),
                     situacao = table.Column<int>(type: "integer", nullable: false),
                     topografia = table.Column<int>(type: "integer", nullable: false),
+                    fechamento_terreno = table.Column<string>(type: "text", nullable: true),
+                    localizacao_unidade = table.Column<string>(type: "text", nullable: true),
                     uso_predio = table.Column<int>(type: "integer", nullable: false),
                     acabamento = table.Column<int>(type: "integer", nullable: false),
                     densidade = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
@@ -594,16 +604,6 @@ namespace TeiaAPI.Migrations
                         principalTable: "users",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.InsertData(
-                table: "users",
-                columns: new[] { "id", "created_at", "email", "name", "password", "phone", "status", "type", "username" },
-                values: new object[,]
-                {
-                    { 1, new DateTime(2025, 3, 31, 0, 55, 5, 741, DateTimeKind.Utc).AddTicks(2598), "turistajose1@gmail.com", "Engenheiro", "40BD001563085FC35165329EA1FF5C5ECBDBBEEF", "(62) 9 9999-9999", 1, 2, "Engenheiro" },
-                    { 2, new DateTime(2025, 3, 31, 0, 55, 5, 746, DateTimeKind.Utc).AddTicks(4360), "turistajose1@gmail.com", "Vistoriador", "5F6955D227A320C7F1F6C7DA2A6D96A851A8118F", "(62) 9 9999-9999", 1, 3, "Vistoriador" },
-                    { 3, new DateTime(2025, 3, 31, 0, 55, 5, 746, DateTimeKind.Utc).AddTicks(5282), "uerisalcaval003@gmail.com", "Admin", "F865B53623B121FD34EE5426C792E5C33AF8C227", "(62) 9 9999-9999", 1, 1, "Admin" }
                 });
 
             migrationBuilder.CreateIndex(

@@ -1,11 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "y0YoqMiExI0k2tAiA/4vRF9uCZGB+DyuUJ15E3Zwv5OFK3cHJ7Fc4D81vfqwUS9JpMkwBPoiD56r99mwP4lJpw==",
+  "dgSpecHash": "thocxcnzxpOydtFCliUbj3KVFWyHZoCdo8J2wiwvn7h+FoB7wyyytBLB5BFsE694QdKhF24E6ReYJ7dYQQBEaw==",
   "success": true,
   "projectFilePath": "/home/uerik/Documentos/Progamacao/CSharpProjects/TEIAProject/GerenciadorDeVistorias/TeiaAPI/TeiaAPI.csproj",
   "expectedPackageFiles": [
     "/home/uerik/.nuget/packages/humanizer.core/2.14.1/humanizer.core.2.14.1.nupkg.sha512",
-    "/home/uerik/.nuget/packages/microsoft.aspnetcore.authentication.jwtbearer/8.0.15/microsoft.aspnetcore.authentication.jwtbearer.8.0.15.nupkg.sha512",
+    "/home/uerik/.nuget/packages/microsoft.aspnetcore.authentication.jwtbearer/8.0.19/microsoft.aspnetcore.authentication.jwtbearer.8.0.19.nupkg.sha512",
     "/home/uerik/.nuget/packages/microsoft.bcl.asyncinterfaces/7.0.0/microsoft.bcl.asyncinterfaces.7.0.0.nupkg.sha512",
     "/home/uerik/.nuget/packages/microsoft.bcl.memory/9.0.0/microsoft.bcl.memory.9.0.0.nupkg.sha512",
     "/home/uerik/.nuget/packages/microsoft.build.framework/17.8.3/microsoft.build.framework.17.8.3.nupkg.sha512",
