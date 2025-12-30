@@ -248,13 +248,12 @@ Este projeto está em desenvolvimento ativo.
 **Uerik Silva Cavalcante**
 
 - GitHub: [@UerikSilvaCavalcante](https://github.com/UerikSilvaCavalcante)
-- LinkedIn: [Seu LinkedIn](https://linkedin.com/in/seu-perfil)
 
 ## 📞 Contato
 
 Para mais informações, dúvidas ou sugestões:
 
-- 📧 Email: seu.email@exemplo.com
+- 📧 Email: uerisalcaval003@gmail.com
 - 🌐 Website: [gerenciador-de-vistorias.vercel.app](https://gerenciador-de-vistorias.vercel.app)
 - 💬 Issues: [GitHub Issues](https://github.com/UerikSilvaCavalcante/GerenciadorDeVistorias/issues)
 
